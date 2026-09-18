@@ -244,21 +244,22 @@
 <script>
 
 function createMeeting() {
+    const meetingId = Math.floor(100000000 + Math.random() * 900000000);
 
-    alert(
-        "Meeting creation will be connected to the server next."
-    );
-
+    window.location.href =
+        "meeting.html?meeting=" + meetingId;
 }
 
 function joinMeeting() {
+    const meetingId = prompt("Enter Meeting ID:");
 
-    const id = prompt("Enter your Meeting ID:");
-
-    if (id) {
-        alert("Joining meeting: " + id);
+    if (!meetingId) {
+        return;
     }
 
+    window.location.href =
+        "meeting.html?meeting=" +
+        encodeURIComponent(meetingId.trim());
 }
 
 </script>
