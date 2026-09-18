@@ -1,265 +1,469 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>Zoom Meeting</title>
+<title>Zoom Meeting</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            min-height: 100%;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #111827;
-            color: white;
-        }
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111827;
+    color: white;
+}
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+/* =========================
+   JOIN SCREEN
+========================= */
 
-        /* TOP BAR */
-        .topbar {
-            height: 64px;
-            background: #1f2937;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 22px;
-            border-bottom: 1px solid #374151;
-        }
+#joinScreen {
+    width: 100%;
+    height: 100vh;
+    background: #f7f9fc;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-        .logo {
-            font-size: 25px;
-            font-weight: 700;
-            color: #2d8cff;
-        }
+.join-card {
+    width: 100%;
+    max-width: 430px;
+    background: white;
+    border-radius: 14px;
+    padding: 35px 28px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.12);
+    text-align: center;
+}
 
-        .meeting-title {
-            color: #d1d5db;
-            font-size: 14px;
-        }
+.logo {
+    color: #2d8cff;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
 
-        /* MAIN */
-        .meeting-area {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 25px;
-        }
+.join-card h1 {
+    margin: 0 0 10px;
+    font-size: 26px;
+}
 
-        .video-box {
-            width: 100%;
-            max-width: 1050px;
-            height: min(65vh, 620px);
-            background: #0b1220;
-            border-radius: 14px;
-            border: 1px solid #374151;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
+.join-card p {
+    color: #6b7280;
+    font-size: 15px;
+    line-height: 1.5;
+}
 
-        .video-message {
-            text-align: center;
-            padding: 25px;
-        }
+.input {
+    width: 100%;
+    height: 54px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 0 16px;
+    font-size: 17px;
+    margin-top: 20px;
+    outline: none;
+}
 
-        .video-icon {
-            width: 76px;
-            height: 76px;
-            margin: 0 auto 22px;
-            border-radius: 50%;
-            background: #374151;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 34px;
-        }
+.input:focus {
+    border-color: #2d8cff;
+}
 
-        .video-message h1 {
-            margin: 0 0 12px;
-            font-size: 25px;
-            font-weight: 500;
-        }
+.join-button {
+    width: 100%;
+    height: 54px;
+    border: none;
+    border-radius: 8px;
+    background: #2d8cff;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 15px;
+    cursor: pointer;
+}
 
-        .video-message p {
-            margin: 0;
-            color: #9ca3af;
-            font-size: 15px;
-        }
+.join-button:active {
+    transform: scale(.98);
+}
 
-        /* ERROR BOX */
-        .error-box {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: min(90%, 430px);
-            background: #ffffff;
-            color: #111827;
-            border-radius: 12px;
-            padding: 27px 24px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-            z-index: 10;
-        }
+/* =========================
+   MEETING SCREEN
+========================= */
 
-        .error-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            background: #fee2e2;
-            color: #dc2626;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
-            font-weight: bold;
-        }
+#meetingScreen {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    background: #111827;
+    flex-direction: column;
+}
 
-        .error-box h2 {
-            margin: 0 0 10px;
-            font-size: 20px;
-        }
+/* TOP BAR */
 
-        .error-box p {
-            margin: 0;
-            color: #6b7280;
-            line-height: 1.5;
-            font-size: 14px;
-        }
+.topbar {
+    height: 64px;
+    flex-shrink: 0;
+    background: #1f2937;
+    border-bottom: 1px solid #374151;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
 
-        .redirect-text {
-            margin-top: 18px !important;
-            font-size: 13px !important;
-            color: #9ca3af !important;
-        }
+.top-logo {
+    color: #2d8cff;
+    font-size: 25px;
+    font-weight: 700;
+}
 
-        /* BOTTOM CONTROLS */
-        .controls {
-            min-height: 82px;
-            background: #1f2937;
-            border-top: 1px solid #374151;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 13px;
-            padding: 12px;
-        }
+.meeting-number {
+    color: #d1d5db;
+    font-size: 14px;
+}
 
-        .control {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: none;
-            background: #374151;
-            color: white;
-            font-size: 21px;
-            cursor: default;
-        }
+/* VIDEO AREA */
 
-        .leave {
-            width: auto;
-            padding: 0 22px;
-            border-radius: 8px;
-            background: #dc2626;
-            font-size: 14px;
-            font-weight: 600;
-        }
+.video-area {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-        @media (max-width: 600px) {
-            .topbar {
-                height: 58px;
-                padding: 0 15px;
-            }
+.video-container {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    background: #090f1c;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #374151;
+}
 
-            .logo {
-                font-size: 22px;
-            }
+/* FAKE VIDEO TILES */
 
-            .meeting-title {
-                font-size: 12px;
-            }
+.video-tile {
+    position: absolute;
+    background: #182233;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-            .meeting-area {
-                padding: 12px;
-            }
+.main-tile {
+    inset: 0;
+}
 
-            .video-box {
-                height: 62vh;
-                border-radius: 10px;
-            }
+.avatar {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background: #374151;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+}
 
-            .controls {
-                gap: 8px;
-            }
+.name-label {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background: rgba(0,0,0,.55);
+    padding: 7px 11px;
+    border-radius: 5px;
+    font-size: 13px;
+}
 
-            .control {
-                width: 46px;
-                height: 46px;
-                font-size: 18px;
-            }
+/* JOINING */
 
-            .leave {
-                padding: 0 15px;
-            }
-        }
-    </style>
+.joining {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(9,15,28,.75);
+    z-index: 4;
+}
+
+.spinner {
+    width: 46px;
+    height: 46px;
+    border: 4px solid #374151;
+    border-top-color: #2d8cff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.joining h2 {
+    margin: 0 0 8px;
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.joining p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+/* ERROR */
+
+.error-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.42);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 8;
+}
+
+.error-card {
+    width: min(90%, 440px);
+    background: white;
+    color: #111827;
+    border-radius: 14px;
+    padding: 30px 25px;
+    text-align: center;
+    box-shadow: 0 25px 70px rgba(0,0,0,.45);
+}
+
+.error-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #dc2626;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 29px;
+    font-weight: bold;
+}
+
+.error-card h2 {
+    margin: 0 0 10px;
+    font-size: 21px;
+}
+
+.error-card p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+/* CONTROLS */
+
+.controls {
+    height: 82px;
+    flex-shrink: 0;
+    background: #1f2937;
+    border-top: 1px solid #374151;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.control {
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background: #374151;
+    color: white;
+    font-size: 19px;
+}
+
+.leave {
+    width: auto;
+    padding: 0 20px;
+    border-radius: 7px;
+    background: #dc2626;
+    font-size: 14px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+    .topbar {
+        height: 58px;
+        padding: 0 15px;
+    }
+
+    .top-logo {
+        font-size: 22px;
+    }
+
+    .video-area {
+        padding: 10px;
+    }
+
+    .controls {
+        height: 72px;
+        gap: 8px;
+    }
+
+    .control {
+        width: 44px;
+        height: 44px;
+        font-size: 17px;
+    }
+
+    .leave {
+        padding: 0 14px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <header class="topbar">
+<!-- =========================
+     JOIN MEETING SCREEN
+========================= -->
+
+<section id="joinScreen">
+
+    <div class="join-card">
+
         <div class="logo">Zoom</div>
-        <div class="meeting-title" id="meetingTitle">
+
+        <h1>Join Meeting</h1>
+
+        <p>
+            Enter the meeting ID or personal link name
+            provided by the meeting host.
+        </p>
+
+        <input
+            id="meetingInput"
+            class="input"
+            type="text"
+            placeholder="Meeting ID"
+            autocomplete="off"
+        >
+
+        <button
+            class="join-button"
+            onclick="startMeeting()">
+            Join
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     VIDEO MEETING SCREEN
+========================= -->
+
+<section id="meetingScreen">
+
+    <header class="topbar">
+
+        <div class="top-logo">
+            Zoom
+        </div>
+
+        <div
+            class="meeting-number"
+            id="meetingNumber">
             Meeting
         </div>
+
     </header>
 
-    <main class="meeting-area">
 
-        <div class="video-box">
+    <main class="video-area">
 
-            <div class="video-message">
-                <div class="video-icon">🎥</div>
+        <div class="video-container">
 
-                <h1>Video Meeting</h1>
+            <div class="video-tile main-tile">
 
-                <p>
-                    Connecting you to the meeting...
-                </p>
+                <div class="avatar">
+                    👤
+                </div>
+
+                <div class="name-label">
+                    You
+                </div>
+
             </div>
 
-            <!-- FAILED JOIN MESSAGE -->
-            <div class="error-box" id="errorBox">
 
-                <div class="error-icon">!</div>
+            <!-- JOINING MESSAGE -->
 
-                <h2>Cannot join at this time</h2>
+            <div
+                class="joining"
+                id="joining">
 
-                <p>
-                    The meeting could not be joined right now.
-                    Please try again later.
+                <div class="spinner"></div>
+
+                <h2>
+                    Joining meeting...
+                </h2>
+
+                <p id="joiningText">
+                    Connecting to the meeting
                 </p>
 
-                <p class="redirect-text" id="redirectText">
-                    Returning to the home page...
-                </p>
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="error-overlay"
+                id="errorOverlay">
+
+                <div class="error-card">
+
+                    <div class="error-icon">
+                        !
+                    </div>
+
+                    <h2>
+                        Cannot join at this time
+                    </h2>
+
+                    <p>
+                        The meeting could not be joined
+                        right now. Please try again later.
+                    </p>
+
+                </div>
 
             </div>
 
@@ -267,63 +471,171 @@
 
     </main>
 
-    <div class="controls">
 
-        <button class="control">🎤</button>
-        <button class="control">📹</button>
-        <button class="control">💬</button>
-        <button class="control">👥</button>
+    <footer class="controls">
 
-        <button class="control leave" onclick="goHome()">
+        <button class="control">
+            🎤
+        </button>
+
+        <button class="control">
+            📹
+        </button>
+
+        <button class="control">
+            💬
+        </button>
+
+        <button class="control">
+            👥
+        </button>
+
+        <button
+            class="control leave"
+            onclick="goHome()">
             Leave
         </button>
 
-    </div>
+    </footer>
 
-    <script>
+</section>
 
-        // Get meeting ID from the URL if one exists.
-        const params = new URLSearchParams(window.location.search);
-        const meetingId = params.get("meeting");
 
-        if (meetingId) {
-            document.getElementById("meetingTitle").textContent =
-                "Meeting " + meetingId;
-        }
+<script>
 
-        // Redirect after 5 seconds.
-        let seconds = 5;
+const params =
+    new URLSearchParams(window.location.search);
 
-        const redirectText =
-            document.getElementById("redirectText");
+const meetingFromURL =
+    params.get("meeting");
 
-        const countdown = setInterval(function () {
 
-            seconds--;
+// If a meeting ID was supplied,
+// immediately start the meeting flow.
 
-            if (seconds > 0) {
-                redirectText.textContent =
-                    "Returning to the home page in " +
-                    seconds +
-                    " seconds...";
-            }
+if (meetingFromURL) {
 
-            if (seconds <= 0) {
-                clearInterval(countdown);
-                goHome();
-            }
+    startMeeting(meetingFromURL);
 
-        }, 1000);
+}
 
-        // Return to landing page.
-        function goHome() {
 
-            // GitHub Pages path-safe redirect.
-            window.location.href = "index.html";
+// Start meeting
 
-        }
+function startMeeting(id) {
 
-    </script>
+    let meetingId = id;
+
+    if (!meetingId) {
+
+        meetingId =
+            document
+            .getElementById("meetingInput")
+            .value
+            .trim();
+
+    }
+
+
+    // Don't continue without an ID.
+
+    if (!meetingId) {
+
+        alert("Please enter a meeting ID.");
+
+        return;
+
+    }
+
+
+    // Show meeting screen
+
+    document
+        .getElementById("joinScreen")
+        .style.display = "none";
+
+    document
+        .getElementById("meetingScreen")
+        .style.display = "flex";
+
+
+    document
+        .getElementById("meetingNumber")
+        .textContent =
+        "Meeting " + meetingId;
+
+
+    // Joining state
+
+    const joining =
+        document.getElementById("joining");
+
+    const joiningText =
+        document.getElementById("joiningText");
+
+    joining.style.display = "flex";
+
+    joiningText.textContent =
+        "Connecting to the meeting";
+
+
+    /*
+       Simulated connection sequence.
+
+       This is only a UI simulation.
+       No camera, microphone, or screen
+       is accessed.
+    */
+
+    setTimeout(function() {
+
+        joiningText.textContent =
+            "Checking meeting connection...";
+
+    }, 1200);
+
+
+    setTimeout(function() {
+
+        joiningText.textContent =
+            "Connecting to meeting server...";
+
+    }, 2400);
+
+
+    setTimeout(function() {
+
+        joining.style.display = "none";
+
+        document
+            .getElementById("errorOverlay")
+            .style.display = "flex";
+
+
+        // Return to landing page
+        // after showing the error.
+
+        setTimeout(function() {
+
+            goHome();
+
+        }, 3500);
+
+    }, 4000);
+
+}
+
+
+// Return to homepage
+
+function goHome() {
+
+    window.location.href =
+        "index.html";
+
+}
+
+</script>
 
 </body>
 </html>
