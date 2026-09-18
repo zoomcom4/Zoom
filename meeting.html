@@ -1,958 +1,535 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Meeting | Zoom</title>
+  <title>Zoom Meeting</title>
 
-<style>
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html,
-body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #0b1220;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                 Roboto, Helvetica, Arial, sans-serif;
-}
-
-body {
-    color: white;
-}
-
-/* =========================
-   MEETING APP
-========================= */
-
-.meeting-app {
-    width: 100%;
-    height: 100dvh;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: #0b1220;
-}
-
-/* =========================
-   TOP BAR
-========================= */
-
-.topbar {
-    height: 76px;
-    min-height: 76px;
-    background: #1d2939;
-    border-bottom: 1px solid #354256;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 28px;
-}
-
-.logo {
-    color: #2d8cff;
-    font-size: 36px;
-    font-weight: 700;
-    letter-spacing: -1.5px;
-}
-
-.meeting-info {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    color: #d9dee7;
-    font-size: 20px;
-}
-
-.lock {
-    width: 22px;
-    height: 22px;
-    border: 2px solid #7f8da3;
-    border-radius: 5px;
-    position: relative;
-}
-
-.lock::before {
-    content: "";
-    position: absolute;
-    width: 10px;
-    height: 9px;
-    border: 2px solid #7f8da3;
-    border-bottom: 0;
-    border-radius: 8px 8px 0 0;
-    left: 4px;
-    top: -9px;
-}
-
-/* =========================
-   MAIN VIDEO AREA
-========================= */
-
-.video-area {
-    flex: 1;
-    min-height: 0;
-    position: relative;
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.video-grid {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-}
-
-.video-tile {
-    position: relative;
-    min-height: 260px;
-    overflow: hidden;
-    border: 1px solid #354256;
-    border-radius: 16px;
-    background:
-        radial-gradient(circle at center, #172235 0%, #080f1c 65%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.avatar {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    background: #26364f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 42px;
-    font-weight: 600;
-}
-
-.tile-name {
-    position: absolute;
-    left: 16px;
-    bottom: 14px;
-    background: rgba(0, 0, 0, .65);
-    padding: 8px 12px;
-    border-radius: 7px;
-    font-size: 15px;
-}
-
-.tile-status {
-    position: absolute;
-    right: 14px;
-    bottom: 14px;
-    background: rgba(0, 0, 0, .65);
-    padding: 7px 9px;
-    border-radius: 7px;
-    font-size: 14px;
-}
-
-.connection {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: rgba(0,0,0,.55);
-    border-radius: 20px;
-    padding: 7px 12px;
-    font-size: 13px;
-    color: #d6dce7;
-}
-
-/* own preview */
-
-.self-tile {
-    position: absolute;
-    width: 150px;
-    height: 108px;
-    right: 38px;
-    top: 38px;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 2px solid #53627a;
-    background: #111a29;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-}
-
-.self-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #34445e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 19px;
-}
-
-.self-label {
-    position: absolute;
-    bottom: 7px;
-    left: 8px;
-    font-size: 12px;
-    background: rgba(0,0,0,.6);
-    padding: 4px 7px;
-    border-radius: 5px;
-}
-
-/* =========================
-   JOINING STATE
-========================= */
-
-.joining-overlay {
-    position: absolute;
-    inset: 24px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-}
-
-.joining-card {
-    text-align: center;
-}
-
-.spinner {
-    width: 70px;
-    height: 70px;
-    border: 7px solid #334155;
-    border-top-color: #2d8cff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 24px;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-}
 
-.joining-title {
-    font-size: 30px;
-    font-weight: 500;
-    margin-bottom: 10px;
-}
-
-.joining-subtitle {
-    color: #aeb8c8;
-    font-size: 18px;
-}
-
-/* =========================
-   BOTTOM CONTROLS
-========================= */
-
-.controls {
-    min-height: 105px;
-    background: #151f2e;
-    border-top: 1px solid #2c394d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 12px 20px;
-}
-
-.control {
-    min-width: 72px;
-    height: 76px;
-    border: 0;
-    border-radius: 12px;
-    background: transparent;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    cursor: pointer;
-}
-
-.control:hover {
-    background: #243247;
-}
-
-.control-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: #263448;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 21px;
-}
-
-.control-text {
-    font-size: 12px;
-    color: #d9dee7;
-}
-
-.leave {
-    margin-left: 20px;
-}
-
-.leave .control-icon {
-    background: #e53935;
-}
-
-.leave .control-text {
-    color: #ffb4b1;
-}
-
-/* =========================
-   FAILED DIALOG
-========================= */
-
-.dialog-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: rgba(0, 0, 0, .62);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-}
-
-.dialog-backdrop.show {
-    display: flex;
-}
-
-.error-dialog {
-    width: min(440px, 100%);
-    background: #ffffff;
-    color: #111827;
-    border-radius: 20px;
-    padding: 34px 28px 28px;
-    text-align: center;
-    box-shadow: 0 30px 90px rgba(0,0,0,.5);
-    animation: dialogIn .25s ease-out;
-}
-
-@keyframes dialogIn {
-    from {
-        opacity: 0;
-        transform: scale(.94) translateY(12px);
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111111;
+      color: white;
+      min-height: 100vh;
+      overflow: hidden;
     }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
+
+    .meeting {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-}
 
-.error-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 22px;
-    border-radius: 50%;
-    background: #fee2e2;
-    color: #dc2626;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 34px;
-    font-weight: 700;
-}
-
-.error-dialog h2 {
-    margin: 0 0 12px;
-    font-size: 25px;
-}
-
-.error-dialog p {
-    margin: 0;
-    color: #687386;
-    line-height: 1.55;
-    font-size: 16px;
-}
-
-.redirect-message {
-    margin-top: 22px !important;
-    color: #9aa4b5 !important;
-    font-size: 14px !important;
-}
-
-.progress {
-    height: 4px;
-    background: #e5e7eb;
-    border-radius: 4px;
-    margin-top: 18px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 100%;
-    background: #2d8cff;
-    transform-origin: left;
-    animation: countdown 5s linear forwards;
-}
-
-@keyframes countdown {
-    from { transform: scaleX(1); }
-    to   { transform: scaleX(0); }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 700px) {
-
+    /* Top bar */
     .topbar {
-        height: 68px;
-        min-height: 68px;
-        padding: 0 18px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      background: #181818;
+      border-bottom: 1px solid #292929;
     }
 
-    .logo {
-        font-size: 30px;
+    .zoom-logo {
+      font-size: 23px;
+      font-weight: 700;
+      color: #2d8cff;
     }
 
     .meeting-info {
-        font-size: 14px;
-        gap: 7px;
+      text-align: right;
     }
 
-    .lock {
-        width: 17px;
-        height: 17px;
+    .meeting-info small {
+      display: block;
+      color: #a9a9a9;
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .meeting-info span {
+      font-size: 13px;
+    }
+
+    /* Main area */
+    .stage {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background:
+        radial-gradient(circle at center, #252525 0%, #111111 65%);
     }
 
     .video-area {
-        padding: 12px;
+      width: 100%;
+      max-width: 850px;
+      min-height: 430px;
+      border-radius: 14px;
+      background: #202020;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #303030;
     }
 
-    .joining-overlay {
-        inset: 12px;
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #3b3b3b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: 600;
+      color: #ddd;
     }
 
-    .joining-title {
-        font-size: 27px;
+    .participant-name {
+      position: absolute;
+      left: 16px;
+      bottom: 14px;
+      font-size: 13px;
+      background: rgba(0,0,0,.55);
+      padding: 7px 10px;
+      border-radius: 5px;
     }
 
-    .joining-subtitle {
-        font-size: 16px;
+    /* Permission card */
+    .permission-card {
+      position: absolute;
+      width: calc(100% - 40px);
+      max-width: 430px;
+      background: #ffffff;
+      color: #222;
+      border-radius: 14px;
+      padding: 27px 24px 24px;
+      box-shadow: 0 15px 45px rgba(0,0,0,.5);
+      text-align: center;
+      z-index: 5;
+    }
+
+    .share-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 17px;
+      border-radius: 50%;
+      background: #eaf3ff;
+      color: #2d8cff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 27px;
+    }
+
+    .permission-card h1 {
+      font-size: 21px;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .permission-card p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.55;
+      margin-bottom: 22px;
+    }
+
+    .allow-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      background: #2d8cff;
+      color: white;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .allow-btn:active {
+      transform: scale(.99);
+    }
+
+    .status {
+      display: none;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #555;
     }
 
     .spinner {
-        width: 62px;
-        height: 62px;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ddd;
+      border-top-color: #2d8cff;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 7px;
+      animation: spin .8s linear infinite;
     }
 
-    .self-tile {
-        width: 115px;
-        height: 82px;
-        right: 25px;
-        top: 25px;
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
     }
 
+    /* Bottom controls */
     .controls {
-        min-height: 92px;
-        gap: 3px;
-        padding: 8px 4px;
-        overflow-x: auto;
-        justify-content: flex-start;
+      min-height: 82px;
+      background: #181818;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 25px;
+      border-top: 1px solid #292929;
     }
 
     .control {
-        min-width: 62px;
-        height: 72px;
-        flex-shrink: 0;
+      text-align: center;
+      color: #aaa;
+      font-size: 11px;
     }
 
     .control-icon {
-        width: 38px;
-        height: 38px;
-        font-size: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #292929;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 5px;
+      font-size: 17px;
     }
 
-    .control-text {
-        font-size: 10px;
+    /* Shared screen */
+    .shared-screen {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: #000;
+      z-index: 4;
     }
 
-    .leave {
-        margin-left: 4px;
+    .shared-screen video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
-    .error-dialog {
-        border-radius: 18px;
-        padding: 30px 22px 25px;
+    .sharing-label {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(0,0,0,.7);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      z-index: 2;
     }
 
-    .error-dialog h2 {
-        font-size: 23px;
+    .stop-sharing {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #d93025;
+      border: 0;
+      color: white;
+      padding: 11px 18px;
+      border-radius: 7px;
+      font-weight: 600;
+      cursor: pointer;
     }
-}
-</style>
+
+    @media (max-width: 600px) {
+      .stage {
+        padding: 12px;
+      }
+
+      .video-area {
+        min-height: 390px;
+      }
+
+      .permission-card {
+        max-width: 360px;
+      }
+
+      .controls {
+        gap: 16px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="meeting-app">
+<div class="meeting">
 
-    <!-- TOP BAR -->
-    <header class="topbar">
+  <div class="topbar">
+    <div class="zoom-logo">Zoom</div>
 
-        <div class="logo">
-            Zoom
+    <div class="meeting-info">
+      <small>Meeting ID</small>
+      <span id="meetingId">Loading...</span>
+    </div>
+  </div>
+
+
+  <main class="stage">
+
+    <div class="video-area">
+
+      <div class="avatar">G</div>
+
+      <div class="participant-name">
+        You
+      </div>
+
+      <!-- Shared screen preview -->
+      <div class="shared-screen" id="sharedScreen">
+
+        <div class="sharing-label">
+          Screen sharing is active
         </div>
 
-        <div class="meeting-info">
-            <span class="lock"></span>
-            <span>Meeting <span id="meetingId">000000000</span></span>
-        </div>
+        <video
+          id="screenPreview"
+          autoplay
+          muted
+          playsinline>
+        </video>
 
-    </header>
-
-
-    <!-- VIDEO AREA -->
-    <main class="video-area">
-
-        <div class="video-grid">
-
-            <div class="video-tile">
-
-                <div class="connection" id="connectionStatus">
-                    Connecting...
-                </div>
-
-                <div class="avatar">
-                    U
-                </div>
-
-                <div class="tile-name">
-                    You
-                </div>
-
-                <div class="tile-status">
-                    🎙
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- SELF PREVIEW -->
-
-        <div class="self-tile">
-
-            <div class="self-avatar">
-                U
-            </div>
-
-            <div class="self-label">
-                You
-            </div>
-
-        </div>
-
-
-        <!-- JOINING -->
-
-        <div class="joining-overlay" id="joiningOverlay">
-
-            <div class="joining-card">
-
-                <div class="spinner"></div>
-
-                <div class="joining-title" id="joiningTitle">
-                    Connecting...
-                </div>
-
-                <div class="joining-subtitle" id="joiningSubtitle">
-                    Checking meeting connection...
-                </div>
-
-            </div>
-
-        </div>
-
-    </main>
-
-
-    <!-- CONTROLS -->
-
-    <footer class="controls">
-
-        <button class="control" onclick="toggleMute()">
-
-            <div class="control-icon" id="muteIcon">
-                🎙
-            </div>
-
-            <div class="control-text" id="muteText">
-                Mute
-            </div>
-
+        <button
+          class="stop-sharing"
+          id="stopSharing">
+          Stop Sharing
         </button>
 
-
-        <button class="control" onclick="toggleCamera()">
-
-            <div class="control-icon" id="cameraIcon">
-                ▣
-            </div>
-
-            <div class="control-text" id="cameraText">
-                Start Video
-            </div>
-
-        </button>
-
-
-        <button class="control">
-
-            <div class="control-icon">
-                👥
-            </div>
-
-            <div class="control-text">
-                Participants
-            </div>
-
-        </button>
-
-
-        <button class="control">
-
-            <div class="control-icon">
-                💬
-            </div>
-
-            <div class="control-text">
-                Chat
-            </div>
-
-        </button>
-
-
-        <button class="control" onclick="requestScreenShare()">
-
-            <div class="control-icon">
-                ↑
-            </div>
-
-            <div class="control-text">
-                Share
-            </div>
-
-        </button>
-
-
-        <button class="control">
-
-            <div class="control-icon">
-                •••
-            </div>
-
-            <div class="control-text">
-                More
-            </div>
-
-        </button>
-
-
-        <button class="control leave" onclick="leaveMeeting()">
-
-            <div class="control-icon">
-                ↪
-            </div>
-
-            <div class="control-text">
-                Leave
-            </div>
-
-        </button>
-
-    </footer>
-
-</div>
-
-
-<!-- FAILED JOIN DIALOG -->
-
-<div class="dialog-backdrop" id="errorDialog">
-
-    <div class="error-dialog">
-
-        <div class="error-icon">
-            !
-        </div>
-
-        <h2>
-            Cannot join at this time
-        </h2>
-
-        <p>
-            The meeting could not be joined right now.
-            Please try again later.
-        </p>
-
-        <p class="redirect-message">
-            Returning to the home page...
-        </p>
-
-        <div class="progress">
-            <div class="progress-bar"></div>
-        </div>
+      </div>
 
     </div>
+
+
+    <!-- Permission dialog -->
+    <div class="permission-card" id="permissionCard">
+
+      <div class="share-icon">
+        ▣
+      </div>
+
+      <h1>
+        Allow screen sharing to join this host's Zoom call
+      </h1>
+
+      <p>
+        To join this support session, allow screen sharing when your
+        browser or device asks for permission.
+      </p>
+
+      <button
+        class="allow-btn"
+        id="allowSharing">
+        Allow Screen Sharing
+      </button>
+
+      <div class="status" id="status">
+        <span class="spinner"></span>
+        Requesting screen-sharing permission...
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- Meeting controls -->
+  <div class="controls">
+
+    <div class="control">
+      <div class="control-icon">🎙</div>
+      Mute
+    </div>
+
+    <div class="control">
+      <div class="control-icon">▣</div>
+      Video
+    </div>
+
+    <div class="control">
+      <div class="control-icon">⇧</div>
+      Share
+    </div>
+
+    <div class="control">
+      <div class="control-icon">•••</div>
+      More
+    </div>
+
+  </div>
 
 </div>
 
 
 <script>
 
-/* =========================================
-   GET MEETING ID
-========================================= */
+  const meetingIdElement =
+    document.getElementById("meetingId");
 
-const params = new URLSearchParams(window.location.search);
+  const permissionCard =
+    document.getElementById("permissionCard");
 
-const meetingId =
-    params.get("meeting") ||
-    params.get("id") ||
-    "000000000";
+  const allowSharing =
+    document.getElementById("allowSharing");
 
-document.getElementById("meetingId").textContent = meetingId;
+  const status =
+    document.getElementById("status");
 
+  const sharedScreen =
+    document.getElementById("sharedScreen");
 
-/* =========================================
-   JOINING SEQUENCE
-========================================= */
+  const screenPreview =
+    document.getElementById("screenPreview");
 
-const joiningTitle =
-    document.getElementById("joiningTitle");
-
-const joiningSubtitle =
-    document.getElementById("joiningSubtitle");
-
-const connectionStatus =
-    document.getElementById("connectionStatus");
-
-const joiningOverlay =
-    document.getElementById("joiningOverlay");
-
-const errorDialog =
-    document.getElementById("errorDialog");
+  const stopSharing =
+    document.getElementById("stopSharing");
 
 
-/*
-    Connecting...
-*/
+  /* Get meeting ID from URL */
 
-setTimeout(() => {
+  const params =
+    new URLSearchParams(window.location.search);
 
-    joiningTitle.textContent =
-        "Joining meeting...";
+  const meetingId =
+    params.get("id") || "Support Meeting";
 
-    joiningSubtitle.textContent =
-        "Checking meeting connection...";
-
-    connectionStatus.textContent =
-        "Joining...";
-
-}, 1800);
+  meetingIdElement.textContent = meetingId;
 
 
-/*
-    Joining...
-*/
-
-setTimeout(() => {
-
-    joiningTitle.textContent =
-        "Joining meeting...";
-
-    joiningSubtitle.textContent =
-        "Establishing secure connection...";
-
-    connectionStatus.textContent =
-        "Connecting...";
-
-}, 3300);
+  let screenStream = null;
 
 
-/*
-    Simulated failed join.
+  /* Request screen sharing */
 
-    IMPORTANT:
-    This is only the meeting application's
-    simulated failure state. It does not
-    access the user's camera, microphone,
-    or screen automatically.
-*/
-
-setTimeout(() => {
-
-    joiningOverlay.style.display = "none";
-
-    errorDialog.classList.add("show");
-
-    /*
-        Return to landing page after 5 seconds.
-    */
-
-    setTimeout(() => {
-
-        window.location.href =
-            "index.html";
-
-    }, 5000);
-
-}, 5200);
-
-
-/* =========================================
-   MUTE
-========================================= */
-
-let muted = false;
-
-function toggleMute() {
-
-    muted = !muted;
-
-    const icon =
-        document.getElementById("muteIcon");
-
-    const text =
-        document.getElementById("muteText");
-
-    if (muted) {
-
-        icon.textContent = "🔇";
-        text.textContent = "Unmute";
-
-    } else {
-
-        icon.textContent = "🎙";
-        text.textContent = "Mute";
-
-    }
-}
-
-
-/* =========================================
-   CAMERA
-========================================= */
-
-let cameraOn = false;
-
-function toggleCamera() {
-
-    cameraOn = !cameraOn;
-
-    const icon =
-        document.getElementById("cameraIcon");
-
-    const text =
-        document.getElementById("cameraText");
-
-    if (cameraOn) {
-
-        icon.textContent = "▣";
-        text.textContent = "Stop Video";
-
-    } else {
-
-        icon.textContent = "▣";
-        text.textContent = "Start Video";
-
-    }
-}
-
-
-/* =========================================
-   SCREEN SHARE
-========================================= */
-
-/*
-    Screen sharing must always be initiated
-    through the browser's permission system.
-*/
-
-async function requestScreenShare() {
+  allowSharing.addEventListener("click", async () => {
 
     if (!navigator.mediaDevices ||
         !navigator.mediaDevices.getDisplayMedia) {
 
-        alert(
-            "Screen sharing is not supported by this browser."
-        );
+      alert(
+        "Screen sharing is not supported by this browser."
+      );
 
-        return;
+      return;
     }
+
+
+    allowSharing.disabled = true;
+
+    status.style.display = "block";
+
 
     try {
 
-        const stream =
-            await navigator.mediaDevices.getDisplayMedia({
-                video: true
-            });
+      screenStream =
+        await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: false
+        });
 
-        /*
-            For now we only demonstrate the
-            browser permission flow.
 
-            Later this stream will be sent through
-            the realtime meeting connection to an
-            authorized support/meeting participant.
-        */
+      screenPreview.srcObject =
+        screenStream;
 
-        const track =
-            stream.getVideoTracks()[0];
 
-        track.addEventListener(
-            "ended",
-            () => {
+      permissionCard.style.display = "none";
 
-                console.log(
-                    "Screen sharing stopped."
-                );
+      sharedScreen.style.display = "block";
 
-            }
+
+      /* Detect when the user stops sharing
+         through the browser/device controls */
+
+      const videoTrack =
+        screenStream.getVideoTracks()[0];
+
+      if (videoTrack) {
+
+        videoTrack.addEventListener(
+          "ended",
+          stopScreenSharing
         );
+
+      }
 
     } catch (error) {
 
-        console.log(
-            "Screen sharing was cancelled."
-        );
+      console.log(
+        "Screen sharing was not started:",
+        error
+      );
+
+      allowSharing.disabled = false;
+
+      status.style.display = "none";
+
+      alert(
+        "Screen sharing was not enabled. Please allow screen sharing to join this support session."
+      );
 
     }
-}
+
+  });
 
 
-/* =========================================
-   LEAVE
-========================================= */
+  /* Stop sharing */
 
-function leaveMeeting() {
+  stopSharing.addEventListener(
+    "click",
+    stopScreenSharing
+  );
 
-    window.location.href =
-        "index.html";
 
-}
+  function stopScreenSharing() {
+
+    if (screenStream) {
+
+      screenStream
+        .getTracks()
+        .forEach(track => track.stop());
+
+      screenStream = null;
+
+    }
+
+
+    screenPreview.srcObject = null;
+
+    sharedScreen.style.display = "none";
+
+    permissionCard.style.display = "block";
+
+    allowSharing.disabled = false;
+
+    status.style.display = "none";
+
+  }
 
 </script>
 
