@@ -3,13 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
 
 <title>Zoom Meeting</title>
 
 <style>
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -21,12 +23,12 @@ body {
     overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
     background: #111827;
-    color: white;
+    color: #fff;
 }
 
-/* =========================
+/* =====================================
    JOIN SCREEN
-========================= */
+===================================== */
 
 #joinScreen {
     width: 100%;
@@ -41,67 +43,68 @@ body {
 
 .join-card {
     width: 100%;
-    max-width: 430px;
-    background: white;
+    max-width: 440px;
+    background: #fff;
     border-radius: 14px;
     padding: 35px 28px;
-    box-shadow: 0 10px 40px rgba(0,0,0,.12);
     text-align: center;
+    box-shadow: 0 15px 45px rgba(0,0,0,.12);
 }
 
-.logo {
+.join-logo {
     color: #2d8cff;
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 700;
     margin-bottom: 30px;
 }
 
 .join-card h1 {
     margin: 0 0 10px;
-    font-size: 26px;
+    font-size: 27px;
 }
 
 .join-card p {
+    margin: 0;
     color: #6b7280;
-    font-size: 15px;
     line-height: 1.5;
+    font-size: 15px;
 }
 
-.input {
+.meeting-input {
     width: 100%;
     height: 54px;
+    margin-top: 24px;
+    padding: 0 16px;
     border: 1px solid #d1d5db;
     border-radius: 8px;
-    padding: 0 16px;
     font-size: 17px;
-    margin-top: 20px;
     outline: none;
 }
 
-.input:focus {
+.meeting-input:focus {
     border-color: #2d8cff;
 }
 
-.join-button {
+.join-btn {
     width: 100%;
     height: 54px;
-    border: none;
+    margin-top: 14px;
+    border: 0;
     border-radius: 8px;
     background: #2d8cff;
-    color: white;
+    color: #fff;
     font-size: 17px;
     font-weight: 600;
-    margin-top: 15px;
     cursor: pointer;
 }
 
-.join-button:active {
+.join-btn:active {
     transform: scale(.98);
 }
 
-/* =========================
+/* =====================================
    MEETING SCREEN
-========================= */
+===================================== */
 
 #meetingScreen {
     display: none;
@@ -114,106 +117,192 @@ body {
 /* TOP BAR */
 
 .topbar {
-    height: 64px;
+    height: 60px;
     flex-shrink: 0;
-    background: #1f2937;
+    background: #1d2634;
     border-bottom: 1px solid #374151;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+
+    padding: 0 18px;
 }
 
-.top-logo {
+.zoom-logo {
     color: #2d8cff;
     font-size: 25px;
     font-weight: 700;
 }
 
-.meeting-number {
+.meeting-info {
     color: #d1d5db;
     font-size: 14px;
 }
 
-/* VIDEO AREA */
+/* =====================================
+   VIDEO AREA
+===================================== */
 
 .video-area {
     flex: 1;
-    position: relative;
+    min-height: 0;
+    padding: 14px;
+
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    padding: 20px;
 }
 
-.video-container {
+.video-stage {
     width: 100%;
+    max-width: 1300px;
     height: 100%;
-    max-width: 1200px;
-    background: #090f1c;
+
+    background: #080e19;
+    border: 1px solid #374151;
     border-radius: 10px;
+
     position: relative;
     overflow: hidden;
-    border: 1px solid #374151;
 }
 
-/* FAKE VIDEO TILES */
+/* MAIN PARTICIPANT */
 
-.video-tile {
+.participant-main {
     position: absolute;
-    background: #182233;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.main-tile {
     inset: 0;
-}
 
-.avatar {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    background: #374151;
+    background:
+        radial-gradient(
+            circle at center,
+            #1c2738 0%,
+            #0b1220 45%,
+            #070c15 100%
+        );
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 34px;
 }
 
-.name-label {
+.avatar-large {
+    width: 105px;
+    height: 105px;
+
+    border-radius: 50%;
+
+    background: #374151;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 42px;
+    color: #fff;
+}
+
+/* NAME */
+
+.participant-name {
     position: absolute;
-    bottom: 15px;
-    left: 15px;
-    background: rgba(0,0,0,.55);
-    padding: 7px 11px;
+    left: 16px;
+    bottom: 16px;
+
+    padding: 8px 12px;
+
     border-radius: 5px;
+
+    background: rgba(0,0,0,.55);
+
+    color: #fff;
     font-size: 13px;
 }
 
-/* JOINING */
+/* =====================================
+   SMALL PARTICIPANT TILE
+===================================== */
 
-.joining {
+.small-tile {
     position: absolute;
-    inset: 0;
+
+    right: 18px;
+    top: 18px;
+
+    width: 145px;
+    height: 95px;
+
+    border-radius: 8px;
+
+    background: #202b3c;
+    border: 1px solid #4b5563;
+
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(9,15,28,.75);
-    z-index: 4;
+
+    z-index: 2;
 }
 
-.spinner {
-    width: 46px;
-    height: 46px;
-    border: 4px solid #374151;
-    border-top-color: #2d8cff;
+.small-avatar {
+    width: 42px;
+    height: 42px;
+
     border-radius: 50%;
+
+    background: #4b5563;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+}
+
+.small-name {
+    position: absolute;
+    left: 8px;
+    bottom: 7px;
+
+    font-size: 11px;
+}
+
+/* =====================================
+   CONNECTION OVERLAY
+===================================== */
+
+.connection-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(5,10,18,.78);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5;
+}
+
+.connection-content {
+    text-align: center;
+    padding: 25px;
+}
+
+/* SPINNER */
+
+.spinner {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 50%;
+
+    border: 5px solid #374151;
+    border-top-color: #2d8cff;
+
     animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+
+    margin: 0 auto 24px;
 }
 
 @keyframes spin {
@@ -222,126 +311,217 @@ body {
     }
 }
 
-.joining h2 {
-    margin: 0 0 8px;
-    font-size: 21px;
+.connection-title {
+    font-size: 24px;
     font-weight: 500;
+    margin-bottom: 10px;
 }
 
-.joining p {
-    margin: 0;
-    color: #9ca3af;
-    font-size: 14px;
+.connection-status {
+    color: #aeb7c5;
+    font-size: 15px;
 }
 
-/* ERROR */
+/* =====================================
+   FAILED JOIN
+===================================== */
 
 .error-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,.42);
+
+    background: rgba(0,0,0,.58);
+
     display: none;
+
     align-items: center;
     justify-content: center;
-    z-index: 8;
+
+    padding: 20px;
+
+    z-index: 20;
 }
 
 .error-card {
-    width: min(90%, 440px);
-    background: white;
+    width: 100%;
+    max-width: 430px;
+
+    background: #fff;
     color: #111827;
+
     border-radius: 14px;
+
     padding: 30px 25px;
+
     text-align: center;
-    box-shadow: 0 25px 70px rgba(0,0,0,.45);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.55);
 }
 
 .error-icon {
-    width: 58px;
-    height: 58px;
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 18px;
+
     border-radius: 50%;
+
     background: #fee2e2;
     color: #dc2626;
-    margin: 0 auto 18px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 29px;
+
+    font-size: 30px;
     font-weight: bold;
 }
 
 .error-card h2 {
-    margin: 0 0 10px;
-    font-size: 21px;
+    margin: 0 0 12px;
+
+    font-size: 22px;
 }
 
 .error-card p {
     margin: 0;
+
     color: #6b7280;
-    line-height: 1.5;
+
+    line-height: 1.55;
+
+    font-size: 15px;
 }
 
-/* CONTROLS */
+.redirect-message {
+    margin-top: 18px !important;
+
+    font-size: 13px !important;
+
+    color: #9ca3af !important;
+}
+
+/* =====================================
+   BOTTOM CONTROLS
+===================================== */
 
 .controls {
-    height: 82px;
+    height: 78px;
     flex-shrink: 0;
-    background: #1f2937;
+
+    background: #1d2634;
     border-top: 1px solid #374151;
+
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 10px;
+}
+
+.control-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 }
 
 .control {
-    width: 48px;
-    height: 48px;
-    border: none;
+    width: 46px;
+    height: 46px;
+
+    border: 0;
     border-radius: 50%;
+
     background: #374151;
-    color: white;
-    font-size: 19px;
+
+    color: #fff;
+
+    font-size: 18px;
 }
 
-.leave {
-    width: auto;
-    padding: 0 20px;
+.control-label {
+    font-size: 9px;
+    color: #9ca3af;
+}
+
+.leave-button {
+    height: 46px;
+
+    padding: 0 19px;
+
+    border: 0;
     border-radius: 7px;
+
     background: #dc2626;
-    font-size: 14px;
+
+    color: #fff;
+
+    font-size: 13px;
+    font-weight: 600;
 }
 
-/* MOBILE */
+/* =====================================
+   MOBILE
+===================================== */
 
-@media(max-width:600px) {
+@media (max-width: 600px) {
 
     .topbar {
-        height: 58px;
-        padding: 0 15px;
+        height: 56px;
+        padding: 0 14px;
     }
 
-    .top-logo {
+    .zoom-logo {
         font-size: 22px;
     }
 
+    .meeting-info {
+        font-size: 12px;
+    }
+
     .video-area {
-        padding: 10px;
+        padding: 8px;
+    }
+
+    .small-tile {
+        width: 105px;
+        height: 75px;
+        right: 12px;
+        top: 12px;
+    }
+
+    .avatar-large {
+        width: 82px;
+        height: 82px;
+        font-size: 32px;
     }
 
     .controls {
-        height: 72px;
-        gap: 8px;
+        height: 75px;
+        gap: 7px;
     }
 
     .control {
-        width: 44px;
-        height: 44px;
-        font-size: 17px;
+        width: 43px;
+        height: 43px;
+        font-size: 16px;
     }
 
-    .leave {
+    .control-label {
+        display: none;
+    }
+
+    .leave-button {
         padding: 0 14px;
+        height: 43px;
+    }
+
+    .connection-title {
+        font-size: 22px;
     }
 }
 </style>
@@ -349,35 +529,43 @@ body {
 
 <body>
 
-<!-- =========================
-     JOIN MEETING SCREEN
-========================= -->
+
+<!-- =====================================
+     JOIN MEETING INPUT
+===================================== -->
 
 <section id="joinScreen">
 
     <div class="join-card">
 
-        <div class="logo">Zoom</div>
+        <div class="join-logo">
+            Zoom
+        </div>
 
-        <h1>Join Meeting</h1>
+        <h1>
+            Join Meeting
+        </h1>
 
         <p>
-            Enter the meeting ID or personal link name
-            provided by the meeting host.
+            Enter the meeting ID provided by
+            the meeting host.
         </p>
 
         <input
             id="meetingInput"
-            class="input"
+            class="meeting-input"
             type="text"
+            inputmode="numeric"
             placeholder="Meeting ID"
             autocomplete="off"
         >
 
         <button
-            class="join-button"
+            class="join-btn"
             onclick="startMeeting()">
+
             Join
+
         </button>
 
     </div>
@@ -385,59 +573,98 @@ body {
 </section>
 
 
-<!-- =========================
-     VIDEO MEETING SCREEN
-========================= -->
+
+<!-- =====================================
+     MEETING SCREEN
+===================================== -->
 
 <section id="meetingScreen">
 
+
+    <!-- TOP BAR -->
+
     <header class="topbar">
 
-        <div class="top-logo">
+        <div class="zoom-logo">
             Zoom
         </div>
 
         <div
-            class="meeting-number"
-            id="meetingNumber">
+            id="meetingInfo"
+            class="meeting-info">
+
             Meeting
+
         </div>
 
     </header>
 
 
+
+    <!-- VIDEO -->
+
     <main class="video-area">
 
-        <div class="video-container">
+        <div class="video-stage">
 
-            <div class="video-tile main-tile">
 
-                <div class="avatar">
+            <!-- MAIN TILE -->
+
+            <div class="participant-main">
+
+                <div class="avatar-large">
                     👤
                 </div>
 
-                <div class="name-label">
+                <div class="participant-name">
                     You
                 </div>
 
             </div>
 
 
-            <!-- JOINING MESSAGE -->
+            <!-- SMALL TILE -->
+
+            <div class="small-tile">
+
+                <div class="small-avatar">
+                    👤
+                </div>
+
+                <div class="small-name">
+                    Host
+                </div>
+
+            </div>
+
+
+            <!-- CONNECTION STATE -->
 
             <div
-                class="joining"
-                id="joining">
+                id="connectionOverlay"
+                class="connection-overlay">
 
-                <div class="spinner"></div>
+                <div class="connection-content">
 
-                <h2>
-                    Joining meeting...
-                </h2>
+                    <div class="spinner"></div>
 
-                <p id="joiningText">
-                    Connecting to the meeting
-                </p>
+                    <div
+                        id="connectionTitle"
+                        class="connection-title">
+
+                        Connecting...
+
+                    </div>
+
+                    <div
+                        id="connectionStatus"
+                        class="connection-status">
+
+                        Preparing your meeting connection
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -445,8 +672,8 @@ body {
             <!-- ERROR -->
 
             <div
-                class="error-overlay"
-                id="errorOverlay">
+                id="errorOverlay"
+                class="error-overlay">
 
                 <div class="error-card">
 
@@ -463,37 +690,87 @@ body {
                         right now. Please try again later.
                     </p>
 
+                    <p
+                        id="redirectMessage"
+                        class="redirect-message">
+
+                        Returning to the home page...
+
+                    </p>
+
                 </div>
 
             </div>
+
 
         </div>
 
     </main>
 
 
+
+    <!-- CONTROLS -->
+
     <footer class="controls">
 
-        <button class="control">
-            🎤
-        </button>
+        <div class="control-wrap">
 
-        <button class="control">
-            📹
-        </button>
+            <button class="control">
+                🎤
+            </button>
 
-        <button class="control">
-            💬
-        </button>
+            <span class="control-label">
+                Mute
+            </span>
 
-        <button class="control">
-            👥
-        </button>
+        </div>
+
+
+        <div class="control-wrap">
+
+            <button class="control">
+                📹
+            </button>
+
+            <span class="control-label">
+                Video
+            </span>
+
+        </div>
+
+
+        <div class="control-wrap">
+
+            <button class="control">
+                👥
+            </button>
+
+            <span class="control-label">
+                Participants
+            </span>
+
+        </div>
+
+
+        <div class="control-wrap">
+
+            <button class="control">
+                💬
+            </button>
+
+            <span class="control-label">
+                Chat
+            </span>
+
+        </div>
+
 
         <button
-            class="control leave"
+            class="leave-button"
             onclick="goHome()">
+
             Leave
+
         </button>
 
     </footer>
@@ -501,7 +778,12 @@ body {
 </section>
 
 
+
 <script>
+
+/* =====================================
+   READ URL
+===================================== */
 
 const params =
     new URLSearchParams(window.location.search);
@@ -510,8 +792,9 @@ const meetingFromURL =
     params.get("meeting");
 
 
-// If a meeting ID was supplied,
-// immediately start the meeting flow.
+/* =====================================
+   AUTOMATIC JOIN WHEN URL HAS ID
+===================================== */
 
 if (meetingFromURL) {
 
@@ -520,11 +803,16 @@ if (meetingFromURL) {
 }
 
 
-// Start meeting
+/* =====================================
+   START MEETING
+===================================== */
 
 function startMeeting(id) {
 
     let meetingId = id;
+
+
+    /* Get input value */
 
     if (!meetingId) {
 
@@ -537,7 +825,7 @@ function startMeeting(id) {
     }
 
 
-    // Don't continue without an ID.
+    /* Require ID */
 
     if (!meetingId) {
 
@@ -548,7 +836,7 @@ function startMeeting(id) {
     }
 
 
-    // Show meeting screen
+    /* Show meeting */
 
     document
         .getElementById("joinScreen")
@@ -559,74 +847,149 @@ function startMeeting(id) {
         .style.display = "flex";
 
 
+    /* Display meeting ID */
+
     document
-        .getElementById("meetingNumber")
+        .getElementById("meetingInfo")
         .textContent =
         "Meeting " + meetingId;
 
 
-    // Joining state
+    const title =
+        document.getElementById(
+            "connectionTitle"
+        );
 
-    const joining =
-        document.getElementById("joining");
+    const status =
+        document.getElementById(
+            "connectionStatus"
+        );
 
-    const joiningText =
-        document.getElementById("joiningText");
-
-    joining.style.display = "flex";
-
-    joiningText.textContent =
-        "Connecting to the meeting";
+    const connection =
+        document.getElementById(
+            "connectionOverlay"
+        );
 
 
-    /*
-       Simulated connection sequence.
+    const error =
+        document.getElementById(
+            "errorOverlay"
+        );
 
-       This is only a UI simulation.
-       No camera, microphone, or screen
-       is accessed.
-    */
+
+    const redirect =
+        document.getElementById(
+            "redirectMessage"
+        );
+
+
+    /* Initial state */
+
+    connection.style.display = "flex";
+    error.style.display = "none";
+
+    title.textContent =
+        "Connecting...";
+
+    status.textContent =
+        "Preparing your meeting connection";
+
+
+    /* =================================
+       CONNECTION SEQUENCE
+    ================================= */
+
 
     setTimeout(function() {
 
-        joiningText.textContent =
-            "Checking meeting connection...";
+        title.textContent =
+            "Connecting...";
+
+        status.textContent =
+            "Finding meeting";
+
 
     }, 1200);
 
 
     setTimeout(function() {
 
-        joiningText.textContent =
-            "Connecting to meeting server...";
+        title.textContent =
+            "Joining meeting...";
+
+        status.textContent =
+            "Connecting to meeting";
+
 
     }, 2400);
 
 
     setTimeout(function() {
 
-        joining.style.display = "none";
+        title.textContent =
+            "Joining meeting...";
 
-        document
-            .getElementById("errorOverlay")
-            .style.display = "flex";
+        status.textContent =
+            "Waiting for meeting response";
 
 
-        // Return to landing page
-        // after showing the error.
+    }, 3500);
 
-        setTimeout(function() {
 
-            goHome();
+    /* =================================
+       FAILED JOIN
+    ================================= */
 
-        }, 3500);
+    setTimeout(function() {
 
-    }, 4000);
+        connection.style.display = "none";
+
+        error.style.display = "flex";
+
+
+        let seconds = 4;
+
+        redirect.textContent =
+            "Returning to the home page in " +
+            seconds +
+            " seconds...";
+
+
+        const timer =
+            setInterval(function() {
+
+                seconds--;
+
+
+                if (seconds > 0) {
+
+                    redirect.textContent =
+                        "Returning to the home page in " +
+                        seconds +
+                        " seconds...";
+
+                }
+
+
+                if (seconds <= 0) {
+
+                    clearInterval(timer);
+
+                    goHome();
+
+                }
+
+            }, 1000);
+
+
+    }, 5200);
 
 }
 
 
-// Return to homepage
+/* =====================================
+   HOME
+===================================== */
 
 function goHome() {
 
