@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zoom Meeting</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #111827;
+            color: white;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            height: 64px;
+            background: #1f2937;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            border-bottom: 1px solid #374151;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 700;
+            color: #2d8cff;
+        }
+
+        .meeting-title {
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        /* MAIN */
+        .meeting-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .video-box {
+            width: 100%;
+            max-width: 1050px;
+            height: min(65vh, 620px);
+            background: #0b1220;
+            border-radius: 14px;
+            border: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-message {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .video-icon {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+        }
+
+        .video-message h1 {
+            margin: 0 0 12px;
+            font-size: 25px;
+            font-weight: 500;
+        }
+
+        .video-message p {
+            margin: 0;
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+        /* ERROR BOX */
+        .error-box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: min(90%, 430px);
+            background: #ffffff;
+            color: #111827;
+            border-radius: 12px;
+            padding: 27px 24px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+            z-index: 10;
+        }
+
+        .error-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background: #fee2e2;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .error-box h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .error-box p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .redirect-text {
+            margin-top: 18px !important;
+            font-size: 13px !important;
+            color: #9ca3af !important;
+        }
+
+        /* BOTTOM CONTROLS */
+        .controls {
+            min-height: 82px;
+            background: #1f2937;
+            border-top: 1px solid #374151;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 13px;
+            padding: 12px;
+        }
+
+        .control {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            background: #374151;
+            color: white;
+            font-size: 21px;
+            cursor: default;
+        }
+
+        .leave {
+            width: auto;
+            padding: 0 22px;
+            border-radius: 8px;
+            background: #dc2626;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                height: 58px;
+                padding: 0 15px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .meeting-title {
+                font-size: 12px;
+            }
+
+            .meeting-area {
+                padding: 12px;
+            }
+
+            .video-box {
+                height: 62vh;
+                border-radius: 10px;
+            }
+
+            .controls {
+                gap: 8px;
+            }
+
+            .control {
+                width: 46px;
+                height: 46px;
+                font-size: 18px;
+            }
+
+            .leave {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="logo">Zoom</div>
+        <div class="meeting-title" id="meetingTitle">
+            Meeting
+        </div>
+    </header>
+
+    <main class="meeting-area">
+
+        <div class="video-box">
+
+            <div class="video-message">
+                <div class="video-icon">🎥</div>
+
+                <h1>Video Meeting</h1>
+
+                <p>
+                    Connecting you to the meeting...
+                </p>
+            </div>
+
+            <!-- FAILED JOIN MESSAGE -->
+            <div class="error-box" id="errorBox">
+
+                <div class="error-icon">!</div>
+
+                <h2>Cannot join at this time</h2>
+
+                <p>
+                    The meeting could not be joined right now.
+                    Please try again later.
+                </p>
+
+                <p class="redirect-text" id="redirectText">
+                    Returning to the home page...
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <div class="controls">
+
+        <button class="control">🎤</button>
+        <button class="control">📹</button>
+        <button class="control">💬</button>
+        <button class="control">👥</button>
+
+        <button class="control leave" onclick="goHome()">
+            Leave
+        </button>
+
+    </div>
+
+    <script>
+
+        // Get meeting ID from the URL if one exists.
+        const params = new URLSearchParams(window.location.search);
+        const meetingId = params.get("meeting");
+
+        if (meetingId) {
+            document.getElementById("meetingTitle").textContent =
+                "Meeting " + meetingId;
+        }
+
+        // Redirect after 5 seconds.
+        let seconds = 5;
+
+        const redirectText =
+            document.getElementById("redirectText");
+
+        const countdown = setInterval(function () {
+
+            seconds--;
+
+            if (seconds > 0) {
+                redirectText.textContent =
+                    "Returning to the home page in " +
+                    seconds +
+                    " seconds...";
+            }
+
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                goHome();
+            }
+
+        }, 1000);
+
+        // Return to landing page.
+        function goHome() {
+
+            // GitHub Pages path-safe redirect.
+            window.location.href = "index.html";
+
+        }
+
+    </script>
+
+</body>
+</html>
