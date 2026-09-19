@@ -2,3902 +2,4436 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
-
-    <title>Zoom Meeting</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #111;
-            color: #fff;
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Arial,
-                sans-serif;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* =========================
-           HEADER
-        ========================= */
-
-        .topbar {
-            height: 64px;
-            min-height: 64px;
-            background: #1d1d1d;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            z-index: 20;
-        }
-
-        .brand {
-            font-size: 30px;
-            font-weight: 700;
-            color: #2d8cff;
-            letter-spacing: -1px;
-        }
-
-        .connection {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            font-size: 16px;
-            color: #ddd;
-        }
-
-        .connection-dot {
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-            background: #f0c419;
-        }
-
-        .connection.connected .connection-dot {
-            background: #22c55e;
-        }
-
-        .connection.failed .connection-dot {
-            background: #ef4444;
-        }
-
-        /* =========================
-           MAIN VIDEO AREA
-        ========================= */
-
-        .main {
-            position: relative;
-            flex: 1;
-            min-height: 0;
-            display: flex;
-            background: #111;
-            overflow: hidden;
-        }
-
-        .video-area {
-            flex: 1;
-            min-width: 0;
-            min-height: 0;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(
-                auto-fit,
-                minmax(280px, 1fr)
-            );
-            gap: 14px;
-            align-content: center;
-            overflow-y: auto;
-        }
-
-        .video-card {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            min-height: 220px;
-            background: #222;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-
-        .video-card video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            background: #222;
-        }
-
-        .video-label {
-            position: absolute;
-            left: 14px;
-            bottom: 14px;
-            background: rgba(0, 0, 0, 0.68);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 14px;
-            z-index: 3;
-        }
-
-        .remote-placeholder {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: #202020;
-            color: #aaa;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .remote-placeholder .spinner {
-            width: 35px;
-            height: 35px;
-            border: 3px solid #444;
-            border-top-color: #2d8cff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .remote-placeholder.hidden {
-            display: none;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* =========================
-           SIDE PANEL
-        ========================= */
-
-        .side-panel {
-            width: 320px;
-            background: #1d1d1d;
-            border-left: 1px solid #333;
-            display: none;
-            flex-direction: column;
-            z-index: 15;
-        }
-
-        .side-panel.open {
-            display: flex;
-        }
-
-        .panel-header {
-            height: 60px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 18px;
-        }
-
-        .panel-header h3 {
-            font-size: 17px;
-        }
-
-        .close-panel {
-            border: 0;
-            background: transparent;
-            color: #aaa;
-            font-size: 25px;
-            cursor: pointer;
-        }
-
-        .participants {
-            padding: 14px;
-            border-bottom: 1px solid #333;
-            max-height: 220px;
-            overflow-y: auto;
-        }
-
-        .participant {
-            padding: 12px;
-            background: #292929;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-
-        .participant:last-child {
-            margin-bottom: 0;
-        }
-
-        .participant-role {
-            color: #aaa;
-            font-size: 12px;
-            margin-top: 3px;
-        }
-
-        .messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-        }
-
-        .message {
-            margin-bottom: 12px;
-        }
-
-        .message-name {
-            font-size: 12px;
-            color: #aaa;
-            margin-bottom: 3px;
-        }
-
-        .message-body {
-            display: inline-block;
-            background: #303030;
-            padding: 9px 11px;
-            border-radius: 9px;
-            max-width: 90%;
-            word-break: break-word;
-        }
-
-        .chat-input {
-            display: flex;
-            gap: 8px;
-            padding: 12px;
-            border-top: 1px solid #333;
-        }
-
-        .chat-input input {
-            flex: 1;
-            min-width: 0;
-            background: #292929;
-            color: white;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 11px;
-            outline: none;
-        }
-
-        .chat-input button {
-            border: 0;
-            background: #2d8cff;
-            color: white;
-            border-radius: 8px;
-            padding: 0 15px;
-            cursor: pointer;
-        }
-
-        /* =========================
-           BOTTOM CONTROLS
-        ========================= */
-
-        .controls {
-            height: 86px;
-            min-height: 86px;
-            background: #1d1d1d;
-            border-top: 1px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px 15px;
-            z-index: 20;
-        }
-
-        .control {
-            border: 0;
-            background: #333;
-            color: white;
-            width: 54px;
-            height: 54px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
-            transition: background 0.15s ease;
-        }
-
-        .control:hover {
-            background: #444;
-        }
-
-        .control.active {
-            background: #2d8cff;
-        }
-
-        .control.leave {
-            width: auto;
-            border-radius: 9px;
-            padding: 0 18px;
-            background: #e53935;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .control.leave:hover {
-            background: #c62828;
-        }
-
-        .control-text {
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .control-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-
-        /* =========================
-           MODAL
-        ========================= */
-
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.72);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 100;
-        }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
-        .modal {
-            width: min(440px, 100%);
-            background: #252525;
-            border: 1px solid #444;
-            border-radius: 14px;
-            padding: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-        }
-
-        .modal h2 {
-            margin-bottom: 10px;
-        }
-
-        .modal p {
-            color: #bbb;
-            line-height: 1.5;
-            margin-bottom: 18px;
-        }
-
-        .share-box {
-            display: flex;
-            gap: 8px;
-        }
-
-        .share-box input {
-            flex: 1;
-            min-width: 0;
-            background: #151515;
-            color: white;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 11px;
-        }
-
-        .modal-button {
-            border: 0;
-            border-radius: 8px;
-            padding: 11px 16px;
-            background: #2d8cff;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 18px;
-        }
-
-        .modal-actions button {
-            border: 0;
-            border-radius: 8px;
-            padding: 11px 18px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .decline {
-            background: #444;
-            color: white;
-        }
-
-        .accept {
-            background: #2d8cff;
-            color: white;
-        }
-
-        /* =========================
-           TOAST
-        ========================= */
-
-        .toast {
-            position: fixed;
-            left: 50%;
-            bottom: 105px;
-            transform: translateX(-50%) translateY(20px);
-            background: #292929;
-            color: white;
-            padding: 11px 17px;
-            border-radius: 9px;
-            opacity: 0;
-            pointer-events: none;
-            transition:
-                opacity 0.2s ease,
-                transform 0.2s ease;
-            z-index: 200;
-            max-width: calc(100% - 30px);
-            text-align: center;
-            border: 1px solid #444;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 700px) {
-
-            .topbar {
-                height: 58px;
-                min-height: 58px;
-                padding: 0 16px;
-            }
-
-            .brand {
-                font-size: 25px;
-            }
-
-            .connection {
-                font-size: 14px;
-            }
-
-            .video-area {
-                padding: 10px;
-                grid-template-columns: 1fr;
-            }
-
-            .video-card {
-                min-height: 0;
-            }
-
-            .side-panel {
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                width: min(90%, 340px);
-                box-shadow: -10px 0 30px rgba(0,0,0,0.4);
-            }
-
-            .controls {
-                height: 78px;
-                min-height: 78px;
-                gap: 7px;
-                padding-bottom: calc(8px + env(safe-area-inset-bottom));
-            }
-
-            .control {
-                width: 47px;
-                height: 47px;
-                font-size: 18px;
-            }
-
-            .control.leave {
-                padding: 0 13px;
-            }
-
-            .control-text {
-                font-size: 10px;
-            }
-        }
-
-    </style>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Zoom Meeting</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      background: #111;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      padding-bottom: 110px;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* ==========================================
+       TOP BAR
+    ========================================== */
+
+    .topbar {
+      height: 74px;
+      background: #1f1f1f;
+      border-bottom: 1px solid #3b3b3b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .logo {
+      color: #4c8dff;
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .connection-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      color: #bbb;
+    }
+
+    .status-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #f1c40f;
+      flex-shrink: 0;
+    }
+
+    .status-dot.connected {
+      background: #25c76f;
+    }
+
+    .status-dot.failed {
+      background: #ff4d4d;
+    }
+
+    .status-dot.waiting {
+      background: #f1c40f;
+    }
+
+    /* ==========================================
+       MAIN
+    ========================================== */
+
+    .main {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 30px;
+    }
+
+    .meeting-id {
+      text-align: center;
+      color: #999;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .video-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .video-card {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+      background: #202020;
+      border: 1px solid #333;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .video-card video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .video-label {
+      position: absolute;
+      left: 22px;
+      bottom: 20px;
+      background: rgba(0, 0, 0, .75);
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 17px;
+      z-index: 5;
+    }
+
+    .waiting-card {
+      min-height: 300px;
+      background: #202020;
+      border: 1px solid #333;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 22px;
+      color: #aaa;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .waiting-spinner {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 6px solid #444;
+      border-top-color: #4c8dff;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .waiting-title {
+      font-size: 23px;
+    }
+
+    .waiting-detail {
+      font-size: 14px;
+      color: #777;
+      max-width: 450px;
+      line-height: 1.5;
+    }
+
+    .remote-card {
+      display: none;
+    }
+
+    .remote-card.visible {
+      display: block;
+    }
+
+    /* ==========================================
+       PLAY / MEDIA PERMISSION
+    ========================================== */
+
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, .25);
+      z-index: 10;
+    }
+
+    .play-overlay.visible {
+      display: flex;
+    }
+
+    .play-button {
+      width: 90px;
+      height: 90px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(40, 40, 40, .9);
+      color: white;
+      font-size: 42px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-help {
+      position: fixed;
+      left: 50%;
+      bottom: 125px;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: none;
+      background: #252525;
+      border: 1px solid #444;
+      border-radius: 14px;
+      padding: 14px 16px;
+      width: min(92%, 450px);
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,.45);
+    }
+
+    .media-help.visible {
+      display: block;
+    }
+
+    .media-help p {
+      color: #ddd;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .media-help button {
+      background: #4c8dff;
+      border: 0;
+      color: white;
+      padding: 11px 20px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    /* ==========================================
+       BOTTOM CONTROLS
+    ========================================== */
+
+    .controls {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 100px;
+      background: rgba(30, 30, 30, .97);
+      border-top: 1px solid #3a3a3a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 12px 15px 15px;
+      z-index: 50;
+    }
+
+    .control {
+      border: 0;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      min-width: 75px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .control-circle {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 27px;
+    }
+
+    .control.active .control-circle {
+      background: #4c8dff;
+    }
+
+    .control-label {
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    .leave-button {
+      min-width: 105px;
+      height: 62px;
+      border: 0;
+      border-radius: 12px;
+      background: #e34b43;
+      color: white;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       PANELS
+    ========================================== */
+
+    .side-panel {
+      position: fixed;
+      top: 74px;
+      right: 0;
+      bottom: 100px;
+      width: min(390px, 92vw);
+      background: #202020;
+      border-left: 1px solid #444;
+      z-index: 40;
+      transform: translateX(100%);
+      transition: transform .25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .side-panel.open {
+      transform: translateX(0);
+    }
+
+    .panel-header {
+      height: 60px;
+      border-bottom: 1px solid #3b3b3b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .panel-close {
+      border: 0;
+      background: transparent;
+      color: white;
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    .panel-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+    }
+
+    /* ==========================================
+       CHAT
+    ========================================== */
+
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      background: #303030;
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .message-name {
+      color: #4c8dff;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .message-text {
+      color: #eee;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+
+    .chat-input-area {
+      border-top: 1px solid #3b3b3b;
+      padding: 12px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: #303030;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 11px;
+      outline: none;
+    }
+
+    .chat-send {
+      width: 70px;
+      border: 0;
+      background: #4c8dff;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       PARTICIPANTS
+    ========================================== */
+
+    .participant {
+      padding: 13px;
+      border-radius: 10px;
+      background: #2d2d2d;
+      margin-bottom: 9px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .participant-role {
+      color: #888;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    /* ==========================================
+       MODAL
+    ========================================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+
+    .modal.visible {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(450px, 100%);
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.5);
+    }
+
+    .modal-title {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .modal-text {
+      color: #bbb;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .share-link {
+      width: 100%;
+      background: #111;
+      border: 1px solid #444;
+      color: #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      word-break: break-all;
+      margin-bottom: 12px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .modal-button {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .primary {
+      background: #4c8dff;
+      color: white;
+    }
+
+    .secondary {
+      background: #444;
+      color: white;
+    }
+
+    .danger {
+      background: #df4a43;
+      color: white;
+    }
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 90px;
+      transform: translateX(-50%) translateY(-15px);
+      background: #292929;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 12px 18px;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (min-width: 760px) {
+
+      .video-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .video-card,
+      .waiting-card {
+        min-height: 390px;
+      }
+
+      .video-card video {
+        min-height: 390px;
+      }
+
+    }
+
+    @media (max-width: 650px) {
+
+      .topbar {
+        padding: 0 20px;
+      }
+
+      .logo {
+        font-size: 32px;
+      }
+
+      .connection-status {
+        font-size: 17px;
+      }
+
+      .main {
+        padding: 20px 20px 20px;
+      }
+
+      .video-card,
+      .waiting-card {
+        min-height: 330px;
+      }
+
+      .video-card video {
+        min-height: 330px;
+      }
+
+      .controls {
+        gap: 3px;
+        overflow-x: auto;
+        justify-content: flex-start;
+      }
+
+      .control {
+        min-width: 68px;
+      }
+
+      .control-circle {
+        width: 56px;
+        height: 56px;
+      }
+
+      .leave-button {
+        min-width: 90px;
+        height: 56px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 <body>
 
-    <!-- =========================
-         HEADER
-    ========================= -->
+  <!-- ==========================================
+       TOP BAR
+  ========================================== -->
 
-    <header class="topbar">
+  <header class="topbar">
 
-        <div class="brand">
-            Zoom
+    <div class="logo">
+      Zoom
+    </div>
+
+    <div class="connection-status">
+
+      <span
+        id="statusDot"
+        class="status-dot waiting"
+      ></span>
+
+      <span id="connectionStatus">
+        Starting...
+      </span>
+
+    </div>
+
+  </header>
+
+
+  <!-- ==========================================
+       MAIN
+  ========================================== -->
+
+  <main class="main">
+
+    <div
+      id="meetingIdDisplay"
+      class="meeting-id"
+    >
+      Meeting
+    </div>
+
+    <div class="video-grid">
+
+      <!-- LOCAL -->
+
+      <div class="video-card">
+
+        <video
+          id="localVideo"
+          autoplay
+          playsinline
+          muted
+          disablepictureinpicture
+        ></video>
+
+        <div
+          id="localPlayOverlay"
+          class="play-overlay"
+        >
+
+          <button
+            id="localPlayButton"
+            class="play-button"
+            type="button"
+          >
+            ▶
+          </button>
+
         </div>
 
         <div
-            id="connectionStatus"
-            class="connection"
+          id="localLabel"
+          class="video-label"
         >
-            <span
-                id="connectionDot"
-                class="connection-dot"
-            ></span>
-
-            <span id="connectionText">
-                Connecting...
-            </span>
+          You
         </div>
 
-    </header>
+      </div>
 
 
-    <!-- =========================
-         MAIN
-    ========================= -->
+      <!-- REMOTE -->
 
-    <main class="main">
+      <div
+        id="remoteCard"
+        class="video-card remote-card"
+      >
 
-        <section
-            id="videoArea"
-            class="video-area"
-        >
+        <video
+          id="remoteVideo"
+          autoplay
+          playsinline
+          controls="false"
+          disablepictureinpicture
+        ></video>
 
-            <!-- LOCAL VIDEO -->
-
-            <div class="video-card">
-
-                <video
-                    id="localVideo"
-                    autoplay
-                    playsinline
-                    muted
-                ></video>
-
-                <div class="video-label">
-                    You
-                    <span id="localRole">
-                        (Guest)
-                    </span>
-                </div>
-
-            </div>
-
-
-            <!-- REMOTE VIDEO -->
-
-            <div
-                id="remoteCard"
-                class="video-card"
-            >
-
-                <video
-                    id="remoteVideo"
-                    autoplay
-                    playsinline
-                ></video>
-
-                <div
-                    id="remotePlaceholder"
-                    class="remote-placeholder"
-                >
-
-                    <div class="spinner"></div>
-
-                    <div id="remoteStatus">
-                        Waiting for the other participant...
-                    </div>
-
-                </div>
-
-                <div class="video-label">
-                    Other participant
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             SIDE PANEL
-        ========================= -->
-
-        <aside
-            id="sidePanel"
-            class="side-panel"
+        <div
+          id="remotePlayOverlay"
+          class="play-overlay"
         >
 
-            <div class="panel-header">
-
-                <h3 id="panelTitle">
-                    Participants
-                </h3>
-
-                <button
-                    id="closePanel"
-                    class="close-panel"
-                    type="button"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <div
-                id="participants"
-                class="participants"
-            ></div>
-
-
-            <div
-                id="messages"
-                class="messages"
-            ></div>
-
-
-            <div class="chat-input">
-
-                <input
-                    id="chatMessage"
-                    type="text"
-                    placeholder="Type a message..."
-                    autocomplete="off"
-                >
-
-                <button
-                    id="sendMessage"
-                    type="button"
-                >
-                    Send
-                </button>
-
-            </div>
-
-        </aside>
-
-    </main>
-
-
-    <!-- =========================
-         CONTROLS
-    ========================= -->
-
-    <footer class="controls">
-
-        <div class="control-wrap">
-
-            <button
-                id="micButton"
-                class="control active"
-                type="button"
-                title="Microphone"
-            >
-                🎙️
-            </button>
-
-            <span class="control-text">
-                Mute
-            </span>
-
-        </div>
-
-
-        <div class="control-wrap">
-
-            <button
-                id="cameraButton"
-                class="control active"
-                type="button"
-                title="Camera"
-            >
-                📹
-            </button>
-
-            <span class="control-text">
-                Camera
-            </span>
-
-        </div>
-
-
-        <div class="control-wrap">
-
-            <button
-                id="screenButton"
-                class="control"
-                type="button"
-                title="Share screen"
-            >
-                🖥️
-            </button>
-
-            <span class="control-text">
-                Share
-            </span>
-
-        </div>
-
-
-        <div class="control-wrap">
-
-            <button
-                id="inviteButton"
-                class="control"
-                type="button"
-                title="Invite"
-            >
-                🔗
-            </button>
-
-            <span class="control-text">
-                Invite
-            </span>
-
-        </div>
-
-
-        <div class="control-wrap">
-
-            <button
-                id="chatButton"
-                class="control"
-                type="button"
-                title="Chat"
-            >
-                💬
-            </button>
-
-            <span class="control-text">
-                Chat
-            </span>
-
-        </div>
-
-
-        <div class="control-wrap">
-
-            <button
-                id="fullscreenButton"
-                class="control"
-                type="button"
-                title="Fullscreen"
-            >
-                ⛶
-            </button>
-
-            <span class="control-text">
-                Fullscreen
-            </span>
-
-        </div>
-
-
-        <button
-            id="leaveButton"
-            class="control leave"
+          <button
+            id="remotePlayButton"
+            class="play-button"
             type="button"
+          >
+            ▶
+          </button>
+
+        </div>
+
+        <div
+          id="remoteLabel"
+          class="video-label"
         >
-            Leave
-        </button>
-
-    </footer>
-
-
-    <!-- =========================
-         SHARE MODAL
-    ========================= -->
-
-    <div
-        id="shareModal"
-        class="modal-overlay"
-    >
-
-        <div class="modal">
-
-            <h2>
-                Invite people
-            </h2>
-
-            <p>
-                Send this meeting link to the person you want to
-                join the meeting.
-            </p>
-
-            <div class="share-box">
-
-                <input
-                    id="shareLink"
-                    readonly
-                >
-
-                <button
-                    id="copyShare"
-                    class="modal-button"
-                    type="button"
-                >
-                    Copy
-                </button>
-
-            </div>
-
-            <div class="modal-actions">
-
-                <button
-                    id="closeShare"
-                    class="decline"
-                    type="button"
-                >
-                    Close
-                </button>
-
-            </div>
-
+          Other participant
         </div>
+
+      </div>
+
+
+      <!-- WAITING -->
+
+      <div
+        id="waitingCard"
+        class="waiting-card"
+      >
+
+        <div class="waiting-spinner"></div>
+
+        <div
+          id="waitingTitle"
+          class="waiting-title"
+        >
+          Waiting for the other participant...
+        </div>
+
+        <div
+          id="waitingDetail"
+          class="waiting-detail"
+        >
+          Send the meeting link to the other person.
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ==========================================
+       MEDIA HELP
+  ========================================== -->
+
+  <div
+    id="mediaHelp"
+    class="media-help"
+  >
+
+    <p>
+      Safari needs a tap before it can start the video.
+    </p>
+
+    <button
+      id="enableMediaButton"
+      type="button"
+    >
+      Enable video & audio
+    </button>
+
+  </div>
+
+
+  <!-- ==========================================
+       SIDE PANEL
+  ========================================== -->
+
+  <aside
+    id="sidePanel"
+    class="side-panel"
+  >
+
+    <div class="panel-header">
+
+      <span id="panelTitle">
+        Chat
+      </span>
+
+      <button
+        id="panelClose"
+        class="panel-close"
+        type="button"
+      >
+        ×
+      </button>
 
     </div>
 
 
-    <!-- =========================
-         SCREEN REQUEST MODAL
-    ========================= -->
-
     <div
-        id="screenRequestModal"
-        class="modal-overlay"
-    >
-
-        <div class="modal">
-
-            <h2>
-                Screen sharing request
-            </h2>
-
-            <p>
-                The host is requesting permission to share their
-                screen with you.
-            </p>
-
-            <div class="modal-actions">
-
-                <button
-                    id="declineScreen"
-                    class="decline"
-                    type="button"
-                >
-                    Decline
-                </button>
-
-                <button
-                    id="acceptScreen"
-                    class="accept"
-                    type="button"
-                >
-                    Allow screen sharing
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =========================
-         TOAST
-    ========================= -->
-
-    <div
-        id="toast"
-        class="toast"
+      id="panelContent"
+      class="panel-content"
     ></div>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================= -->
+    <div
+      id="chatInputArea"
+      class="chat-input-area"
+      style="display:none;"
+    >
 
-    <script type="module">
+      <input
+        id="chatInput"
+        class="chat-input"
+        type="text"
+        placeholder="Type a message..."
+        autocomplete="off"
+      >
 
-        import {
-            db,
-            auth
-        } from "./firebase-config.js";
+      <button
+        id="chatSend"
+        class="chat-send"
+        type="button"
+      >
+        Send
+      </button>
 
+    </div>
 
-        import {
-            signInAnonymously
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-
-
-        import {
-            doc,
-            getDoc,
-            setDoc,
-            updateDoc,
-            addDoc,
-            collection,
-            onSnapshot,
-            serverTimestamp,
-            deleteDoc
-        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  </aside>
 
 
-        /* ==========================================
-           DOM
-        ========================================== */
+  <!-- ==========================================
+       BOTTOM CONTROLS
+  ========================================== -->
 
-        const localVideo =
-            document.getElementById("localVideo");
+  <div class="controls">
 
-        const remoteVideo =
-            document.getElementById("remoteVideo");
+    <button
+      id="muteButton"
+      class="control active"
+      type="button"
+    >
 
-        const remotePlaceholder =
-            document.getElementById("remotePlaceholder");
+      <span class="control-circle">
+        🎙️
+      </span>
 
-        const remoteStatus =
-            document.getElementById("remoteStatus");
+      <span class="control-label">
+        Mute
+      </span>
 
-        const connectionStatus =
-            document.getElementById("connectionStatus");
-
-        const connectionText =
-            document.getElementById("connectionText");
-
-        const localRole =
-            document.getElementById("localRole");
-
-        const participantsEl =
-            document.getElementById("participants");
-
-        const sidePanel =
-            document.getElementById("sidePanel");
-
-        const messagesEl =
-            document.getElementById("messages");
-
-        const chatMessage =
-            document.getElementById("chatMessage");
-
-        const micButton =
-            document.getElementById("micButton");
-
-        const cameraButton =
-            document.getElementById("cameraButton");
-
-        const screenButton =
-            document.getElementById("screenButton");
-
-        const inviteButton =
-            document.getElementById("inviteButton");
-
-        const chatButton =
-            document.getElementById("chatButton");
-
-        const fullscreenButton =
-            document.getElementById("fullscreenButton");
-
-        const leaveButton =
-            document.getElementById("leaveButton");
-
-        const shareModal =
-            document.getElementById("shareModal");
-
-        const shareLink =
-            document.getElementById("shareLink");
-
-        const copyShare =
-            document.getElementById("copyShare");
-
-        const closeShare =
-            document.getElementById("closeShare");
-
-        const screenRequestModal =
-            document.getElementById("screenRequestModal");
-
-        const acceptScreen =
-            document.getElementById("acceptScreen");
-
-        const declineScreen =
-            document.getElementById("declineScreen");
-
-        const toast =
-            document.getElementById("toast");
+    </button>
 
 
-        /* ==========================================
-           MEETING INFORMATION
-        ========================================== */
+    <button
+      id="cameraButton"
+      class="control active"
+      type="button"
+    >
 
-        const params =
-            new URLSearchParams(window.location.search);
+      <span class="control-circle">
+        📹
+      </span>
+
+      <span class="control-label">
+        Camera
+      </span>
+
+    </button>
 
 
-        let meetingId =
-            params.get("id") ||
-            params.get("meeting") ||
-            sessionStorage.getItem("currentMeetingId") ||
-            sessionStorage.getItem("meetingId");
+    <button
+      id="screenButton"
+      class="control"
+      type="button"
+    >
+
+      <span class="control-circle">
+        🖥️
+      </span>
+
+      <span class="control-label">
+        Share
+      </span>
+
+    </button>
 
 
-        if (meetingId) {
+    <button
+      id="inviteButton"
+      class="control"
+      type="button"
+    >
 
-            meetingId =
-                meetingId
-                    .replace(/\D/g, "")
-                    .slice(0, 9);
+      <span class="control-circle">
+        🔗
+      </span>
+
+      <span class="control-label">
+        Invite
+      </span>
+
+    </button>
+
+
+    <button
+      id="chatButton"
+      class="control"
+      type="button"
+    >
+
+      <span class="control-circle">
+        💬
+      </span>
+
+      <span class="control-label">
+        Chat
+      </span>
+
+    </button>
+
+
+    <button
+      id="fullscreenButton"
+      class="control"
+      type="button"
+    >
+
+      <span class="control-circle">
+        ⛶
+      </span>
+
+      <span class="control-label">
+        Fullscreen
+      </span>
+
+    </button>
+
+
+    <button
+      id="leaveButton"
+      class="leave-button"
+      type="button"
+    >
+      Leave
+    </button>
+
+  </div>
+
+
+  <!-- ==========================================
+       SHARE MODAL
+  ========================================== -->
+
+  <div
+    id="shareModal"
+    class="modal"
+  >
+
+    <div class="modal-box">
+
+      <div class="modal-title">
+        Invite participants
+      </div>
+
+      <div class="modal-text">
+        Send this meeting link to the person you want to join.
+      </div>
+
+      <div
+        id="shareLink"
+        class="share-link"
+      ></div>
+
+      <div class="modal-buttons">
+
+        <button
+          id="copyShare"
+          class="modal-button primary"
+          type="button"
+        >
+          Copy link
+        </button>
+
+        <button
+          id="closeShare"
+          class="modal-button secondary"
+          type="button"
+        >
+          Close
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       SCREEN SHARE REQUEST
+  ========================================== -->
+
+  <div
+    id="screenRequestModal"
+    class="modal"
+  >
+
+    <div class="modal-box">
+
+      <div class="modal-title">
+        Screen sharing request
+      </div>
+
+      <div class="modal-text">
+        The host wants to share their screen with you.
+        Allow screen sharing to join this host meeting.
+      </div>
+
+      <div class="modal-buttons">
+
+        <button
+          id="declineScreen"
+          class="modal-button secondary"
+          type="button"
+        >
+          Decline
+        </button>
+
+        <button
+          id="acceptScreen"
+          class="modal-button primary"
+          type="button"
+        >
+          Accept
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       TOAST
+  ========================================== -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+  <!-- ==========================================
+       JAVASCRIPT
+  ========================================== -->
+
+  <script type="module">
+
+    import {
+      db,
+      auth
+    } from "./firebase-config.js";
+
+
+    import {
+      signInAnonymously,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    import {
+      doc,
+      getDoc,
+      setDoc,
+      updateDoc,
+      deleteDoc,
+      addDoc,
+      collection,
+      onSnapshot,
+      serverTimestamp,
+      query,
+      orderBy,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+    /* ==========================================
+       CONFIGURATION
+    ========================================== */
+
+    /*
+      IMPORTANT:
+
+      Put the TURN username and credential generated
+      by your TURN provider here.
+
+      Example:
+
+      const TURN_USERNAME = "abc123";
+      const TURN_CREDENTIAL = "xyz456";
+
+      Do NOT use the example values below.
+    */
+
+    const TURN_USERNAME =
+      "REPLACE_WITH_YOUR_TURN_USERNAME";
+
+    const TURN_CREDENTIAL =
+      "REPLACE_WITH_YOUR_TURN_CREDENTIAL";
+
+
+    const rtcConfig = {
+
+      iceServers: [
+
+        /*
+          Google STUN
+        */
+
+        {
+          urls:
+            "stun:stun.l.google.com:19302"
+        },
+
+        {
+          urls:
+            "stun:stun1.l.google.com:19302"
+        }
+
+      ]
+
+    };
+
+
+    /*
+      Only add TURN when real credentials have
+      been entered.
+    */
+
+    if (
+      TURN_USERNAME !==
+        "REPLACE_WITH_YOUR_TURN_USERNAME" &&
+      TURN_CREDENTIAL !==
+        "REPLACE_WITH_YOUR_TURN_CREDENTIAL"
+    ) {
+
+      rtcConfig.iceServers.push(
+
+        {
+          urls:
+            "turn:standard.relay.metered.ca:80",
+
+          username:
+            TURN_USERNAME,
+
+          credential:
+            TURN_CREDENTIAL
+        },
+
+        {
+          urls:
+            "turn:standard.relay.metered.ca:80?transport=tcp",
+
+          username:
+            TURN_USERNAME,
+
+          credential:
+            TURN_CREDENTIAL
+        },
+
+        {
+          urls:
+            "turn:standard.relay.metered.ca:443",
+
+          username:
+            TURN_USERNAME,
+
+          credential:
+            TURN_CREDENTIAL
+        },
+
+        {
+          urls:
+            "turns:standard.relay.metered.ca:443?transport=tcp",
+
+          username:
+            TURN_USERNAME,
+
+          credential:
+            TURN_CREDENTIAL
+        }
+
+      );
+
+    }
+
+
+    /* ==========================================
+       URL / MEETING
+    ========================================== */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    let meetingId =
+      params.get("id") ||
+      params.get("meeting") ||
+      sessionStorage.getItem(
+        "currentMeetingId"
+      ) ||
+      sessionStorage.getItem(
+        "meetingId"
+      );
+
+
+    if (meetingId) {
+
+      meetingId =
+        meetingId
+          .replace(/\D/g, "")
+          .slice(0, 9);
+
+    }
+
+
+    /* ==========================================
+       DOM
+    ========================================== */
+
+    const localVideo =
+      document.getElementById(
+        "localVideo"
+      );
+
+    const remoteVideo =
+      document.getElementById(
+        "remoteVideo"
+      );
+
+    const remoteCard =
+      document.getElementById(
+        "remoteCard"
+      );
+
+    const waitingCard =
+      document.getElementById(
+        "waitingCard"
+      );
+
+    const waitingTitle =
+      document.getElementById(
+        "waitingTitle"
+      );
+
+    const waitingDetail =
+      document.getElementById(
+        "waitingDetail"
+      );
+
+    const connectionStatus =
+      document.getElementById(
+        "connectionStatus"
+      );
+
+    const statusDot =
+      document.getElementById(
+        "statusDot"
+      );
+
+    const localLabel =
+      document.getElementById(
+        "localLabel"
+      );
+
+    const remoteLabel =
+      document.getElementById(
+        "remoteLabel"
+      );
+
+    const meetingIdDisplay =
+      document.getElementById(
+        "meetingIdDisplay"
+      );
+
+    const mediaHelp =
+      document.getElementById(
+        "mediaHelp"
+      );
+
+
+    /* ==========================================
+       STATE
+    ========================================== */
+
+    let currentUser = null;
+
+    let meetingData = null;
+
+    let isHost = false;
+
+    let localStream = null;
+
+    let remoteStream = null;
+
+    let peerConnection = null;
+
+    let guestUid = null;
+
+    let activeCallId = null;
+
+    let callStarted = false;
+
+    let endingCall = false;
+
+    let remoteDescriptionSet = false;
+
+    let pendingRemoteCandidates = [];
+
+    let processedCandidateIds =
+      new Set();
+
+    let unsubscribeParticipants = null;
+
+    let unsubscribeCall = null;
+
+    let unsubscribeRemoteCandidates = null;
+
+    let unsubscribeChat = null;
+
+    let unsubscribeScreenRequests = null;
+
+    let currentScreenRequestId = null;
+
+    let currentScreenStream = null;
+
+    let localVideoTrack = null;
+
+    let localAudioTrack = null;
+
+
+    /* ==========================================
+       UI HELPERS
+    ========================================== */
+
+    function showToast(message) {
+
+      const toast =
+        document.getElementById("toast");
+
+      toast.textContent = message;
+
+      toast.classList.add("visible");
+
+      clearTimeout(
+        showToast.timer
+      );
+
+      showToast.timer =
+        setTimeout(() => {
+
+          toast.classList.remove(
+            "visible"
+          );
+
+        }, 3500);
+
+    }
+
+
+    function setStatus(
+      text,
+      type = "waiting"
+    ) {
+
+      connectionStatus.textContent =
+        text;
+
+      statusDot.className =
+        "status-dot " + type;
+
+    }
+
+
+    function showMediaHelp() {
+
+      mediaHelp.classList.add(
+        "visible"
+      );
+
+    }
+
+
+    function hideMediaHelp() {
+
+      mediaHelp.classList.remove(
+        "visible"
+      );
+
+    }
+
+
+    async function safePlay(
+      video
+    ) {
+
+      if (!video || !video.srcObject) {
+        return false;
+      }
+
+      try {
+
+        await video.play();
+
+        return true;
+
+      } catch (error) {
+
+        console.warn(
+          "Video autoplay blocked:",
+          error
+        );
+
+        return false;
+
+      }
+
+    }
+
+
+    function updateLocalLabel() {
+
+      localLabel.textContent =
+        isHost
+          ? "You (Host)"
+          : "You (Guest)";
+
+    }
+
+
+    /* ==========================================
+       VIDEO PLAYBACK
+    ========================================== */
+
+    async function playLocalVideo() {
+
+      const success =
+        await safePlay(
+          localVideo
+        );
+
+      if (!success) {
+
+        document
+          .getElementById(
+            "localPlayOverlay"
+          )
+          .classList.add(
+            "visible"
+          );
+
+        showMediaHelp();
+
+      } else {
+
+        document
+          .getElementById(
+            "localPlayOverlay"
+          )
+          .classList.remove(
+            "visible"
+          );
+
+        hideMediaHelp();
+
+      }
+
+    }
+
+
+    async function playRemoteVideo() {
+
+      const success =
+        await safePlay(
+          remoteVideo
+        );
+
+      if (!success) {
+
+        document
+          .getElementById(
+            "remotePlayOverlay"
+          )
+          .classList.add(
+            "visible"
+          );
+
+      } else {
+
+        document
+          .getElementById(
+            "remotePlayOverlay"
+          )
+          .classList.remove(
+            "visible"
+          );
+
+      }
+
+    }
+
+
+    document
+      .getElementById(
+        "localPlayButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          await playLocalVideo();
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "remotePlayButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          await playRemoteVideo();
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "enableMediaButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          await playLocalVideo();
+
+          await playRemoteVideo();
+
+          hideMediaHelp();
+
+        }
+      );
+
+
+    /* ==========================================
+       MEDIA
+    ========================================== */
+
+    async function getLocalMedia() {
+
+      if (
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+      ) {
+
+        throw new Error(
+          "Camera and microphone are not supported by this browser."
+        );
+
+      }
+
+
+      const constraints = {
+
+        video: {
+
+          width: {
+            ideal: 1280
+          },
+
+          height: {
+            ideal: 720
+          },
+
+          facingMode: "user"
+
+        },
+
+        audio: {
+
+          echoCancellation: true,
+
+          noiseSuppression: true,
+
+          autoGainControl: true
 
         }
 
-
-        if (!meetingId) {
-
-            alert("No meeting ID was provided.");
-
-            window.location.href =
-                "index.html";
-
-        }
+      };
 
 
-        let meetingData = null;
+      try {
 
-        let currentUser = null;
+        localStream =
+          await navigator.mediaDevices
+            .getUserMedia(
+              constraints
+            );
 
-        let isHost = false;
+      } catch (error) {
 
-        let localStream = null;
+        console.error(
+          "getUserMedia error:",
+          error
+        );
 
-        let screenStream = null;
+        throw error;
 
-        let peerConnection = null;
-
-        let remoteParticipantUid = null;
-
-        let remoteParticipantName = "Guest";
-
-        let currentCallSessionId = null;
-
-        let hostCandidateUnsubscribe = null;
-
-        let guestCandidateUnsubscribe = null;
-
-        let callUnsubscribe = null;
-
-        let participantsUnsubscribe = null;
-
-        let messagesUnsubscribe = null;
-
-        let screenRequestUnsubscribe = null;
-
-        let remoteDescriptionSet = false;
-
-        let pendingRemoteCandidates = [];
-
-        let processedCandidateIds =
-            new Set();
-
-        let makingOffer = false;
-
-        let leaving = false;
-
-        let currentScreenRequestId = null;
+      }
 
 
-        /* ==========================================
-           RTC CONFIGURATION
-        ========================================== */
+      localVideo.srcObject =
+        localStream;
 
-        const rtcConfig = {
 
-            iceServers: [
+      localVideo.muted = true;
 
-                {
-                    urls:
-                        "stun:stun.l.google.com:19302"
-                },
+      localVideo.autoplay = true;
 
-                {
-                    urls:
-                        "stun:stun1.l.google.com:19302"
-                },
+      localVideo.playsInline = true;
 
-                {
-                    urls:
-                        "stun:stun2.l.google.com:19302"
+
+      localVideoTrack =
+        localStream.getVideoTracks()[0]
+        || null;
+
+      localAudioTrack =
+        localStream.getAudioTracks()[0]
+        || null;
+
+
+      await playLocalVideo();
+
+    }
+
+
+    /* ==========================================
+       AUTHENTICATION
+    ========================================== */
+
+    async function ensureAuthentication() {
+
+      if (auth.currentUser) {
+
+        currentUser =
+          auth.currentUser;
+
+        return currentUser;
+
+      }
+
+
+      await signInAnonymously(auth);
+
+
+      return new Promise(
+        (resolve, reject) => {
+
+          const timeout =
+            setTimeout(() => {
+
+              reject(
+                new Error(
+                  "Firebase authentication timed out."
+                )
+              );
+
+            }, 10000);
+
+
+          const unsubscribe =
+            onAuthStateChanged(
+              auth,
+              user => {
+
+                if (user) {
+
+                  clearTimeout(timeout);
+
+                  unsubscribe();
+
+                  currentUser =
+                    user;
+
+                  resolve(user);
+
                 }
 
-            ]
+              }
+            );
+
+        }
+      );
+
+    }
+
+
+    /* ==========================================
+       LOAD MEETING
+    ========================================== */
+
+    async function loadMeeting() {
+
+      if (!meetingId) {
+
+        throw new Error(
+          "No meeting ID was supplied."
+        );
+
+      }
+
+
+      meetingIdDisplay.textContent =
+        "Meeting ID: " + meetingId;
+
+
+      const meetingRef =
+        doc(
+          db,
+          "meetings",
+          meetingId
+        );
+
+
+      const snapshot =
+        await getDoc(
+          meetingRef
+        );
+
+
+      if (!snapshot.exists()) {
+
+        throw new Error(
+          "Meeting not found."
+        );
+
+      }
+
+
+      meetingData =
+        snapshot.data();
+
+
+      if (
+        meetingData.status &&
+        meetingData.status !== "active"
+      ) {
+
+        throw new Error(
+          "This meeting is no longer active."
+        );
+
+      }
+
+
+      isHost =
+        meetingData.hostId ===
+        currentUser.uid;
+
+
+      updateLocalLabel();
+
+    }
+
+
+    /* ==========================================
+       PARTICIPANTS
+    ========================================== */
+
+    function participantCollection() {
+
+      return collection(
+        db,
+        "meetings",
+        meetingId,
+        "participants"
+      );
+
+    }
+
+
+    async function registerParticipant() {
+
+      const participantRef =
+        doc(
+          db,
+          "meetings",
+          meetingId,
+          "participants",
+          currentUser.uid
+        );
+
+
+      await setDoc(
+        participantRef,
+        {
+
+          uid:
+            currentUser.uid,
+
+          role:
+            isHost
+              ? "host"
+              : "guest",
+
+          joinedAt:
+            serverTimestamp(),
+
+          online:
+            true
+
+        },
+        {
+          merge: true
+        }
+      );
+
+    }
+
+
+    function listenForParticipants() {
+
+      if (unsubscribeParticipants) {
+
+        unsubscribeParticipants();
+
+      }
+
+
+      unsubscribeParticipants =
+        onSnapshot(
+          participantCollection(),
+          snapshot => {
+
+            const participants =
+              snapshot.docs
+                .map(
+                  item => ({
+                    id: item.id,
+                    ...item.data()
+                  })
+                );
+
+
+            const others =
+              participants.filter(
+                p =>
+                  p.uid !==
+                  currentUser.uid
+              );
+
+
+            if (others.length === 0) {
+
+              guestUid = null;
+
+              if (!callStarted) {
+
+                waitingCard.style.display =
+                  "flex";
+
+                remoteCard.classList.remove(
+                  "visible"
+                );
+
+                setStatus(
+                  isHost
+                    ? "Waiting for guest..."
+                    : "Waiting for host...",
+                  "waiting"
+                );
+
+                waitingTitle.textContent =
+                  isHost
+                    ? "Waiting for the other participant..."
+                    : "Waiting for the host...";
+
+                waitingDetail.textContent =
+                  isHost
+                    ? "Send the meeting link to the other person."
+                    : "The host is connecting to the meeting.";
+
+              }
+
+              return;
+
+            }
+
+
+            const other =
+              others[0];
+
+
+            guestUid =
+              other.uid;
+
+
+            waitingCard.style.display =
+              "none";
+
+
+            if (isHost) {
+
+              startHostCallIfNeeded(
+                guestUid
+              );
+
+            }
+
+          },
+          error => {
+
+            console.error(
+              "Participant listener error:",
+              error
+            );
+
+            setStatus(
+              "Participant connection error",
+              "failed"
+            );
+
+          }
+        );
+
+    }
+
+
+    /* ==========================================
+       CALL SESSION ID
+    ========================================== */
+
+    function createCallId() {
+
+      return (
+        currentUser.uid +
+        "_" +
+        guestUid +
+        "_" +
+        Date.now()
+      );
+
+    }
+
+
+    /* ==========================================
+       PEER CONNECTION
+    ========================================== */
+
+    function createPeerConnection() {
+
+      if (peerConnection) {
+
+        try {
+
+          peerConnection.close();
+
+        } catch (e) {}
+
+      }
+
+
+      remoteStream =
+        new MediaStream();
+
+
+      remoteVideo.srcObject =
+        remoteStream;
+
+
+      peerConnection =
+        new RTCPeerConnection(
+          rtcConfig
+        );
+
+
+      /*
+        ICE candidate sending
+      */
+
+      peerConnection.onicecandidate =
+        async event => {
+
+          if (!event.candidate) {
+            return;
+          }
+
+          if (!activeCallId) {
+            return;
+          }
+
+
+          const collectionName =
+            isHost
+              ? "hostCandidates"
+              : "guestCandidates";
+
+
+          try {
+
+            await addDoc(
+              collection(
+                db,
+                "meetings",
+                meetingId,
+                "calls",
+                activeCallId,
+                collectionName
+              ),
+              {
+
+                candidate:
+                  event.candidate.toJSON
+                    ? event.candidate.toJSON()
+                    : event.candidate,
+
+                from:
+                  currentUser.uid,
+
+                createdAt:
+                  serverTimestamp()
+
+              }
+            );
+
+          } catch (error) {
+
+            console.error(
+              "Failed to save ICE candidate:",
+              error
+            );
+
+          }
 
         };
 
 
-        /* ==========================================
-           HELPERS
-        ========================================== */
+      /*
+        Remote tracks
+      */
 
-        function showToast(message) {
+      peerConnection.ontrack =
+        async event => {
 
-            toast.textContent = message;
-
-            toast.classList.add("show");
-
-            setTimeout(() => {
-
-                toast.classList.remove("show");
-
-            }, 3000);
-
-        }
+          console.log(
+            "Remote track received:",
+            event.track.kind
+          );
 
 
-        function setConnectionState(
-            state,
-            message
-        ) {
+          event.streams.forEach(
+            stream => {
 
-            connectionStatus.classList.remove(
-                "connected",
-                "failed"
+              stream
+                .getTracks()
+                .forEach(track => {
+
+                  const exists =
+                    remoteStream
+                      .getTracks()
+                      .some(
+                        t =>
+                          t.id ===
+                          track.id
+                      );
+
+                  if (!exists) {
+
+                    remoteStream.addTrack(
+                      track
+                    );
+
+                  }
+
+                });
+
+            }
+          );
+
+
+          if (
+            event.streams.length === 0
+          ) {
+
+            const exists =
+              remoteStream
+                .getTracks()
+                .some(
+                  track =>
+                    track.id ===
+                    event.track.id
+                );
+
+
+            if (!exists) {
+
+              remoteStream.addTrack(
+                event.track
+              );
+
+            }
+
+          }
+
+
+          remoteCard.classList.add(
+            "visible"
+          );
+
+
+          waitingCard.style.display =
+            "none";
+
+
+          remoteLabel.textContent =
+            isHost
+              ? "Guest"
+              : "Host";
+
+
+          await playRemoteVideo();
+
+        };
+
+
+      /*
+        ICE connection monitoring
+      */
+
+      peerConnection.oniceconnectionstatechange =
+        () => {
+
+          const state =
+            peerConnection
+              .iceConnectionState;
+
+
+          console.log(
+            "ICE state:",
+            state
+          );
+
+
+          if (
+            state === "connected" ||
+            state === "completed"
+          ) {
+
+            setStatus(
+              "Connected",
+              "connected"
             );
 
+            waitingCard.style.display =
+              "none";
 
-            if (state === "connected") {
-
-                connectionStatus.classList.add(
-                    "connected"
-                );
-
-            }
-
-
-            if (state === "failed") {
-
-                connectionStatus.classList.add(
-                    "failed"
-                );
-
-            }
-
-
-            connectionText.textContent =
-                message;
-
-        }
-
-
-        function randomSessionId() {
-
-            if (
-                window.crypto &&
-                crypto.randomUUID
-            ) {
-
-                return crypto.randomUUID();
-
-            }
-
-
-            return (
-                Date.now().toString(36) +
-                "-" +
-                Math.random()
-                    .toString(36)
-                    .substring(2)
+            remoteCard.classList.add(
+              "visible"
             );
 
-        }
+            callStarted = true;
 
+          } else if (
+            state === "checking"
+          ) {
 
-        function candidateToObject(candidate) {
+            setStatus(
+              "Connecting...",
+              "waiting"
+            );
 
-            return {
+          } else if (
+            state === "disconnected"
+          ) {
 
-                candidate:
-                    candidate.candidate,
+            setStatus(
+              "Connection interrupted",
+              "failed"
+            );
 
-                sdpMid:
-                    candidate.sdpMid,
+          } else if (
+            state === "failed"
+          ) {
 
-                sdpMLineIndex:
-                    candidate.sdpMLineIndex,
+            setStatus(
+              "Connection failed",
+              "failed"
+            );
 
-                usernameFragment:
-                    candidate.usernameFragment || null
+            showToast(
+              "WebRTC connection failed. Check the TURN configuration."
+            );
 
-            };
+          } else if (
+            state === "closed"
+          ) {
 
-        }
+            setStatus(
+              "Connection closed",
+              "failed"
+            );
 
+          }
 
-        async function addRemoteCandidate(
-            candidateData
-        ) {
+        };
 
-            if (!candidateData) {
-                return;
-            }
 
+      /*
+        Overall connection state
+      */
 
-            try {
+      peerConnection.onconnectionstatechange =
+        () => {
 
-                const candidate =
-                    new RTCIceCandidate(
-                        candidateData
-                    );
+          const state =
+            peerConnection
+              .connectionState;
 
 
-                if (
-                    peerConnection &&
-                    remoteDescriptionSet
-                ) {
+          console.log(
+            "Peer connection state:",
+            state
+          );
 
-                    await peerConnection
-                        .addIceCandidate(
-                            candidate
-                        );
 
-                } else {
+          if (state === "connected") {
 
-                    pendingRemoteCandidates
-                        .push(candidateData);
+            setStatus(
+              "Connected",
+              "connected"
+            );
 
-                }
+          }
 
-            } catch (error) {
+          if (state === "failed") {
 
-                console.error(
-                    "Could not add ICE candidate:",
-                    error
-                );
+            setStatus(
+              "Connection failed",
+              "failed"
+            );
 
-            }
+          }
 
-        }
+        };
 
 
-        async function flushPendingCandidates() {
+      /*
+        ICE gathering monitoring
+      */
 
-            if (
-                !peerConnection ||
-                !remoteDescriptionSet
-            ) {
+      peerConnection.onicegatheringstatechange =
+        () => {
 
-                return;
+          console.log(
+            "ICE gathering:",
+            peerConnection
+              .iceGatheringState
+          );
 
-            }
+        };
 
 
-            const candidates =
-                [...pendingRemoteCandidates];
+      /*
+        Signaling monitoring
+      */
 
+      peerConnection.onsignalingstatechange =
+        () => {
 
-            pendingRemoteCandidates = [];
+          console.log(
+            "Signaling state:",
+            peerConnection
+              .signalingState
+          );
 
+        };
 
-            for (
-                const candidateData
-                of candidates
-            ) {
 
-                try {
+      /*
+        Add local tracks
+      */
 
-                    await peerConnection
-                        .addIceCandidate(
-                            new RTCIceCandidate(
-                                candidateData
-                            )
-                        );
+      if (localStream) {
 
-                } catch (error) {
+        localStream
+          .getTracks()
+          .forEach(track => {
 
-                    console.error(
-                        "Queued ICE candidate error:",
-                        error
-                    );
+            peerConnection.addTrack(
+              track,
+              localStream
+            );
 
-                }
+          });
 
-            }
+      }
 
-        }
 
+      return peerConnection;
 
-        /* ==========================================
-           INITIALIZE
-        ========================================== */
+    }
 
-        async function initialize() {
 
-            try {
+    /* ==========================================
+       HOST STARTS CALL
+    ========================================== */
 
-                setConnectionState(
-                    "connecting",
-                    "Connecting..."
-                );
+    async function startHostCallIfNeeded(
+      guestId
+    ) {
 
+      if (!isHost) {
+        return;
+      }
 
-                if (
-                    !auth.currentUser
-                ) {
 
-                    await signInAnonymously(
-                        auth
-                    );
+      if (callStarted) {
+        return;
+      }
 
-                }
 
+      if (activeCallId) {
+        return;
+      }
 
-                currentUser =
-                    auth.currentUser;
 
+      if (!guestId) {
+        return;
+      }
 
-                if (!currentUser) {
 
-                    throw new Error(
-                        "Anonymous authentication failed."
-                    );
+      try {
 
-                }
+        setStatus(
+          "Starting call...",
+          "waiting"
+        );
 
 
-                await loadMeeting();
+        activeCallId =
+          createCallId();
 
 
-                await startLocalMedia();
+        /*
+          Create peer connection BEFORE offer.
+        */
 
+        createPeerConnection();
 
-                await registerParticipant();
 
+        /*
+          Create offer.
+        */
 
-                listenForParticipants();
+        const offer =
+          await peerConnection
+            .createOffer({
+              offerToReceiveAudio: true,
+              offerToReceiveVideo: true
+            });
 
 
-                listenForCall();
+        await peerConnection
+          .setLocalDescription(
+            offer
+          );
 
 
-                listenForMessages();
+        /*
+          Store the call.
+        */
 
+        const callRef =
+          doc(
+            db,
+            "meetings",
+            meetingId,
+            "calls",
+            activeCallId
+          );
 
-                listenForScreenRequests();
 
+        await setDoc(
+          callRef,
+          {
 
-                setupControls();
+            hostUid:
+              currentUser.uid,
 
+            guestUid:
+              guestId,
 
-                setConnectionState(
-                    "connecting",
-                    "Waiting for participant..."
-                );
+            offer: {
 
-            } catch (error) {
+              type:
+                peerConnection
+                  .localDescription
+                  .type,
 
-                console.error(
-                    "Initialization error:",
-                    error
-                );
+              sdp:
+                peerConnection
+                  .localDescription
+                  .sdp
 
+            },
 
-                setConnectionState(
-                    "failed",
-                    "Connection failed"
-                );
+            createdAt:
+              serverTimestamp(),
 
+            status:
+              "offer-created"
 
-                showToast(
-                    error.message ||
-                    "Could not join meeting."
-                );
+          }
+        );
 
-            }
 
-        }
+        /*
+          Tell the meeting document which
+          call is active.
+        */
 
+        const meetingRef =
+          doc(
+            db,
+            "meetings",
+            meetingId
+          );
 
-        /* ==========================================
-           LOAD MEETING
-        ========================================== */
 
-        async function loadMeeting() {
+        await updateDoc(
+          meetingRef,
+          {
 
-            const meetingRef =
-                doc(
-                    db,
-                    "meetings",
-                    meetingId
-                );
+            activeCallId:
+              activeCallId
 
+          }
+        );
 
-            const snapshot =
-                await getDoc(
-                    meetingRef
-                );
 
+        listenForHostAnswer(
+          callRef
+        );
+
+
+        listenForGuestCandidates(
+          activeCallId
+        );
+
+
+        setStatus(
+          "Calling guest...",
+          "waiting"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Host call error:",
+          error
+        );
+
+        setStatus(
+          "Connection failed",
+          "failed"
+        );
+
+        showToast(
+          "Could not start the video call: " +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       HOST ANSWER LISTENER
+    ========================================== */
+
+    function listenForHostAnswer(
+      callRef
+    ) {
+
+      if (unsubscribeCall) {
+
+        unsubscribeCall();
+
+      }
+
+
+      unsubscribeCall =
+        onSnapshot(
+          callRef,
+          async snapshot => {
 
             if (!snapshot.exists()) {
-
-                throw new Error(
-                    "Meeting not found."
-                );
-
+              return;
             }
 
 
-            meetingData =
-                snapshot.data();
+            const data =
+              snapshot.data();
 
 
             if (
-                meetingData.status &&
-                meetingData.status !== "active"
+              data.answer &&
+              peerConnection &&
+              !remoteDescriptionSet
             ) {
 
-                throw new Error(
-                    "This meeting is not active."
-                );
-
-            }
-
-
-            isHost =
-                meetingData.hostId ===
-                currentUser.uid;
-
-
-            localRole.textContent =
-                isHost
-                    ? "(Host)"
-                    : "(Guest)";
-
-
-            if (isHost) {
-
-                setConnectionState(
-                    "connecting",
-                    "Waiting for guest..."
-                );
-
-            }
-
-        }
-
-
-        /* ==========================================
-           LOCAL MEDIA
-        ========================================== */
-
-        async function startLocalMedia() {
-
-            if (localStream) {
-                return;
-            }
-
-
-            localStream =
-                await navigator.mediaDevices
-                    .getUserMedia({
-
-                        video: {
-
-                            width: {
-                                ideal: 1280
-                            },
-
-                            height: {
-                                ideal: 720
-                            },
-
-                            facingMode: "user"
-
-                        },
-
-                        audio: true
-
-                    });
-
-
-            localVideo.srcObject =
-                localStream;
-
-
-            await localVideo.play()
-                .catch(() => {});
-
-
-            console.log(
-                "Local media started."
-            );
-
-        }
-
-
-        /* ==========================================
-           REGISTER PARTICIPANT
-        ========================================== */
-
-        async function registerParticipant() {
-
-            const participantRef =
-                doc(
-                    db,
-                    "meetings",
-                    meetingId,
-                    "participants",
-                    currentUser.uid
-                );
-
-
-            await setDoc(
-                participantRef,
-                {
-
-                    uid:
-                        currentUser.uid,
-
-                    role:
-                        isHost
-                            ? "host"
-                            : "guest",
-
-                    name:
-                        isHost
-                            ? "Host"
-                            : "Guest",
-
-                    joinedAt:
-                        serverTimestamp(),
-
-                    online:
-                        true
-
-                },
-                {
-                    merge: true
-                }
-            );
-
-        }
-
-
-        /* ==========================================
-           PARTICIPANT LISTENER
-        ========================================== */
-
-        function listenForParticipants() {
-
-            const participantsRef =
-                collection(
-                    db,
-                    "meetings",
-                    meetingId,
-                    "participants"
-                );
-
-
-            participantsUnsubscribe =
-                onSnapshot(
-                    participantsRef,
-                    async snapshot => {
-
-                        const participants =
-                            snapshot.docs.map(
-                                item => ({
-                                    id: item.id,
-                                    ...item.data()
-                                })
-                            );
-
-
-                        renderParticipants(
-                            participants
-                        );
-
-
-                        const guest =
-                            participants.find(
-                                participant =>
-                                    participant.uid !==
-                                    currentUser.uid &&
-                                    participant.online !== false
-                            );
-
-
-                        if (!guest) {
-
-                            remoteParticipantUid =
-                                null;
-
-                            setConnectionState(
-                                "connecting",
-                                isHost
-                                    ? "Waiting for guest..."
-                                    : "Waiting for host..."
-                            );
-
-                            remoteStatus.textContent =
-                                "Waiting for the other participant...";
-
-                            return;
-
-                        }
-
-
-                        remoteParticipantUid =
-                            guest.uid;
-
-
-                        remoteParticipantName =
-                            guest.name ||
-                            (
-                                guest.role === "host"
-                                    ? "Host"
-                                    : "Guest"
-                            );
-
-
-                        if (isHost) {
-
-                            await ensureHostCall(
-                                guest.uid
-                            );
-
-                        }
-
-                    },
-                    error => {
-
-                        console.error(
-                            "Participant listener error:",
-                            error
-                        );
-
-                        showToast(
-                            "Could not read participants."
-                        );
-
-                    }
-                );
-
-        }
-
-
-        function renderParticipants(
-            participants
-        ) {
-
-            participantsEl.innerHTML = "";
-
-
-            participants.forEach(
-                participant => {
-
-                    const div =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    div.className =
-                        "participant";
-
-
-                    const name =
-                        participant.uid ===
-                        currentUser.uid
-                            ? "You"
-                            : (
-                                participant.name ||
-                                (
-                                    participant.role ===
-                                    "host"
-                                        ? "Host"
-                                        : "Guest"
-                                )
-                            );
-
-
-                    div.innerHTML = `
-
-                        <div>
-                            ${escapeHtml(name)}
-                        </div>
-
-                        <div class="participant-role">
-                            ${participant.role || "Participant"}
-                        </div>
-
-                    `;
-
-
-                    participantsEl.appendChild(
-                        div
-                    );
-
-                }
-            );
-
-        }
-
-
-        function escapeHtml(value) {
-
-            return String(value)
-                .replace(
-                    /[&<>"']/g,
-                    character => ({
-
-                        "&": "&amp;",
-                        "<": "&lt;",
-                        ">": "&gt;",
-                        '"': "&quot;",
-                        "'": "&#039;"
-
-                    }[character])
-                );
-
-        }
-
-
-        /* ==========================================
-           CREATE PEER CONNECTION
-        ========================================== */
-
-        function createPeerConnection(
-            sessionId
-        ) {
-
-            if (peerConnection) {
-
-                try {
-                    peerConnection.close();
-                } catch {}
-
-            }
-
-
-            remoteDescriptionSet =
-                false;
-
-
-            pendingRemoteCandidates =
-                [];
-
-
-            processedCandidateIds =
-                new Set();
-
-
-            peerConnection =
-                new RTCPeerConnection(
-                    rtcConfig
-                );
-
-
-            console.log(
-                "Created RTCPeerConnection:",
-                sessionId
-            );
-
-
-            /* ---------- LOCAL TRACKS ---------- */
-
-            if (localStream) {
-
-                localStream
-                    .getTracks()
-                    .forEach(track => {
-
-                        peerConnection.addTrack(
-                            track,
-                            localStream
-                        );
-
-                    });
-
-            }
-
-
-            /* ---------- REMOTE TRACKS ---------- */
-
-            peerConnection.ontrack =
-                event => {
-
-                    console.log(
-                        "Remote track received."
-                    );
-
-
-                    let stream =
-                        event.streams &&
-                        event.streams[0];
-
-
-                    if (!stream) {
-
-                        if (
-                            !remoteVideo.srcObject
-                        ) {
-
-                            stream =
-                                new MediaStream();
-
-                            remoteVideo.srcObject =
-                                stream;
-
-                        } else {
-
-                            stream =
-                                remoteVideo.srcObject;
-
-                        }
-
-
-                        if (
-                            !stream.getTracks()
-                                .includes(
-                                    event.track
-                                )
-                        ) {
-
-                            stream.addTrack(
-                                event.track
-                            );
-
-                        }
-
-                    }
-
-
-                    remoteVideo.srcObject =
-                        stream;
-
-
-                    remotePlaceholder
-                        .classList
-                        .add("hidden");
-
-
-                    remoteStatus.textContent =
-                        "Connected";
-
-
-                    remoteVideo.play()
-                        .catch(error => {
-
-                            console.log(
-                                "Remote autoplay blocked:",
-                                error
-                            );
-
-                        });
-
-                };
-
-
-            /* ---------- ICE ---------- */
-
-            peerConnection.onicecandidate =
-                async event => {
-
-                    if (
-                        !event.candidate ||
-                        !currentCallSessionId
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    try {
-
-                        const side =
-                            isHost
-                                ? "hostCandidates"
-                                : "guestCandidates";
-
-
-                        const candidateRef =
-                            collection(
-                                db,
-                                "meetings",
-                                meetingId,
-                                "calls",
-                                currentCallSessionId,
-                                side
-                            );
-
-
-                        await addDoc(
-                            candidateRef,
-                            {
-
-                                sessionId:
-                                    currentCallSessionId,
-
-                                candidate:
-                                    candidateToObject(
-                                        event.candidate
-                                    ),
-
-                                createdAt:
-                                    serverTimestamp()
-
-                            }
-                        );
-
-                    } catch (error) {
-
-                        console.error(
-                            "ICE candidate write failed:",
-                            error
-                        );
-
-                    }
-
-                };
-
-
-            /* ---------- CONNECTION STATE ---------- */
-
-            peerConnection.onconnectionstatechange =
-                () => {
-
-                    const state =
-                        peerConnection
-                            .connectionState;
-
-
-                    console.log(
-                        "WebRTC connection state:",
-                        state
-                    );
-
-
-                    if (
-                        state ===
-                        "connected"
-                    ) {
-
-                        setConnectionState(
-                            "connected",
-                            "Connected"
-                        );
-
-
-                        remoteStatus.textContent =
-                            "Connected";
-
-                    }
-
-
-                    if (
-                        state ===
-                        "connecting"
-                    ) {
-
-                        setConnectionState(
-                            "connecting",
-                            "Connecting..."
-                        );
-
-                    }
-
-
-                    if (
-                        state ===
-                        "disconnected"
-                    ) {
-
-                        setConnectionState(
-                            "connecting",
-                            "Reconnecting..."
-                        );
-
-                    }
-
-
-                    if (
-                        state ===
-                        "failed"
-                    ) {
-
-                        setConnectionState(
-                            "failed",
-                            "Connection failed"
-                        );
-
-
-                        remoteStatus.textContent =
-                            "Connection failed";
-
-                    }
-
-
-                    if (
-                        state ===
-                        "closed"
-                    ) {
-
-                        setConnectionState(
-                            "failed",
-                            "Connection closed"
-                        );
-
-                    }
-
-                };
-
-
-            peerConnection.oniceconnectionstatechange =
-                () => {
-
-                    console.log(
-                        "ICE state:",
-                        peerConnection
-                            .iceConnectionState
-                    );
-
-                };
-
-
-            peerConnection.onsignalingstatechange =
-                () => {
-
-                    console.log(
-                        "Signaling state:",
-                        peerConnection
-                            .signalingState
-                    );
-
-                };
-
-
-            return peerConnection;
-
-        }
-
-
-        /* ==========================================
-           HOST CREATE NEW CALL SESSION
-        ========================================== */
-
-        let lastHostGuestUid = null;
-
-
-        async function ensureHostCall(
-            guestUid
-        ) {
-
-            if (!isHost) {
-                return;
-            }
-
-
-            if (
-                makingOffer
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                lastHostGuestUid ===
-                guestUid &&
-                currentCallSessionId
-            ) {
-
-                return;
-
-            }
-
-
-            makingOffer = true;
-
-
-            try {
-
-                lastHostGuestUid =
-                    guestUid;
-
-
-                const sessionId =
-                    randomSessionId();
-
-
-                currentCallSessionId =
-                    sessionId;
-
-
-                if (callUnsubscribe) {
-
-                    callUnsubscribe();
-
-                    callUnsubscribe =
-                        null;
-
-                }
-
-
-                if (hostCandidateUnsubscribe) {
-
-                    hostCandidateUnsubscribe();
-
-                    hostCandidateUnsubscribe =
-                        null;
-
-                }
-
-
-                if (guestCandidateUnsubscribe) {
-
-                    guestCandidateUnsubscribe();
-
-                    guestCandidateUnsubscribe =
-                        null;
-
-                }
-
-
-                createPeerConnection(
-                    sessionId
-                );
-
-
-                setConnectionState(
-                    "connecting",
-                    "Connecting..."
-                );
-
-
-                const offer =
-                    await peerConnection
-                        .createOffer();
-
+              try {
 
                 await peerConnection
-                    .setLocalDescription(
-                        offer
-                    );
-
-
-                const callRef =
-                    doc(
-                        db,
-                        "meetings",
-                        meetingId,
-                        "calls",
-                        sessionId
-                    );
-
-
-                await setDoc(
-                    callRef,
-                    {
-
-                        sessionId:
-                            sessionId,
-
-                        hostUid:
-                            currentUser.uid,
-
-                        guestUid:
-                            guestUid,
-
-                        offer: {
-
-                            type:
-                                offer.type,
-
-                            sdp:
-                                offer.sdp
-
-                        },
-
-                        answer:
-                            null,
-
-                        createdAt:
-                            serverTimestamp(),
-
-                        status:
-                            "offer-created"
-
-                    }
-                );
-
-
-                console.log(
-                    "Host created call:",
-                    sessionId
-                );
-
-
-                listenForGuestCandidates(
-                    sessionId
-                );
-
-
-                listenForAnswer(
-                    sessionId
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Host call creation failed:",
-                    error
-                );
-
-
-                setConnectionState(
-                    "failed",
-                    "Connection failed"
-                );
-
-
-                showToast(
-                    "Could not start video connection."
-                );
-
-            } finally {
-
-                makingOffer = false;
-
-            }
-
-        }
-
-
-        /* ==========================================
-           GUEST LISTENS FOR CALL
-        ========================================== */
-
-        function listenForCall() {
-
-            if (isHost) {
-                return;
-            }
-
-
-            if (callUnsubscribe) {
-
-                callUnsubscribe();
-
-            }
-
-
-            /*
-             * We cannot query arbitrary call IDs.
-             * Instead, the guest watches the
-             * meetings/{meetingId}/currentCall
-             * document.
-             */
-
-            const currentCallRef =
-                doc(
-                    db,
-                    "meetings",
-                    meetingId,
-                    "signaling",
-                    "currentCall"
-                );
-
-
-            callUnsubscribe =
-                onSnapshot(
-                    currentCallRef,
-                    async snapshot => {
-
-                        if (
-                            !snapshot.exists()
-                        ) {
-
-                            setConnectionState(
-                                "connecting",
-                                "Waiting for host..."
-                            );
-
-                            return;
-
-                        }
-
-
-                        const data =
-                            snapshot.data();
-
-
-                        if (
-                            data.guestUid !==
-                            currentUser.uid
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        const sessionId =
-                            data.sessionId;
-
-
-                        if (
-                            !sessionId
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        if (
-                            currentCallSessionId ===
-                            sessionId
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        await joinCallAsGuest(
-                            data
-                        );
-
-                    },
-                    error => {
-
-                        console.error(
-                            "Call listener error:",
-                            error
-                        );
-
-
-                        showToast(
-                            "Could not read call signaling."
-                        );
-
-                    }
-                );
-
-        }
-
-
-        /* ==========================================
-           GUEST JOIN CALL
-        ========================================== */
-
-        async function joinCallAsGuest(
-            data
-        ) {
-
-            try {
-
-                const sessionId =
-                    data.sessionId;
-
-
-                currentCallSessionId =
-                    sessionId;
-
-
-                if (peerConnection) {
-
-                    try {
-                        peerConnection.close();
-                    } catch {}
-
-                }
-
-
-                if (
-                    guestCandidateUnsubscribe
-                ) {
-
-                    guestCandidateUnsubscribe();
-
-                    guestCandidateUnsubscribe =
-                        null;
-
-                }
-
-
-                createPeerConnection(
-                    sessionId
-                );
-
-
-                setConnectionState(
-                    "connecting",
-                    "Connecting..."
-                );
-
-
-                const offer =
-                    data.offer;
-
-
-                if (!offer) {
-
-                    throw new Error(
-                        "Host offer is missing."
-                    );
-
-                }
-
-
-                await peerConnection
-                    .setRemoteDescription(
-                        new RTCSessionDescription(
-                            offer
-                        )
-                    );
+                  .setRemoteDescription(
+                    new RTCSessionDescription(
+                      data.answer
+                    )
+                  );
 
 
                 remoteDescriptionSet =
-                    true;
+                  true;
 
 
                 await flushPendingCandidates();
 
 
-                listenForHostCandidates(
-                    sessionId
+                setStatus(
+                  "Connecting...",
+                  "waiting"
                 );
 
-
-                const answer =
-                    await peerConnection
-                        .createAnswer();
-
-
-                await peerConnection
-                    .setLocalDescription(
-                        answer
-                    );
-
-
-                const callRef =
-                    doc(
-                        db,
-                        "meetings",
-                        meetingId,
-                        "calls",
-                        sessionId
-                    );
-
-
-                await updateDoc(
-                    callRef,
-                    {
-
-                        answer: {
-
-                            type:
-                                answer.type,
-
-                            sdp:
-                                answer.sdp
-
-                        },
-
-                        status:
-                            "answer-created",
-
-                        answeredAt:
-                            serverTimestamp()
-
-                    }
-                );
-
-
-                console.log(
-                    "Guest sent answer."
-                );
-
-
-            } catch (error) {
+              } catch (error) {
 
                 console.error(
-                    "Guest join call failed:",
-                    error
+                  "Host answer error:",
+                  error
                 );
 
-
-                setConnectionState(
-                    "failed",
-                    "Connection failed"
+                setStatus(
+                  "Connection failed",
+                  "failed"
                 );
 
-
-                showToast(
-                    "Could not connect to host."
-                );
+              }
 
             }
 
-        }
-
-
-        /* ==========================================
-           HOST LISTENS FOR ANSWER
-        ========================================== */
-
-        function listenForAnswer(
-            sessionId
-        ) {
-
-            const callRef =
-                doc(
-                    db,
-                    "meetings",
-                    meetingId,
-                    "calls",
-                    sessionId
-                );
-
-
-            const unsubscribe =
-                onSnapshot(
-                    callRef,
-                    async snapshot => {
-
-                        if (
-                            !snapshot.exists()
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        const data =
-                            snapshot.data();
-
-
-                        if (
-                            data.sessionId !==
-                            sessionId
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        if (
-                            !data.answer
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        if (
-                            remoteDescriptionSet
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        if (!peerConnection) {
-
-                            return;
-
-                        }
-
-
-                        try {
-
-                            await peerConnection
-                                .setRemoteDescription(
-                                    new RTCSessionDescription(
-                                        data.answer
-                                    )
-                                );
-
-
-                            remoteDescriptionSet =
-                                true;
-
-
-                            await flushPendingCandidates();
-
-
-                            console.log(
-                                "Host received guest answer."
-                            );
-
-
-                        } catch (error) {
-
-                            console.error(
-                                "Could not set answer:",
-                                error
-                            );
-
-
-                            setConnectionState(
-                                "failed",
-                                "Connection failed"
-                            );
-
-                        }
-
-                    },
-                    error => {
-
-                        console.error(
-                            "Answer listener error:",
-                            error
-                        );
-
-                    }
-                );
-
-
-            callUnsubscribe =
-                unsubscribe;
-
-        }
-
-
-        /* ==========================================
-           HOST CANDIDATES
-        ========================================== */
-
-        function listenForGuestCandidates(
-            sessionId
-        ) {
-
-            const candidateRef =
-                collection(
-                    db,
-                    "meetings",
-                    meetingId,
-                    "calls",
-                    sessionId,
-                    "guestCandidates"
-                );
-
-
-            guestCandidateUnsubscribe =
-                onSnapshot(
-                    candidateRef,
-                    snapshot => {
-
-                        snapshot.docChanges()
-                            .forEach(
-                                async change => {
-
-                                    if (
-                                        change.type !==
-                                        "added"
-                                    ) {
-
-                                        return;
-
-                                    }
-
-
-                                    if (
-                                        processedCandidateIds
-                                            .has(
-                                                change.doc.id
-                                            )
-                                    ) {
-
-                                        return;
-
-                                    }
-
-
-                                    processedCandidateIds
-                                        .add(
-                                            change.doc.id
-                                        );
-
-
-                                    const data =
-                                        change.doc.data();
-
-
-                                    if (
-                                        data.sessionId !==
-                                        sessionId
-                                    ) {
-
-                                        return;
-
-                                    }
-
-
-                                    await addRemoteCandidate(
-                                        data.candidate
-                                    );
-
-                                }
-                            );
-
-                    },
-                    error => {
-
-                        console.error(
-                            "Guest candidate listener error:",
-                            error
-                        );
-
-                    }
-                );
-
-        }
-
-
-        /* ==========================================
-           GUEST CANDIDATES
-        ========================================== */
-
-        function listenForHostCandidates(
-            sessionId
-        ) {
-
-            if (
-                hostCandidateUnsubscribe
-            ) {
-
-                hostCandidateUnsubscribe();
-
-            }
-
-
-            const candidateRef =
-                collection(
-                    db,
-                    "meetings",
-                    meetingId,
-                    "calls",
-                    sessionId,
-                    "hostCandidates"
-                );
-
-
-            hostCandidateUnsubscribe =
-                onSnapshot(
-                    candidateRef,
-                    snapshot => {
-
-                        snapshot.docChanges()
-                            .forEach(
-                                async change => {
-
-                                    if (
-                                        change.type !==
-                                        "added"
-                                    ) {
-
-                                        return;
-
-                                    }
-
-
-                                    if (
-                                        processedCandidateIds
-                                            .has(
-                                                change.doc.id
-                                            )
-                                    ) {
-
-                                        return;
-
-                                    }
-
-
-                                    processedCandidateIds
-                                        .add(
-                                            change.doc.id
-                                        );
-
-
-                                    const data =
-                                        change.doc.data();
-
-
-                                    if (
-                                        data.sessionId !==
-                                        sessionId
-                                    ) {
-
-                                        return;
-
-                                    }
-
-
-                                    await addRemoteCandidate(
-                                        data.candidate
-                                    );
-
-                                }
-                            );
-
-                    },
-                    error => {
-
-                        console.error(
-                            "Host candidate listener error:",
-                            error
-                        );
-
-                    }
-                );
-
-        }
-
-
-        /* ==========================================
-           IMPORTANT:
-           PUBLISH CURRENT CALL FOR GUEST
-        ========================================== */
-
-        /*
-         * The guest needs to know which call
-         * session the host just created.
-         *
-         * We publish the current session here.
-         */
-
-        const originalEnsureHostCall =
-            ensureHostCall;
-
-
-        ensureHostCall =
-            async function(guestUid) {
-
-                await originalEnsureHostCall(
-                    guestUid
-                );
-
-
-                if (
-                    currentCallSessionId
-                ) {
-
-                    const currentCallRef =
-                        doc(
-                            db,
-                            "meetings",
-                            meetingId,
-                            "signaling",
-                            "currentCall"
-                        );
-
-
-                    await setDoc(
-                        currentCallRef,
-                        {
-
-                            sessionId:
-                                currentCallSessionId,
-
-                            hostUid:
-                                currentUser.uid,
-
-                            guestUid:
-                                guestUid,
-
-                            updatedAt:
-                                serverTimestamp()
-
-                        }
-                    );
-
-                }
-
-            };
-
-
-        /* ==========================================
-           CHAT
-        ========================================== */
-
-        function listenForMessages() {
-
-            const messagesRef =
-                collection(
-                    db,
-                    "meetings",
-                    meetingId,
-                    "messages"
-                );
-
-
-            messagesUnsubscribe =
-                onSnapshot(
-                    messagesRef,
-                    snapshot => {
-
-                        const messages =
-                            snapshot.docs
-                                .map(
-                                    item => ({
-                                        id:
-                                            item.id,
-                                        ...item.data()
-                                    })
-                                )
-                                .sort(
-                                    (a, b) => {
-
-                                        const aTime =
-                                            a.createdAt?.seconds ||
-                                            0;
-
-                                        const bTime =
-                                            b.createdAt?.seconds ||
-                                            0;
-
-                                        return (
-                                            aTime -
-                                            bTime
-                                        );
-
-                                    }
-                                );
-
-
-                        messagesEl.innerHTML =
-                            "";
-
-
-                        messages.forEach(
-                            message => {
-
-                                const div =
-                                    document.createElement(
-                                        "div"
-                                    );
-
-
-                                div.className =
-                                    "message";
-
-
-                                div.innerHTML = `
-
-                                    <div class="message-name">
-                                        ${escapeHtml(
-                                            message.name ||
-                                            "Participant"
-                                        )}
-                                    </div>
-
-                                    <div class="message-body">
-                                        ${escapeHtml(
-                                            message.text ||
-                                            ""
-                                        )}
-                                    </div>
-
-                                `;
-
-
-                                messagesEl.appendChild(
-                                    div
-                                );
-
-                            }
-                        );
-
-
-                        messagesEl.scrollTop =
-                            messagesEl.scrollHeight;
-
-                    },
-                    error => {
-
-                        console.error(
-                            "Chat listener error:",
-                            error
-                        );
-
-                    }
-                );
-
-        }
-
-
-        async function sendMessage() {
-
-            const text =
-                chatMessage.value.trim();
-
-
-            if (!text) {
-                return;
-            }
-
-
-            try {
-
-                await addDoc(
-                    collection(
-                        db,
-                        "meetings",
-                        meetingId,
-                        "messages"
-                    ),
-                    {
-
-                        text:
-                            text,
-
-                        name:
-                            isHost
-                                ? "Host"
-                                : "Guest",
-
-                        uid:
-                            currentUser.uid,
-
-                        createdAt:
-                            serverTimestamp()
-
-                    }
-                );
-
-
-                chatMessage.value =
-                    "";
-
-            } catch (error) {
-
-                console.error(
-                    "Send message error:",
-                    error
-                );
-
-
-                showToast(
-                    "Could not send message."
-                );
-
-            }
-
-        }
-
-
-        /* ==========================================
-           SCREEN SHARING
-        ========================================== */
-
-        function listenForScreenRequests() {
-
-            if (!isHost) {
-
-                const requestsRef =
-                    collection(
-                        db,
-                        "meetings",
-                        meetingId,
-                        "screenShareRequests"
-                    );
-
-
-                screenRequestUnsubscribe =
-                    onSnapshot(
-                        requestsRef,
-                        snapshot => {
-
-                            snapshot.docChanges()
-                                .forEach(
-                                    change => {
-
-                                        if (
-                                            change.type !==
-                                            "added"
-                                        ) {
-
-                                            return;
-
-                                        }
-
-
-                                        const data =
-                                            change.doc.data();
-
-
-                                        if (
-                                            data.toUid !==
-                                            currentUser.uid
-                                        ) {
-
-                                            return;
-
-                                        }
-
-
-                                        if (
-                                            data.status !==
-                                            "pending"
-                                        ) {
-
-                                            return;
-
-                                        }
-
-
-                                        currentScreenRequestId =
-                                            change.doc.id;
-
-
-                                        screenRequestModal
-                                            .classList
-                                            .add("show");
-
-                                    }
-                                );
-
-                        }
-                    );
-
-            }
-
-        }
-
-
-        async function requestScreenShare() {
-
-            if (
-                !remoteParticipantUid
-            ) {
-
-                showToast(
-                    "Wait for the other participant to join."
-                );
-
-                return;
-
-            }
-
-
-            try {
-
-                await addDoc(
-                    collection(
-                        db,
-                        "meetings",
-                        meetingId,
-                        "screenShareRequests"
-                    ),
-                    {
-
-                        fromUid:
-                            currentUser.uid,
-
-                        toUid:
-                            remoteParticipantUid,
-
-                        status:
-                            "pending",
-
-                        createdAt:
-                            serverTimestamp()
-
-                    }
-                );
-
-
-                showToast(
-                    "Screen sharing request sent."
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Screen request error:",
-                    error
-                );
-
-
-                showToast(
-                    "Could not send screen sharing request."
-                );
-
-            }
-
-        }
-
-
-        async function respondToScreenRequest(
-            accepted
-        ) {
-
-            if (
-                !currentScreenRequestId
-            ) {
-
-                return;
-
-            }
-
-
-            const requestRef =
-                doc(
-                    db,
-                    "meetings",
-                    meetingId,
-                    "screenShareRequests",
-                    currentScreenRequestId
-                );
-
-
-            try {
-
-                await updateDoc(
-                    requestRef,
-                    {
-
-                        status:
-                            accepted
-                                ? "accepted"
-                                : "declined",
-
-                        respondedAt:
-                            serverTimestamp()
-
-                    }
-                );
-
-
-                screenRequestModal
-                    .classList
-                    .remove("show");
-
-
-                if (accepted) {
-
-                    await startScreenShare();
-
-                }
-
-
-                currentScreenRequestId =
-                    null;
-
-            } catch (error) {
-
-                console.error(
-                    "Screen response error:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        async function startScreenShare() {
-
-            try {
-
-                screenStream =
-                    await navigator.mediaDevices
-                        .getDisplayMedia({
-
-                            video: true,
-
-                            audio: false
-
-                        });
-
-
-                const screenTrack =
-                    screenStream.getVideoTracks()[0];
-
-
-                if (!screenTrack) {
-                    return;
-                }
-
-
-                if (peerConnection) {
-
-                    const sender =
-                        peerConnection
-                            .getSenders()
-                            .find(
-                                item =>
-                                    item.track &&
-                                    item.track.kind ===
-                                    "video"
-                            );
-
-
-                    if (sender) {
-
-                        await sender
-                            .replaceTrack(
-                                screenTrack
-                            );
-
-                    }
-
-                }
-
-
-                screenTrack.onended =
-                    async () => {
-
-                        await stopScreenShare();
-
-                    };
-
-
-                localVideo.srcObject =
-                    screenStream;
-
-
-                showToast(
-                    "Screen sharing started."
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Screen sharing error:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        async function stopScreenShare() {
-
-            if (!screenStream) {
-                return;
-            }
-
-
-            const cameraTrack =
-                localStream
-                    ?.getVideoTracks()[0];
-
-
-            if (
-                peerConnection &&
-                cameraTrack
-            ) {
-
-                const sender =
-                    peerConnection
-                        .getSenders()
-                        .find(
-                            item =>
-                                item.track &&
-                                item.track.kind ===
-                                "video"
-                        );
-
-
-                if (sender) {
-
-                    await sender
-                        .replaceTrack(
-                            cameraTrack
-                        );
-
-                }
-
-            }
-
-
-            screenStream
-                .getTracks()
-                .forEach(
-                    track =>
-                        track.stop()
-                );
-
-
-            screenStream =
-                null;
-
-
-            localVideo.srcObject =
-                localStream;
-
-        }
-
-
-        /* ==========================================
-           CONTROLS
-        ========================================== */
-
-        function setupControls() {
-
-            micButton.onclick =
-                toggleMicrophone;
-
-
-            cameraButton.onclick =
-                toggleCamera;
-
-
-            screenButton.onclick =
-                requestScreenShare;
-
-
-            inviteButton.onclick =
-                openShareModal;
-
-
-            chatButton.onclick =
-                () => {
-
-                    sidePanel.classList.toggle(
-                        "open"
-                    );
-
-                };
-
-
-            fullscreenButton.onclick =
-                toggleFullscreen;
-
-
-            leaveButton.onclick =
-                leaveMeeting;
-
-
-            document.getElementById(
-                "closePanel"
-            ).onclick =
-                () => {
-
-                    sidePanel.classList.remove(
-                        "open"
-                    );
-
-                };
-
-
-            document.getElementById(
-                "sendMessage"
-            ).onclick =
-                sendMessage;
-
-
-            chatMessage.addEventListener(
-                "keydown",
-                event => {
-
-                    if (
-                        event.key ===
-                        "Enter"
-                    ) {
-
-                        sendMessage();
-
-                    }
-
-                }
+          },
+          error => {
+
+            console.error(
+              "Host call listener error:",
+              error
             );
 
-
-            closeShare.onclick =
-                () => {
-
-                    shareModal.classList.remove(
-                        "show"
-                    );
-
-                };
-
-
-            copyShare.onclick =
-                copyInviteLink;
-
-
-            acceptScreen.onclick =
-                () =>
-                    respondToScreenRequest(
-                        true
-                    );
-
-
-            declineScreen.onclick =
-                () =>
-                    respondToScreenRequest(
-                        false
-                    );
-
-
-            remoteVideo.addEventListener(
-                "click",
-                () => {
-
-                    remoteVideo.play()
-                        .catch(() => {});
-
-                }
+            setStatus(
+              "Signaling error",
+              "failed"
             );
 
-        }
+          }
+        );
 
+    }
 
-        function toggleMicrophone() {
 
-            if (!localStream) {
-                return;
-            }
+    /* ==========================================
+       GUEST FINDS ACTIVE CALL
+    ========================================== */
 
+    function listenForGuestCall() {
 
-            const tracks =
-                localStream.getAudioTracks();
-
-
-            if (!tracks.length) {
-                return;
-            }
-
-
-            const enabled =
-                !tracks[0].enabled;
-
-
-            tracks.forEach(
-                track =>
-                    track.enabled =
-                        enabled
-            );
-
-
-            micButton.classList.toggle(
-                "active",
-                enabled
-            );
-
-
-            document.querySelector(
-                "#micButton + .control-text"
-            ).textContent =
-                enabled
-                    ? "Mute"
-                    : "Unmute";
-
-        }
-
-
-        function toggleCamera() {
-
-            if (!localStream) {
-                return;
-            }
-
-
-            const tracks =
-                localStream.getVideoTracks();
-
-
-            if (!tracks.length) {
-                return;
-            }
-
-
-            const enabled =
-                !tracks[0].enabled;
-
-
-            tracks.forEach(
-                track =>
-                    track.enabled =
-                        enabled
-            );
-
-
-            cameraButton.classList.toggle(
-                "active",
-                enabled
-            );
-
-        }
-
-
-        function openShareModal() {
-
-            const link =
-                new URL(
-                    "join.html?meeting=" +
-                    encodeURIComponent(
-                        meetingId
-                    ),
-                    window.location.href
-                ).href;
-
-
-            shareLink.value =
-                link;
-
-
-            shareModal.classList.add(
-                "show"
-            );
-
-        }
-
-
-        async function copyInviteLink() {
-
-            try {
-
-                await navigator.clipboard
-                    .writeText(
-                        shareLink.value
-                    );
-
-
-                copyShare.textContent =
-                    "Copied";
-
-
-                setTimeout(
-                    () => {
-
-                        copyShare.textContent =
-                            "Copy";
-
-                    },
-                    1500
-                );
-
-            } catch {
-
-                shareLink.select();
-
-                document.execCommand(
-                    "copy"
-                );
-
-            }
-
-        }
-
-
-        async function toggleFullscreen() {
-
-            try {
-
-                if (
-                    !document.fullscreenElement
-                ) {
-
-                    await document.documentElement
-                        .requestFullscreen();
-
-                } else {
-
-                    await document.exitFullscreen();
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Fullscreen error:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        /* ==========================================
-           LEAVE
-        ========================================== */
-
-        async function leaveMeeting() {
-
-            if (leaving) {
-                return;
-            }
-
-
-            leaving = true;
-
-
-            try {
-
-                if (
-                    participantsUnsubscribe
-                ) {
-
-                    participantsUnsubscribe();
-
-                }
-
-
-                if (
-                    messagesUnsubscribe
-                ) {
-
-                    messagesUnsubscribe();
-
-                }
-
-
-                if (
-                    callUnsubscribe
-                ) {
-
-                    callUnsubscribe();
-
-                }
-
-
-                if (
-                    hostCandidateUnsubscribe
-                ) {
-
-                    hostCandidateUnsubscribe();
-
-                }
-
-
-                if (
-                    guestCandidateUnsubscribe
-                ) {
-
-                    guestCandidateUnsubscribe();
-
-                }
-
-
-                if (
-                    screenRequestUnsubscribe
-                ) {
-
-                    screenRequestUnsubscribe();
-
-                }
-
-
-                if (peerConnection) {
-
-                    peerConnection.close();
-
-                }
-
-
-                if (localStream) {
-
-                    localStream
-                        .getTracks()
-                        .forEach(
-                            track =>
-                                track.stop()
-                        );
-
-                }
-
-
-                if (screenStream) {
-
-                    screenStream
-                        .getTracks()
-                        .forEach(
-                            track =>
-                                track.stop()
-                        );
-
-                }
-
-
-                if (currentUser) {
-
-                    await deleteDoc(
-                        doc(
-                            db,
-                            "meetings",
-                            meetingId,
-                            "participants",
-                            currentUser.uid
-                        )
-                    ).catch(
-                        () => {}
-                    );
-
-                }
-
-            } finally {
-
-                window.location.href =
-                    "index.html";
-
-            }
-
-        }
-
-
-        /* ==========================================
-           PAGE UNLOAD
-        ========================================== */
-
-        window.addEventListener(
-            "beforeunload",
-            () => {
-
-                if (localStream) {
-
-                    localStream
-                        .getTracks()
-                        .forEach(
-                            track =>
-                                track.stop()
-                        );
-
-                }
-
-
-                if (peerConnection) {
-
-                    peerConnection.close();
-
-                }
-
-            }
+      const meetingRef =
+        doc(
+          db,
+          "meetings",
+          meetingId
         );
 
 
-        /* ==========================================
-           START
-        ========================================== */
+      onSnapshot(
+        meetingRef,
+        async snapshot => {
 
-        initialize();
+          if (!snapshot.exists()) {
+            return;
+          }
 
-    </script>
+
+          const data =
+            snapshot.data();
+
+
+          const callId =
+            data.activeCallId;
+
+
+          if (!callId) {
+
+            setStatus(
+              "Waiting for host...",
+              "waiting"
+            );
+
+            return;
+
+          }
+
+
+          if (
+            activeCallId === callId
+          ) {
+
+            return;
+
+          }
+
+
+          activeCallId =
+            callId;
+
+
+          await startGuestCall(
+            callId
+          );
+
+        },
+        error => {
+
+          console.error(
+            "Guest meeting listener error:",
+            error
+          );
+
+          setStatus(
+            "Connection failed",
+            "failed"
+          );
+
+        }
+      );
+
+    }
+
+
+    /* ==========================================
+       GUEST STARTS CALL
+    ========================================== */
+
+    async function startGuestCall(
+      callId
+    ) {
+
+      if (isHost) {
+        return;
+      }
+
+
+      try {
+
+        setStatus(
+          "Connecting...",
+          "waiting"
+        );
+
+
+        const callRef =
+          doc(
+            db,
+            "meetings",
+            meetingId,
+            "calls",
+            callId
+          );
+
+
+        const snapshot =
+          await getDoc(
+            callRef
+          );
+
+
+        if (!snapshot.exists()) {
+
+          setStatus(
+            "Waiting for host...",
+            "waiting"
+          );
+
+          return;
+
+        }
+
+
+        const data =
+          snapshot.data();
+
+
+        if (!data.offer) {
+
+          setStatus(
+            "Waiting for host...",
+            "waiting"
+          );
+
+          return;
+
+        }
+
+
+        createPeerConnection();
+
+
+        await peerConnection
+          .setRemoteDescription(
+            new RTCSessionDescription(
+              data.offer
+            )
+          );
+
+
+        remoteDescriptionSet =
+          true;
+
+
+        await flushPendingCandidates();
+
+
+        const answer =
+          await peerConnection
+            .createAnswer();
+
+
+        await peerConnection
+          .setLocalDescription(
+            answer
+          );
+
+
+        await updateDoc(
+          callRef,
+          {
+
+            answer: {
+
+              type:
+                peerConnection
+                  .localDescription
+                  .type,
+
+              sdp:
+                peerConnection
+                  .localDescription
+                  .sdp
+
+            },
+
+            status:
+              "connected"
+
+          }
+        );
+
+
+        listenForHostCandidates(
+          callId
+        );
+
+
+        setStatus(
+          "Connecting...",
+          "waiting"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Guest call error:",
+          error
+        );
+
+        setStatus(
+          "Connection failed",
+          "failed"
+        );
+
+        showToast(
+          "Could not connect to the host: " +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       HOST CANDIDATES
+    ========================================== */
+
+    function listenForGuestCandidates(
+      callId
+    ) {
+
+      if (unsubscribeRemoteCandidates) {
+
+        unsubscribeRemoteCandidates();
+
+      }
+
+
+      const candidateRef =
+        collection(
+          db,
+          "meetings",
+          meetingId,
+          "calls",
+          callId,
+          "guestCandidates"
+        );
+
+
+      unsubscribeRemoteCandidates =
+        onSnapshot(
+          candidateRef,
+          async snapshot => {
+
+            for (
+              const change of
+              snapshot.docChanges()
+            ) {
+
+              if (
+                change.type !== "added"
+              ) {
+
+                continue;
+
+              }
+
+
+              if (
+                processedCandidateIds
+                  .has(change.doc.id)
+              ) {
+
+                continue;
+
+              }
+
+
+              processedCandidateIds.add(
+                change.doc.id
+              );
+
+
+              const data =
+                change.doc.data();
+
+
+              if (!data.candidate) {
+                continue;
+              }
+
+
+              await addRemoteCandidate(
+                data.candidate
+              );
+
+            }
+
+          },
+          error => {
+
+            console.error(
+              "Guest candidate listener error:",
+              error
+            );
+
+          }
+        );
+
+    }
+
+
+    /* ==========================================
+       GUEST CANDIDATES
+    ========================================== */
+
+    function listenForHostCandidates(
+      callId
+    ) {
+
+      if (unsubscribeRemoteCandidates) {
+
+        unsubscribeRemoteCandidates();
+
+      }
+
+
+      const candidateRef =
+        collection(
+          db,
+          "meetings",
+          meetingId,
+          "calls",
+          callId,
+          "hostCandidates"
+        );
+
+
+      unsubscribeRemoteCandidates =
+        onSnapshot(
+          candidateRef,
+          async snapshot => {
+
+            for (
+              const change of
+              snapshot.docChanges()
+            ) {
+
+              if (
+                change.type !== "added"
+              ) {
+
+                continue;
+
+              }
+
+
+              if (
+                processedCandidateIds
+                  .has(change.doc.id)
+              ) {
+
+                continue;
+
+              }
+
+
+              processedCandidateIds.add(
+                change.doc.id
+              );
+
+
+              const data =
+                change.doc.data();
+
+
+              if (!data.candidate) {
+                continue;
+              }
+
+
+              await addRemoteCandidate(
+                data.candidate
+              );
+
+            }
+
+          },
+          error => {
+
+            console.error(
+              "Host candidate listener error:",
+              error
+            );
+
+          }
+        );
+
+    }
+
+
+    /* ==========================================
+       REMOTE ICE CANDIDATES
+    ========================================== */
+
+    async function addRemoteCandidate(
+      candidateData
+    ) {
+
+      if (!peerConnection) {
+        return;
+      }
+
+
+      const candidate =
+        new RTCIceCandidate(
+          candidateData
+        );
+
+
+      if (
+        remoteDescriptionSet
+      ) {
+
+        try {
+
+          await peerConnection
+            .addIceCandidate(
+              candidate
+            );
+
+        } catch (error) {
+
+          console.error(
+            "Failed to add ICE candidate:",
+            error
+          );
+
+        }
+
+      } else {
+
+        pendingRemoteCandidates.push(
+          candidate
+        );
+
+      }
+
+    }
+
+
+    async function flushPendingCandidates() {
+
+      if (!peerConnection) {
+        return;
+      }
+
+
+      const candidates =
+        [...pendingRemoteCandidates];
+
+
+      pendingRemoteCandidates =
+        [];
+
+
+      for (
+        const candidate of candidates
+      ) {
+
+        try {
+
+          await peerConnection
+            .addIceCandidate(
+              candidate
+            );
+
+        } catch (error) {
+
+          console.error(
+            "Pending ICE candidate error:",
+            error
+          );
+
+        }
+
+      }
+
+    }
+
+
+    /* ==========================================
+       MUTE
+    ========================================== */
+
+    document
+      .getElementById(
+        "muteButton"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!localAudioTrack) {
+            return;
+          }
+
+
+          localAudioTrack.enabled =
+            !localAudioTrack.enabled;
+
+
+          const button =
+            document.getElementById(
+              "muteButton"
+            );
+
+
+          const icon =
+            button.querySelector(
+              ".control-circle"
+            );
+
+
+          if (
+            localAudioTrack.enabled
+          ) {
+
+            button.classList.add(
+              "active"
+            );
+
+            icon.textContent =
+              "🎙️";
+
+          } else {
+
+            button.classList.remove(
+              "active"
+            );
+
+            icon.textContent =
+              "🔇";
+
+          }
+
+        }
+      );
+
+
+    /* ==========================================
+       CAMERA
+    ========================================== */
+
+    document
+      .getElementById(
+        "cameraButton"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!localVideoTrack) {
+            return;
+          }
+
+
+          localVideoTrack.enabled =
+            !localVideoTrack.enabled;
+
+
+          const button =
+            document.getElementById(
+              "cameraButton"
+            );
+
+
+          const icon =
+            button.querySelector(
+              ".control-circle"
+            );
+
+
+          if (
+            localVideoTrack.enabled
+          ) {
+
+            button.classList.add(
+              "active"
+            );
+
+            icon.textContent =
+              "📹";
+
+          } else {
+
+            button.classList.remove(
+              "active"
+            );
+
+            icon.textContent =
+              "📵";
+
+          }
+
+        }
+      );
+
+
+    /* ==========================================
+       SCREEN SHARE REQUEST
+    ========================================== */
+
+    document
+      .getElementById(
+        "screenButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          if (!guestUid) {
+
+            showToast(
+              "The other participant has not joined yet."
+            );
+
+            return;
+
+          }
+
+
+          try {
+
+            await addDoc(
+              collection(
+                db,
+                "meetings",
+                meetingId,
+                "screenShareRequests"
+              ),
+              {
+
+                from:
+                  currentUser.uid,
+
+                to:
+                  guestUid,
+
+                status:
+                  "pending",
+
+                createdAt:
+                  serverTimestamp()
+
+              }
+            );
+
+
+            showToast(
+              "Screen-sharing request sent."
+            );
+
+          } catch (error) {
+
+            console.error(
+              error
+            );
+
+            showToast(
+              "Could not send screen-sharing request."
+            );
+
+          }
+
+        }
+      );
+
+
+    /* ==========================================
+       SCREEN SHARE LISTENER
+    ========================================== */
+
+    function listenForScreenRequests() {
+
+      const requestsRef =
+        collection(
+          db,
+          "meetings",
+          meetingId,
+          "screenShareRequests"
+        );
+
+
+      unsubscribeScreenRequests =
+        onSnapshot(
+          requestsRef,
+          snapshot => {
+
+            snapshot.docChanges()
+              .forEach(change => {
+
+                if (
+                  change.type !==
+                  "added"
+                ) {
+
+                  return;
+
+                }
+
+
+                const data =
+                  change.doc.data();
+
+
+                if (
+                  data.to ===
+                    currentUser.uid &&
+                  data.status ===
+                    "pending"
+                ) {
+
+                  currentScreenRequestId =
+                    change.doc.id;
+
+
+                  document
+                    .getElementById(
+                      "screenRequestModal"
+                    )
+                    .classList.add(
+                      "visible"
+                    );
+
+                }
+
+              });
+
+          },
+          error => {
+
+            console.error(
+              "Screen request listener:",
+              error
+            );
+
+          }
+        );
+
+    }
+
+
+    document
+      .getElementById(
+        "declineScreen"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          if (!currentScreenRequestId) {
+            return;
+          }
+
+
+          await updateDoc(
+            doc(
+              db,
+              "meetings",
+              meetingId,
+              "screenShareRequests",
+              currentScreenRequestId
+            ),
+            {
+              status:
+                "declined"
+            }
+          );
+
+
+          document
+            .getElementById(
+              "screenRequestModal"
+            )
+            .classList.remove(
+              "visible"
+            );
+
+
+          currentScreenRequestId =
+            null;
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "acceptScreen"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          if (!currentScreenRequestId) {
+            return;
+          }
+
+
+          try {
+
+            await updateDoc(
+              doc(
+                db,
+                "meetings",
+                meetingId,
+                "screenShareRequests",
+                currentScreenRequestId
+              ),
+              {
+                status:
+                  "accepted"
+              }
+            );
+
+
+            document
+              .getElementById(
+                "screenRequestModal"
+              )
+              .classList.remove(
+                "visible"
+              );
+
+
+            await startScreenShare();
+
+          } catch (error) {
+
+            console.error(
+              error
+            );
+
+            showToast(
+              "Could not start screen sharing."
+            );
+
+          }
+
+
+          currentScreenRequestId =
+            null;
+
+        }
+      );
+
+
+    async function startScreenShare() {
+
+      if (!peerConnection) {
+
+        showToast(
+          "The video connection is not ready."
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        currentScreenStream =
+          await navigator.mediaDevices
+            .getDisplayMedia({
+              video: true,
+              audio: true
+            });
+
+
+        const screenTrack =
+          currentScreenStream
+            .getVideoTracks()[0];
+
+
+        const sender =
+          peerConnection
+            .getSenders()
+            .find(
+              s =>
+                s.track &&
+                s.track.kind ===
+                  "video"
+            );
+
+
+        if (sender) {
+
+          await sender.replaceTrack(
+            screenTrack
+          );
+
+        }
+
+
+        screenTrack.onended =
+          async () => {
+
+            await restoreCameraTrack();
+
+          };
+
+
+        showToast(
+          "Screen sharing started."
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Screen share error:",
+          error
+        );
+
+      }
+
+    }
+
+
+    async function restoreCameraTrack() {
+
+      if (
+        !peerConnection ||
+        !localVideoTrack
+      ) {
+
+        return;
+
+      }
+
+
+      const sender =
+        peerConnection
+          .getSenders()
+          .find(
+            s =>
+              s.track &&
+              s.track.kind ===
+                "video"
+          );
+
+
+      if (sender) {
+
+        await sender.replaceTrack(
+          localVideoTrack
+        );
+
+      }
+
+
+      if (currentScreenStream) {
+
+        currentScreenStream
+          .getTracks()
+          .forEach(
+            track =>
+              track.stop()
+          );
+
+        currentScreenStream =
+          null;
+
+      }
+
+      showToast(
+        "Camera sharing restored."
+      );
+
+    }
+
+
+    /* ==========================================
+       INVITE
+    ========================================== */
+
+    function openShareModal() {
+
+      const link =
+        new URL(
+          "join.html?meeting=" +
+          encodeURIComponent(
+            meetingId
+          ),
+          window.location.href
+        ).href;
+
+
+      document.getElementById(
+        "shareLink"
+      ).textContent =
+        link;
+
+
+      document
+        .getElementById(
+          "shareModal"
+        )
+        .classList.add(
+          "visible"
+        );
+
+    }
+
+
+    document
+      .getElementById(
+        "inviteButton"
+      )
+      .addEventListener(
+        "click",
+        openShareModal
+      );
+
+
+    document
+      .getElementById(
+        "closeShare"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById(
+              "shareModal"
+            )
+            .classList.remove(
+              "visible"
+            );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "copyShare"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          const link =
+            document.getElementById(
+              "shareLink"
+            ).textContent;
+
+
+          try {
+
+            await navigator
+              .clipboard
+              .writeText(link);
+
+
+            showToast(
+              "Meeting link copied."
+            );
+
+          } catch (error) {
+
+            showToast(
+              "Copy failed. Press and hold the link to copy it."
+            );
+
+          }
+
+        }
+      );
+
+
+    /* ==========================================
+       CHAT
+    ========================================== */
+
+    function openChat() {
+
+      const panel =
+        document.getElementById(
+          "sidePanel"
+        );
+
+
+      document.getElementById(
+        "panelTitle"
+      ).textContent =
+        "Chat";
+
+
+      document.getElementById(
+        "chatInputArea"
+      ).style.display =
+        "flex";
+
+
+      panel.classList.add(
+        "open"
+      );
+
+
+      renderChat();
+
+    }
+
+
+    function renderChat() {
+
+      const content =
+        document.getElementById(
+          "panelContent"
+        );
+
+
+      content.innerHTML =
+        `<div id="chatMessages"
+              class="chat-messages">
+        </div>`;
+
+
+      const messagesRef =
+        collection(
+          db,
+          "meetings",
+          meetingId,
+          "messages"
+        );
+
+
+      const messagesQuery =
+        query(
+          messagesRef,
+          orderBy(
+            "createdAt",
+            "asc"
+          )
+        );
+
+
+      if (unsubscribeChat) {
+
+        unsubscribeChat();
+
+      }
+
+
+      unsubscribeChat =
+        onSnapshot(
+          messagesQuery,
+          snapshot => {
+
+            const container =
+              document.getElementById(
+                "chatMessages"
+              );
+
+
+            if (!container) {
+              return;
+            }
+
+
+            container.innerHTML =
+              "";
+
+
+            snapshot.forEach(
+              messageDoc => {
+
+                const data =
+                  messageDoc.data();
+
+
+                const message =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                message.className =
+                  "message";
+
+
+                const name =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                name.className =
+                  "message-name";
+
+
+                name.textContent =
+                  data.senderId ===
+                    currentUser.uid
+                    ? "You"
+                    : "Participant";
+
+
+                const text =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                text.className =
+                  "message-text";
+
+
+                text.textContent =
+                  data.text || "";
+
+
+                message.appendChild(
+                  name
+                );
+
+
+                message.appendChild(
+                  text
+                );
+
+
+                container.appendChild(
+                  message
+                );
+
+              }
+            );
+
+
+            container.scrollTop =
+              container.scrollHeight;
+
+          }
+        );
+
+    }
+
+
+    async function sendChatMessage() {
+
+      const input =
+        document.getElementById(
+          "chatInput"
+        );
+
+
+      const text =
+        input.value.trim();
+
+
+      if (!text) {
+        return;
+      }
+
+
+      try {
+
+        await addDoc(
+          collection(
+            db,
+            "meetings",
+            meetingId,
+            "messages"
+          ),
+          {
+
+            senderId:
+              currentUser.uid,
+
+            text:
+              text,
+
+            createdAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        input.value = "";
+
+      } catch (error) {
+
+        console.error(
+          "Chat error:",
+          error
+        );
+
+        showToast(
+          "Could not send message."
+        );
+
+      }
+
+    }
+
+
+    document
+      .getElementById(
+        "chatButton"
+      )
+      .addEventListener(
+        "click",
+        openChat
+      );
+
+
+    document
+      .getElementById(
+        "chatSend"
+      )
+      .addEventListener(
+        "click",
+        sendChatMessage
+      );
+
+
+    document
+      .getElementById(
+        "chatInput"
+      )
+      .addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
+            sendChatMessage();
+
+          }
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "panelClose"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById(
+              "sidePanel"
+            )
+            .classList.remove(
+              "open"
+            );
+
+          document.getElementById(
+            "chatInputArea"
+          ).style.display =
+            "none";
+
+        }
+      );
+
+
+    /* ==========================================
+       PARTICIPANTS PANEL
+    ========================================== */
+
+    async function showParticipants() {
+
+      const panel =
+        document.getElementById(
+          "sidePanel"
+        );
+
+
+      document.getElementById(
+        "panelTitle"
+      ).textContent =
+        "Participants";
+
+
+      document.getElementById(
+        "chatInputArea"
+      ).style.display =
+        "none";
+
+
+      panel.classList.add(
+        "open"
+      );
+
+
+      const content =
+        document.getElementById(
+          "panelContent"
+        );
+
+
+      content.innerHTML =
+        "<p style='color:#aaa'>Loading...</p>";
+
+
+      const snapshot =
+        await getDocs(
+          participantCollection()
+        );
+
+
+      content.innerHTML =
+        "";
+
+
+      snapshot.forEach(
+        participantDoc => {
+
+          const data =
+            participantDoc.data();
+
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "participant";
+
+
+          const left =
+            document.createElement(
+              "div"
+            );
+
+
+          left.innerHTML =
+            `<div>${
+              data.uid ===
+              currentUser.uid
+                ? "You"
+                : "Participant"
+            }</div>
+             <div class="participant-role">
+               ${data.role || "guest"}
+             </div>`;
+
+
+          item.appendChild(
+            left
+          );
+
+
+          content.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    /* ==========================================
+       FULLSCREEN
+    ========================================== */
+
+    document
+      .getElementById(
+        "fullscreenButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          try {
+
+            if (
+              !document.fullscreenElement
+            ) {
+
+              await document.documentElement
+                .requestFullscreen();
+
+            } else {
+
+              await document.exitFullscreen();
+
+            }
+
+          } catch (error) {
+
+            console.error(
+              "Fullscreen:",
+              error
+            );
+
+          }
+
+        }
+      );
+
+
+    /* ==========================================
+       LEAVE
+    ========================================== */
+
+    async function leaveMeeting() {
+
+      if (endingCall) {
+        return;
+      }
+
+
+      endingCall = true;
+
+
+      try {
+
+        if (unsubscribeParticipants) {
+          unsubscribeParticipants();
+        }
+
+        if (unsubscribeCall) {
+          unsubscribeCall();
+        }
+
+        if (unsubscribeRemoteCandidates) {
+          unsubscribeRemoteCandidates();
+        }
+
+        if (unsubscribeChat) {
+          unsubscribeChat();
+        }
+
+        if (unsubscribeScreenRequests) {
+          unsubscribeScreenRequests();
+        }
+
+
+        if (peerConnection) {
+
+          peerConnection.close();
+
+          peerConnection =
+            null;
+
+        }
+
+
+        if (localStream) {
+
+          localStream
+            .getTracks()
+            .forEach(
+              track =>
+                track.stop()
+            );
+
+          localStream =
+            null;
+
+        }
+
+
+        if (currentScreenStream) {
+
+          currentScreenStream
+            .getTracks()
+            .forEach(
+              track =>
+                track.stop()
+            );
+
+          currentScreenStream =
+            null;
+
+        }
+
+
+        if (currentUser) {
+
+          await deleteDoc(
+            doc(
+              db,
+              "meetings",
+              meetingId,
+              "participants",
+              currentUser.uid
+            )
+          );
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Leave error:",
+          error
+        );
+
+      }
+
+
+      window.location.href =
+        "index.html";
+
+    }
+
+
+    document
+      .getElementById(
+        "leaveButton"
+      )
+      .addEventListener(
+        "click",
+        leaveMeeting
+      );
+
+
+    /* ==========================================
+       START
+    ========================================== */
+
+    async function startMeeting() {
+
+      try {
+
+        setStatus(
+          "Connecting...",
+          "waiting"
+        );
+
+
+        if (!meetingId) {
+
+          throw new Error(
+            "No meeting ID found."
+          );
+
+        }
+
+
+        await ensureAuthentication();
+
+
+        await loadMeeting();
+
+
+        await getLocalMedia();
+
+
+        await registerParticipant();
+
+
+        listenForParticipants();
+
+
+        listenForScreenRequests();
+
+
+        /*
+          Guests watch the meeting document
+          for the host's fresh call session.
+        */
+
+        if (!isHost) {
+
+          listenForGuestCall();
+
+        }
+
+
+        /*
+          Host waits for the guest through
+          the participant listener.
+        */
+
+        if (isHost) {
+
+          setStatus(
+            "Waiting for guest...",
+            "waiting"
+          );
+
+        } else {
+
+          setStatus(
+            "Waiting for host...",
+            "waiting"
+          );
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Meeting startup error:",
+          error
+        );
+
+
+        setStatus(
+          "Connection failed",
+          "failed"
+        );
+
+
+        waitingTitle.textContent =
+          "Unable to join meeting";
+
+
+        waitingDetail.textContent =
+          error.message ||
+          "Please reload and try again.";
+
+
+        showToast(
+          error.message ||
+          "Unable to start meeting."
+        );
+
+      }
+
+    }
+
+
+    /*
+      If the user returns to the page,
+      try video playback again.
+    */
+
+    document.addEventListener(
+      "visibilitychange",
+      async () => {
+
+        if (
+          document.visibilityState ===
+          "visible"
+        ) {
+
+          await playLocalVideo();
+
+          if (remoteStream) {
+
+            await playRemoteVideo();
+
+          }
+
+        }
+
+      }
+    );
+
+
+    /*
+      Safari/iPhone often needs an actual
+      user interaction before playback.
+    */
+
+    document.addEventListener(
+      "click",
+      async () => {
+
+        if (
+          localVideo.srcObject
+        ) {
+
+          await playLocalVideo();
+
+        }
+
+        if (
+          remoteVideo.srcObject
+        ) {
+
+          await playRemoteVideo();
+
+        }
+
+      },
+      {
+        once: true
+      }
+    );
+
+
+    /*
+      Start everything.
+    */
+
+    startMeeting();
+
+  </script>
 
 </body>
 
