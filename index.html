@@ -1315,27 +1315,23 @@ window.createMeeting = async function() {
 
     } catch (error) {
 
-        console.error(
-            "Create meeting error:",
-            error
-        );
+    console.error(
+        "Create meeting error:",
+        error
+    );
 
+    overlay.classList.remove(
+        "show"
+    );
 
-        /*
-         * Remove the modal if creation failed.
-         */
+    alert(
+        "Firebase error:\n\n"
+        + (error.code || "unknown-error")
+        + "\n\n"
+        + (error.message || "Unknown Firebase error")
+    );
 
-        overlay.classList.remove(
-            "show"
-        );
-
-
-        alert(
-            "Unable to create the meeting. Please check your connection and try again."
-        );
-
-    }
-
+}
 };
 
 
