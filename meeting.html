@@ -3,761 +3,767 @@
 
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Start a New Meeting</title>
+    <title>Start Meeting | Zoom</title>
 
-  <style>
+    <style>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      min-height: 100vh;
-      background: #1f1f1f;
-      color: white;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            background: #1f1f1f;
+            color: #fff;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+        }
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+        body {
+            min-height: 100vh;
+        }
 
-      padding: 25px;
-    }
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 70px 20px 60px;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 760px;
-      text-align: center;
-    }
+        .container {
+            width: 100%;
+            max-width: 760px;
+            text-align: center;
+        }
 
-    .icon {
-      width: 92px;
-      height: 92px;
-      border-radius: 26px;
+        .plus {
+            width: 145px;
+            height: 145px;
+            margin: 0 auto 55px;
+            border-radius: 38px;
+            background: #1976f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            font-weight: 300;
+        }
 
-      background: #2d8cff;
+        h1 {
+            margin: 0;
+            font-size: 52px;
+            line-height: 1.1;
+            font-weight: 700;
+        }
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+        .subtitle {
+            margin: 28px auto 55px;
+            max-width: 650px;
+            color: #b7b7b7;
+            font-size: 24px;
+            line-height: 1.45;
+        }
 
-      font-size: 55px;
+        .meeting-card {
+            background: #2d2d30;
+            border: 1px solid #454549;
+            border-radius: 30px;
+            padding: 48px 38px;
+            margin-bottom: 28px;
+        }
 
-      margin: 0 auto 55px;
-    }
+        .meeting-label {
+            color: #bdbdc1;
+            font-size: 25px;
+            margin-bottom: 22px;
+        }
 
-    h1 {
-      font-size: 46px;
-      margin-bottom: 18px;
-      font-weight: 700;
-    }
+        .meeting-id {
+            font-size: 54px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 35px;
+        }
 
-    .subtitle {
-      color: #aaa;
-      font-size: 20px;
-      line-height: 1.5;
-      margin-bottom: 70px;
-    }
+        .join-link {
+            background: #202022;
+            border-radius: 22px;
+            padding: 25px 20px;
+            color: #bdbdc1;
+            font-size: 19px;
+            line-height: 1.45;
+            word-break: break-all;
+        }
 
-    .meeting-card {
-      background: #303033;
-      border: 1px solid #414145;
-      border-radius: 24px;
+        .button {
+            width: 100%;
+            height: 105px;
+            border: none;
+            border-radius: 28px;
+            font-size: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
 
-      padding: 48px 35px;
+        .start {
+            background: #2684f5;
+            color: #fff;
+        }
 
-      margin-bottom: 35px;
-    }
+        .start:active {
+            transform: scale(.99);
+        }
 
-    .label {
-      color: #aaa;
-      font-size: 20px;
-      margin-bottom: 18px;
-    }
+        .copy {
+            background: #3a3a3d;
+            color: #fff;
+        }
 
-    .meeting-id {
-      font-size: 48px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      margin-bottom: 30px;
-    }
+        .message {
+            min-height: 30px;
+            margin-top: 25px;
+            color: #ff6b6b;
+            font-size: 19px;
+            line-height: 1.4;
+        }
 
-    .join-link {
-      background: #222224;
-      border-radius: 20px;
+        .success {
+            color: #5edb88;
+        }
 
-      padding: 18px 22px;
+        .loading {
+            opacity: .65;
+            pointer-events: none;
+        }
 
-      color: #aaa;
-      font-size: 16px;
+        @media (max-width: 600px) {
 
-      word-break: break-all;
-      line-height: 1.4;
-    }
+            .page {
+                padding: 25px 20px 50px;
+            }
 
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
+            .plus {
+                width: 145px;
+                height: 145px;
+                margin-bottom: 38px;
+            }
 
-    button {
-      width: 100%;
-      height: 75px;
+            h1 {
+                font-size: 46px;
+            }
 
-      border: none;
-      border-radius: 18px;
+            .subtitle {
+                font-size: 21px;
+                margin-bottom: 45px;
+            }
 
-      font-size: 22px;
-      font-weight: 700;
+            .meeting-card {
+                padding: 40px 20px;
+                border-radius: 28px;
+            }
 
-      cursor: pointer;
-    }
+            .meeting-id {
+                font-size: 42px;
+                letter-spacing: 1px;
+            }
 
-    .start {
-      background: #2d8cff;
-      color: white;
-    }
+            .join-link {
+                font-size: 16px;
+            }
 
-    .start:disabled {
-      opacity: .55;
-      cursor: wait;
-    }
+            .button {
+                height: 95px;
+                font-size: 23px;
+                border-radius: 25px;
+            }
 
-    .copy {
-      background: #3a3a3d;
-      color: white;
-    }
+        }
 
-    .message {
-      min-height: 28px;
-      margin-top: 22px;
-
-      color: #ff6b6b;
-      font-size: 17px;
-    }
-
-    .success {
-      color: #45d483;
-    }
-
-    .loading {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-
-      border: 3px solid rgba(255,255,255,.35);
-      border-top-color: white;
-
-      border-radius: 50%;
-
-      animation: spin .8s linear infinite;
-
-      vertical-align: middle;
-      margin-right: 8px;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    @media (max-width: 600px) {
-
-      body {
-        padding: 18px;
-      }
-
-      .icon {
-        width: 82px;
-        height: 82px;
-        margin-bottom: 38px;
-      }
-
-      h1 {
-        font-size: 38px;
-      }
-
-      .subtitle {
-        font-size: 17px;
-        margin-bottom: 45px;
-      }
-
-      .meeting-card {
-        padding: 35px 20px;
-      }
-
-      .meeting-id {
-        font-size: 37px;
-        letter-spacing: 2px;
-      }
-
-      .join-link {
-        font-size: 14px;
-      }
-
-      button {
-        height: 68px;
-        font-size: 20px;
-      }
-    }
-
-  </style>
+    </style>
 
 </head>
 
 
 <body>
 
-  <div class="container">
+<div class="page">
 
-    <div class="icon">
-      +
+    <div class="container">
+
+        <div class="plus">
+            +
+        </div>
+
+        <h1>
+            Start a new meeting
+        </h1>
+
+        <div class="subtitle">
+            Your meeting is ready. Share the meeting ID
+            with the people you want to invite.
+        </div>
+
+
+        <div class="meeting-card">
+
+            <div class="meeting-label">
+                Meeting ID
+            </div>
+
+            <div
+                class="meeting-id"
+                id="meetingId"
+            >
+                ---------
+            </div>
+
+            <div
+                class="join-link"
+                id="joinLink"
+            >
+                Creating meeting link...
+            </div>
+
+        </div>
+
+
+        <button
+            class="button start"
+            id="startButton"
+        >
+            Start Meeting
+        </button>
+
+
+        <button
+            class="button copy"
+            id="copyButton"
+        >
+            Copy Meeting Link
+        </button>
+
+
+        <div
+            class="message"
+            id="message"
+        ></div>
+
     </div>
 
-    <h1>
-      Start a new meeting
-    </h1>
-
-    <div class="subtitle">
-      Your meeting is ready. Share the meeting ID<br>
-      with the people you want to invite.
-    </div>
+</div>
 
 
-    <div class="meeting-card">
+<script type="module">
 
-      <div class="label">
-        Meeting ID
-      </div>
-
-      <div
-        class="meeting-id"
-        id="meetingId"
-      >
-        ---------
-      </div>
-
-      <div
-        class="join-link"
-        id="joinLink"
-      >
-        Creating meeting link...
-      </div>
-
-    </div>
+import {
+    db,
+    auth
+} from "./firebase-config.js";
 
 
-    <div class="buttons">
-
-      <button
-        class="start"
-        id="startButton"
-      >
-        Start Meeting
-      </button>
-
-      <button
-        class="copy"
-        id="copyButton"
-      >
-        Copy Meeting Link
-      </button>
-
-    </div>
+import {
+    signInAnonymously
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-    <div
-      class="message"
-      id="message"
-    ></div>
-
-  </div>
-
-
-  <script type="module">
-
-    import {
-      db,
-      auth
-    } from "./firebase-config.js";
+import {
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-    import {
-      signInAnonymously
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+// ============================================================
+// ELEMENTS
+// ============================================================
+
+const meetingIdElement =
+    document.getElementById("meetingId");
+
+const joinLinkElement =
+    document.getElementById("joinLink");
+
+const startButton =
+    document.getElementById("startButton");
+
+const copyButton =
+    document.getElementById("copyButton");
+
+const messageElement =
+    document.getElementById("message");
 
 
-    import {
-      doc,
-      getDoc,
-      setDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// ============================================================
+// GET MEETING ID
+// ============================================================
 
-
-    // =========================================================
-    // ELEMENTS
-    // =========================================================
-
-    const meetingIdElement =
-      document.getElementById("meetingId");
-
-    const joinLinkElement =
-      document.getElementById("joinLink");
-
-    const startButton =
-      document.getElementById("startButton");
-
-    const copyButton =
-      document.getElementById("copyButton");
-
-    const messageElement =
-      document.getElementById("message");
-
-
-    // =========================================================
-    // GET OR CREATE MEETING ID
-    // =========================================================
-
-    let meetingId =
-      new URLSearchParams(
+const params =
+    new URLSearchParams(
         window.location.search
-      ).get("id");
+    );
 
 
-    if (!meetingId) {
-
-      meetingId =
-        sessionStorage.getItem(
-          "meetingId"
-        );
-
-    }
+let meetingId =
+    params.get("id");
 
 
-    if (!meetingId) {
-
-      meetingId =
-        generateMeetingId();
-
-      sessionStorage.setItem(
-        "meetingId",
-        meetingId
-      );
-
-    }
-
+if (!meetingId) {
 
     meetingId =
-      meetingId
+        sessionStorage.getItem(
+            "meetingId"
+        );
+
+}
+
+
+// ============================================================
+// VALIDATE MEETING ID
+// ============================================================
+
+meetingId =
+    String(meetingId || "")
         .replace(/\D/g, "")
         .slice(0, 9);
 
 
-    // Make sure the ID is 9 digits.
+if (meetingId.length !== 9) {
 
-    if (meetingId.length !== 9) {
+    showError(
+        "No valid meeting ID was found. Please return to the home page and create a new meeting."
+    );
 
-      meetingId =
-        generateMeetingId();
+} else {
 
-      sessionStorage.setItem(
+    sessionStorage.setItem(
         "meetingId",
         meetingId
-      );
+    );
 
-    }
+    sessionStorage.setItem(
+        "currentMeetingId",
+        meetingId
+    );
 
-
-    // =========================================================
-    // DISPLAY ID
-    // =========================================================
 
     meetingIdElement.textContent =
-      formatMeetingId(
-        meetingId
-      );
-
-
-    // =========================================================
-    // CORRECT JOIN URL
-    // =========================================================
-
-    const joinUrl =
-      new URL(
-        "join.html?meeting=" +
-        encodeURIComponent(meetingId),
-        window.location.href
-      ).href;
-
-
-    joinLinkElement.textContent =
-      joinUrl;
-
-
-    // =========================================================
-    // GENERATE 9 DIGIT ID
-    // =========================================================
-
-    function generateMeetingId() {
-
-      let number = "";
-
-      for (
-        let i = 0;
-        i < 9;
-        i++
-      ) {
-
-        number +=
-          Math.floor(
-            Math.random() * 10
-          );
-
-      }
-
-      return number;
-
-    }
-
-
-    // =========================================================
-    // FORMAT ID
-    // =========================================================
-
-    function formatMeetingId(id) {
-
-      return (
-        id.slice(0, 3) +
-        " " +
-        id.slice(3, 6) +
-        " " +
-        id.slice(6, 9)
-      );
-
-    }
-
-
-    // =========================================================
-    // AUTHENTICATE HOST
-    // =========================================================
-
-    async function authenticateHost() {
-
-      if (auth.currentUser) {
-
-        return auth.currentUser;
-
-      }
-
-
-      const result =
-        await signInAnonymously(
-          auth
+        formatMeetingId(
+            meetingId
         );
 
 
-      return result.user;
+    /*
+     * IMPORTANT:
+     *
+     * This uses the current page location
+     * so /Zoom/ is preserved.
+     *
+     * Example:
+     * https://zoomcom4.github.io/Zoom/join.html?meeting=123456789
+     */
+
+    const joinUrl =
+        new URL(
+            "join.html?meeting=" +
+            encodeURIComponent(
+                meetingId
+            ),
+            window.location.href
+        ).href;
+
+
+    joinLinkElement.textContent =
+        joinUrl;
+
+
+    startButton.addEventListener(
+        "click",
+        startMeeting
+    );
+
+
+    copyButton.addEventListener(
+        "click",
+        copyMeetingLink
+    );
+
+}
+
+
+// ============================================================
+// START MEETING
+// ============================================================
+
+async function startMeeting() {
+
+    if (
+        meetingId.length !== 9
+    ) {
+
+        showError(
+            "Invalid meeting ID."
+        );
+
+        return;
 
     }
 
 
-    // =========================================================
-    // START MEETING
-    // =========================================================
-
-    startButton.addEventListener(
-      "click",
-      async () => {
-
-        startButton.disabled =
-          true;
-
-        copyButton.disabled =
-          true;
+    setLoading(
+        true
+    );
 
 
-        messageElement.className =
-          "message";
+    try {
+
+        /*
+         * Authenticate anonymously.
+         *
+         * Anonymous Firebase users are still
+         * authenticated users and receive a UID.
+         */
+
+        let user =
+            auth.currentUser;
 
 
-        messageElement.innerHTML =
-          '<span class="loading"></span>' +
-          "Starting meeting...";
+        if (!user) {
+
+            const result =
+                await signInAnonymously(
+                    auth
+                );
+
+            user =
+                result.user;
+
+        }
 
 
-        try {
+        /*
+         * IMPORTANT:
+         *
+         * We use doc(), NOT collection().
+         *
+         * The meeting is one document:
+         *
+         * meetings
+         *    └── 123456789
+         */
 
-          // ---------------------------------------------
-          // AUTHENTICATE
-          // ---------------------------------------------
-
-          const user =
-            await authenticateHost();
-
-
-          if (!user) {
-
-            throw new Error(
-              "Authentication failed."
-            );
-
-          }
-
-
-          // ---------------------------------------------
-          // FIRESTORE REFERENCE
-          // ---------------------------------------------
-
-          const meetingRef =
+        const meetingRef =
             doc(
-              db,
-              "meetings",
-              meetingId
+                db,
+                "meetings",
+                meetingId
             );
 
 
-          // ---------------------------------------------
-          // CHECK EXISTING MEETING
-          // ---------------------------------------------
-
-          const existingMeeting =
+        const existingMeeting =
             await getDoc(
-              meetingRef
+                meetingRef
             );
 
 
-          if (
+        /*
+         * If the meeting already exists,
+         * make sure it belongs to this host.
+         */
+
+        if (
             existingMeeting.exists()
-          ) {
+        ) {
 
-            const data =
-              existingMeeting.data();
+            const existingData =
+                existingMeeting.data();
 
-
-            // If this meeting belongs
-            // to another host, don't take it.
 
             if (
-              data.hostId &&
-              data.hostId !== user.uid
+                existingData.hostId &&
+                existingData.hostId !==
+                user.uid
             ) {
 
-              throw new Error(
-                "This meeting ID is already being used. Please return and create a new meeting."
-              );
+                /*
+                 * The ID belongs to another
+                 * host, so don't take over it.
+                 */
+
+                showError(
+                    "This meeting ID is already being used by another host. Please create a new meeting."
+                );
+
+                setLoading(
+                    false
+                );
+
+                return;
 
             }
 
-          }
+        }
 
 
-          // ---------------------------------------------
-          // CREATE / ACTIVATE MEETING
-          // ---------------------------------------------
+        /*
+         * Create/update the meeting document.
+         */
 
-          await setDoc(
+        await setDoc(
             meetingRef,
             {
 
-              meetingId:
-                meetingId,
+                meetingId:
+                    meetingId,
 
-              hostId:
-                user.uid,
+                hostId:
+                    user.uid,
 
-              status:
-                "active",
+                status:
+                    "active",
 
-              createdAt:
-                existingMeeting.exists()
-                  ? (
-                      existingMeeting.data()
-                        .createdAt ||
-                      serverTimestamp()
-                    )
-                  : serverTimestamp(),
-
-              updatedAt:
-                serverTimestamp()
+                createdAt:
+                    existingMeeting.exists()
+                        ? (
+                            existingMeeting
+                                .data()
+                                .createdAt ||
+                            serverTimestamp()
+                          )
+                        : serverTimestamp()
 
             },
             {
-              merge: true
+                merge: true
             }
-          );
+        );
 
 
-          // ---------------------------------------------
-          // SAVE SESSION
-          // ---------------------------------------------
+        /*
+         * Save meeting information locally.
+         */
 
-          sessionStorage.setItem(
+        sessionStorage.setItem(
             "currentMeetingId",
             meetingId
-          );
+        );
 
-          sessionStorage.setItem(
+        sessionStorage.setItem(
             "meetingHostId",
             user.uid
-          );
+        );
 
-          sessionStorage.setItem(
-            "joiningAsHost",
-            "true"
-          );
-
-
-          // ---------------------------------------------
-          // SUCCESS
-          // ---------------------------------------------
-
-          messageElement.className =
-            "message success";
-
-          messageElement.textContent =
-            "Meeting started. Opening meeting room...";
+        sessionStorage.setItem(
+            "joiningAsGuest",
+            "false"
+        );
 
 
-          // ---------------------------------------------
-          // OPEN MEETING ROOM
-          // ---------------------------------------------
+        /*
+         * Go to the actual meeting room.
+         */
 
-          setTimeout(
-            () => {
-
-              window.location.href =
-                "./meeting-room.html?id=" +
-                encodeURIComponent(
-                  meetingId
-                );
-
-            },
-            500
-          );
-
-
-        } catch (error) {
-
-          console.error(
-            "START MEETING ERROR:",
-            error
-          );
-
-
-          let errorMessage =
-            "Unable to start the meeting. Please try again.";
-
-
-          if (
-            error &&
-            error.message
-          ) {
-
-            errorMessage =
-              error.message;
-
-          }
-
-
-          // Firebase permission error
-
-          if (
-            error.code ===
-            "permission-denied"
-          ) {
-
-            errorMessage =
-              "Firebase denied access to create this meeting. Please make sure Anonymous Authentication is enabled and the Firestore rules were published.";
-
-          }
-
-
-          messageElement.className =
-            "message";
-
-
-          messageElement.textContent =
-            errorMessage;
-
-
-          startButton.disabled =
-            false;
-
-          copyButton.disabled =
-            false;
-
-        }
-
-      }
-    );
-
-
-    // =========================================================
-    // COPY LINK
-    // =========================================================
-
-    copyButton.addEventListener(
-      "click",
-      async () => {
-
-        try {
-
-          await navigator.clipboard
-            .writeText(
-              joinUrl
+        window.location.href =
+            "./meeting-room.html?id=" +
+            encodeURIComponent(
+                meetingId
             );
 
 
-          messageElement.className =
-            "message success";
+    } catch (error) {
 
-          messageElement.textContent =
+        console.error(
+            "START MEETING ERROR:",
+            error
+        );
+
+
+        showError(
+            error.message ||
+            "Unable to start the meeting. Please try again."
+        );
+
+
+        setLoading(
+            false
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// COPY LINK
+// ============================================================
+
+async function copyMeetingLink() {
+
+    const url =
+        joinLinkElement.textContent.trim();
+
+
+    if (!url) {
+        return;
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            url
+        );
+
+
+        messageElement.textContent =
             "Meeting link copied.";
 
-          setTimeout(
+        messageElement.className =
+            "message success";
+
+
+        setTimeout(
             () => {
 
-              messageElement.textContent =
-                "";
+                messageElement.textContent =
+                    "";
 
             },
             2500
-          );
+        );
 
 
-        } catch (error) {
+    } catch (error) {
 
-          console.error(error);
+        /*
+         * Fallback for browsers where
+         * navigator.clipboard is unavailable.
+         */
 
-          messageElement.className =
-            "message";
+        const textarea =
+            document.createElement(
+                "textarea"
+            );
 
-          messageElement.textContent =
-            "Unable to copy the meeting link.";
+        textarea.value =
+            url;
 
-        }
+        document.body.appendChild(
+            textarea
+        );
 
-      }
+        textarea.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+        textarea.remove();
+
+
+        messageElement.textContent =
+            "Meeting link copied.";
+
+        messageElement.className =
+            "message success";
+
+    }
+
+}
+
+
+// ============================================================
+// FORMAT ID
+// ============================================================
+
+function formatMeetingId(
+    id
+) {
+
+    if (
+        id.length !== 9
+    ) {
+
+        return id;
+
+    }
+
+
+    return (
+        id.substring(0, 3) +
+        " " +
+        id.substring(3, 6) +
+        " " +
+        id.substring(6, 9)
     );
 
-  </script>
+}
+
+
+// ============================================================
+// ERROR
+// ============================================================
+
+function showError(
+    text
+) {
+
+    messageElement.textContent =
+        text;
+
+    messageElement.className =
+        "message";
+
+}
+
+
+// ============================================================
+// LOADING
+// ============================================================
+
+function setLoading(
+    loading
+) {
+
+    if (loading) {
+
+        startButton.classList.add(
+            "loading"
+        );
+
+        startButton.textContent =
+            "Starting Meeting...";
+
+    } else {
+
+        startButton.classList.remove(
+            "loading"
+        );
+
+        startButton.textContent =
+            "Start Meeting";
+
+    }
+
+}
+
+</script>
 
 </body>
 
