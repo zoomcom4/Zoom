@@ -41,58 +41,36 @@
             background: #1769ff;
         }
 
-        /* =================================
-           MAIN APP
-        ================================= */
-
         .app {
             position: relative;
-
             width: 100%;
             height: 100dvh;
-
             overflow: hidden;
-
             background: #1769ff;
         }
 
-        /* =================================
-           SETTINGS
-        ================================= */
-
         .settings {
             position: absolute;
-
             top: max(32px, env(safe-area-inset-top));
             left: 45px;
-
             width: 42px;
             height: 42px;
-
             padding: 0;
-
             border: 0;
             outline: none;
-
             background: transparent;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             cursor: pointer;
-
             z-index: 20;
         }
 
         .settings svg {
             width: 30px;
             height: 30px;
-
             stroke: #ffffff;
-
             stroke-width: 1.8;
-
             stroke-linecap: round;
             stroke-linejoin: round;
         }
@@ -101,158 +79,94 @@
             transform: scale(.92);
         }
 
-        /* =================================
-           BRAND
-        ================================= */
-
         .brand {
             position: absolute;
-
             top: 25.5%;
-
             left: 0;
             right: 0;
-
             text-align: center;
-
             color: #ffffff;
-
             z-index: 2;
         }
 
         .brand-main {
             font-size: clamp(48px, 11vw, 66px);
-
             line-height: 1;
-
             font-weight: 500;
-
             letter-spacing: -3px;
         }
 
         .brand-sub {
             margin-top: 20px;
-
             font-size: clamp(42px, 10vw, 60px);
-
             line-height: 1;
-
             font-weight: 600;
-
             letter-spacing: -2.5px;
         }
 
-        /* =================================
-           WELCOME PANEL
-        ================================= */
-
         .welcome-panel {
             position: absolute;
-
             left: 0;
             right: 0;
             bottom: 0;
-
             width: 100%;
-
             height: 50%;
-
             background: #000000;
-
             border-radius:
                 38px
                 38px
                 0
                 0;
-
             padding:
                 34px
                 48px
                 max(18px, env(safe-area-inset-bottom));
-
             display: flex;
             flex-direction: column;
             align-items: center;
-
             z-index: 5;
         }
 
-        /* =================================
-           WELCOME TEXT
-        ================================= */
-
         .welcome-title {
             color: #ffffff;
-
             font-size: 29px;
-
             line-height: 1.1;
-
             font-weight: 700;
-
             text-align: center;
         }
 
         .welcome-description {
             margin-top: 17px;
-
             color: #ffffff;
-
             font-size: 20px;
-
             line-height: 1.2;
-
             font-weight: 400;
-
             text-align: center;
-
             white-space: nowrap;
         }
 
-        /* =================================
-           BUTTON AREA
-        ================================= */
-
         .buttons {
             width: 100%;
-
             max-width: 700px;
-
             margin-top: 27px;
-
             display: flex;
             flex-direction: column;
-
             gap: 10px;
         }
 
-        /* =================================
-           BUTTONS
-        ================================= */
-
         .button {
             width: 100%;
-
             height: 54px;
-
             border: 0;
-
             border-radius: 22px;
-
             font-family: inherit;
-
             font-size: 21px;
-
             font-weight: 650;
-
             color: #ffffff;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             cursor: pointer;
-
             transition:
                 transform .12s ease,
                 opacity .12s ease;
@@ -274,27 +188,16 @@
             background: #1478f2;
         }
 
-        /* =================================
-           MEETING MODAL OVERLAY
-        ================================= */
-
         .meeting-overlay {
             position: fixed;
-
             inset: 0;
-
             background: rgba(0, 0, 0, .62);
-
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-
             display: none;
-
             align-items: center;
             justify-content: center;
-
             padding: 24px;
-
             z-index: 100;
         }
 
@@ -302,24 +205,14 @@
             display: flex;
         }
 
-        /* =================================
-           MEETING MODAL
-        ================================= */
-
         .meeting-modal {
             width: 100%;
-
             max-width: 430px;
-
             background: #ffffff;
-
             border-radius: 28px;
-
             padding: 30px 24px 24px;
-
             box-shadow:
                 0 30px 80px rgba(0, 0, 0, .35);
-
             animation:
                 modalIn .22s ease-out;
         }
@@ -338,13 +231,8 @@
 
         }
 
-        /* =================================
-           MODAL HEADER
-        ================================= */
-
         .modal-top {
             display: flex;
-
             align-items: flex-start;
             justify-content: space-between;
         }
@@ -358,11 +246,8 @@
         .success-icon {
             width: 46px;
             height: 46px;
-
             border-radius: 50%;
-
             background: #e9f3ff;
-
             display: flex;
             align-items: center;
             justify-content: center;
@@ -371,177 +256,112 @@
         .success-icon svg {
             width: 25px;
             height: 25px;
-
             stroke: #1478f2;
-
             stroke-width: 2.4;
-
             fill: none;
-
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
         .modal-title {
             color: #111111;
-
             font-size: 22px;
-
             line-height: 1.15;
-
             font-weight: 700;
         }
 
         .modal-subtitle {
             margin-top: 5px;
-
             color: #666666;
-
             font-size: 14px;
-
             line-height: 1.3;
         }
-
-        /* =================================
-           CLOSE BUTTON
-        ================================= */
 
         .close-modal {
             width: 36px;
             height: 36px;
-
             border: 0;
-
             border-radius: 50%;
-
             background: #f2f2f2;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             cursor: pointer;
         }
 
         .close-modal svg {
             width: 18px;
             height: 18px;
-
             stroke: #555555;
-
             stroke-width: 2;
-
             fill: none;
         }
 
-        /* =================================
-           MEETING ID CARD
-        ================================= */
-
         .meeting-id-card {
             margin-top: 28px;
-
             padding: 19px;
-
             border-radius: 18px;
-
             background: #f5f7fa;
-
             border: 1px solid #e5e8ed;
-
             text-align: center;
         }
 
         .meeting-id-label {
             color: #777777;
-
             font-size: 13px;
-
             font-weight: 500;
-
             letter-spacing: .2px;
         }
 
         .meeting-id {
             margin-top: 8px;
-
             color: #111111;
-
             font-size: 29px;
-
             font-weight: 700;
-
             letter-spacing: 2px;
         }
 
-        /* =================================
-           INVITATION
-        ================================= */
-
         .invitation {
             margin-top: 17px;
-
             color: #666666;
-
             font-size: 14px;
-
             line-height: 1.45;
-
             text-align: center;
         }
 
-        /* =================================
-           MODAL ACTIONS
-        ================================= */
-
         .modal-actions {
             margin-top: 23px;
-
             display: flex;
             flex-direction: column;
-
             gap: 10px;
         }
 
         .modal-button {
             width: 100%;
-
             min-height: 52px;
-
             border: 0;
-
             border-radius: 16px;
-
             font-family: inherit;
-
             font-size: 16px;
-
             font-weight: 650;
-
             cursor: pointer;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             gap: 9px;
         }
 
         .modal-button svg {
             width: 19px;
             height: 19px;
-
             fill: none;
-
             stroke-width: 2;
-
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
         .start-button {
             background: #1478f2;
-
             color: #ffffff;
         }
 
@@ -551,7 +371,6 @@
 
         .copy-button {
             background: #eef4ff;
-
             color: #1769ff;
         }
 
@@ -561,7 +380,6 @@
 
         .share-button {
             background: #f3f3f3;
-
             color: #222222;
         }
 
@@ -573,35 +391,20 @@
             transform: scale(.985);
         }
 
-        /* =================================
-           COPIED MESSAGE
-        ================================= */
-
         .copy-status {
             min-height: 18px;
-
             margin-top: 8px;
-
             color: #16833b;
-
             font-size: 13px;
-
             font-weight: 600;
-
             text-align: center;
-
             opacity: 0;
-
             transition: opacity .2s ease;
         }
 
         .copy-status.visible {
             opacity: 1;
         }
-
-        /* =================================
-           NORMAL PHONE
-        ================================= */
 
         @media (min-height: 760px) and (max-height: 900px) {
 
@@ -630,11 +433,8 @@
                 height: 52px;
                 font-size: 21px;
             }
-        }
 
-        /* =================================
-           SMALL PHONE
-        ================================= */
+        }
 
         @media (max-height: 750px) {
 
@@ -683,11 +483,8 @@
             .meeting-id {
                 font-size: 26px;
             }
-        }
 
-        /* =================================
-           VERY SMALL PHONE
-        ================================= */
+        }
 
         @media (max-height: 680px) {
 
@@ -741,17 +538,13 @@
             .modal-button {
                 min-height: 45px;
             }
-        }
 
-        /* =================================
-           DESKTOP
-        ================================= */
+        }
 
         @media (min-width: 700px) {
 
             .welcome-panel {
                 height: 48%;
-
                 padding-left: 50px;
                 padding-right: 50px;
             }
@@ -759,6 +552,7 @@
             .button {
                 height: 58px;
             }
+
         }
 
     </style>
@@ -767,10 +561,6 @@
 <body>
 
 <div class="app">
-
-    <!-- =================================
-         SETTINGS
-    ================================= -->
 
     <button
         class="settings"
@@ -816,11 +606,6 @@
 
     </button>
 
-
-    <!-- =================================
-         BRAND
-    ================================= -->
-
     <div class="brand">
 
         <div class="brand-main">
@@ -832,11 +617,6 @@
         </div>
 
     </div>
-
-
-    <!-- =================================
-         WELCOME PANEL
-    ================================= -->
 
     <section class="welcome-panel">
 
@@ -888,11 +668,6 @@
 
 </div>
 
-
-<!-- =================================
-     NEW MEETING MODAL
-================================= -->
-
 <div
     class="meeting-overlay"
     id="meetingOverlay"
@@ -905,17 +680,13 @@
         aria-labelledby="meetingTitle"
     >
 
-        <!-- HEADER -->
-
         <div class="modal-top">
 
             <div class="modal-heading">
 
                 <div class="success-icon">
 
-                    <svg
-                        viewBox="0 0 24 24"
-                    >
+                    <svg viewBox="0 0 24 24">
                         <path d="M5 12.5l4 4L19 7" />
                     </svg>
 
@@ -938,7 +709,6 @@
 
             </div>
 
-
             <button
                 class="close-modal"
                 type="button"
@@ -946,9 +716,7 @@
                 aria-label="Close"
             >
 
-                <svg
-                    viewBox="0 0 24 24"
-                >
+                <svg viewBox="0 0 24 24">
                     <path d="M6 6l12 12" />
                     <path d="M18 6L6 18" />
                 </svg>
@@ -956,9 +724,6 @@
             </button>
 
         </div>
-
-
-        <!-- MEETING ID -->
 
         <div class="meeting-id-card">
 
@@ -975,18 +740,12 @@
 
         </div>
 
-
         <p class="invitation">
             Share this meeting ID with the people you want
             to invite to your meeting.
         </p>
 
-
-        <!-- ACTIONS -->
-
         <div class="modal-actions">
-
-            <!-- START -->
 
             <button
                 class="modal-button start-button"
@@ -994,9 +753,7 @@
                 onclick="startMeeting()"
             >
 
-                <svg
-                    viewBox="0 0 24 24"
-                >
+                <svg viewBox="0 0 24 24">
                     <path d="M8 5l11 7-11 7V5z" />
                 </svg>
 
@@ -1004,18 +761,14 @@
 
             </button>
 
-
-            <!-- COPY -->
-
             <button
                 class="modal-button copy-button"
                 type="button"
                 onclick="copyMeetingId()"
             >
 
-                <svg
-                    viewBox="0 0 24 24"
-                >
+                <svg viewBox="0 0 24 24">
+
                     <rect
                         x="9"
                         y="9"
@@ -1027,14 +780,12 @@
                     <path
                         d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"
                     />
+
                 </svg>
 
                 Copy meeting ID
 
             </button>
-
-
-            <!-- SHARE -->
 
             <button
                 class="modal-button share-button"
@@ -1042,9 +793,8 @@
                 onclick="shareInvitation()"
             >
 
-                <svg
-                    viewBox="0 0 24 24"
-                >
+                <svg viewBox="0 0 24 24">
+
                     <circle
                         cx="18"
                         cy="5"
@@ -1065,6 +815,7 @@
 
                     <path d="M8 11l8-5" />
                     <path d="M8 13l8 5" />
+
                 </svg>
 
                 Share invitation
@@ -1072,7 +823,6 @@
             </button>
 
         </div>
-
 
         <div
             class="copy-status"
@@ -1087,10 +837,6 @@
 
 <script type="module">
 
-/* =================================
-   FIREBASE
-================================= */
-
 import {
     db,
     auth
@@ -1098,14 +844,15 @@ import {
 
 import {
     signInAnonymously
-} from
-"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
 import {
     doc,
     setDoc,
     serverTimestamp
-} from
-"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
 /* =================================
    PAGE NAVIGATION
 ================================= */
@@ -1185,10 +932,6 @@ window.createMeeting = async function() {
         );
 
 
-    /*
-     * Generate a 9-digit Meeting ID.
-     */
-
     const part1 =
         Math.floor(
             100 + Math.random() * 900
@@ -1209,10 +952,6 @@ window.createMeeting = async function() {
         `${part1}${part2}${part3}`;
 
 
-    /*
-     * Show the ID immediately.
-     */
-
     display.textContent =
         formatMeetingId(
             meetingId
@@ -1224,23 +963,12 @@ window.createMeeting = async function() {
     );
 
 
-    /*
-     * Show the modal.
-     */
-
     overlay.classList.add(
         "show"
     );
 
 
     try {
-
-        /*
-         * Authenticate the host anonymously.
-         *
-         * This means a host can create a meeting
-         * without creating a normal account.
-         */
 
         if (!auth.currentUser) {
 
@@ -1250,13 +978,6 @@ window.createMeeting = async function() {
 
         }
 
-
-        /*
-         * Create the Firestore meeting document.
-         *
-         * meetings
-         *    └── 123456789
-         */
 
         const meetingRef =
             doc(
@@ -1288,21 +1009,15 @@ window.createMeeting = async function() {
         );
 
 
-        /*
-         * Save locally too.
-         */
-
         sessionStorage.setItem(
             "meetingId",
             meetingId
         );
 
-
         sessionStorage.setItem(
             "currentMeetingId",
             meetingId
         );
-
 
         sessionStorage.setItem(
             "joiningAsHost",
@@ -1312,23 +1027,24 @@ window.createMeeting = async function() {
 
     } catch (error) {
 
-    console.error(
-        "Create meeting error:",
-        error
-    );
+        console.error(
+            "Create meeting error:",
+            error
+        );
 
-    overlay.classList.remove(
-        "show"
-    );
+        overlay.classList.remove(
+            "show"
+        );
 
-    alert(
-        "Firebase error:\n\n"
-        + (error.code || "unknown-error")
-        + "\n\n"
-        + (error.message || "Unknown Firebase error")
-    );
+        alert(
+            "Firebase error:\n\n"
+            + (error.code || "unknown-error")
+            + "\n\n"
+            + (error.message || "Unknown Firebase error")
+        );
 
-}
+    }
+
 };
 
 
@@ -1458,11 +1174,6 @@ window.shareInvitation =
             );
 
 
-        /*
-         * The invitation link now points
-         * directly to join.html with the ID.
-         */
-
         const joinUrl =
             window.location.origin
             + window.location.pathname
@@ -1500,9 +1211,7 @@ window.shareInvitation =
 
             } catch (error) {
 
-                /*
-                 * Sharing was cancelled.
-                 */
+                // Sharing cancelled.
 
             }
 
@@ -1579,17 +1288,12 @@ window.startMeeting =
         }
 
 
-        /*
-         * Host enters the meeting using
-         * the same ID that was stored
-         * in Firestore.
-         */
-
         window.location.href =
-    "meeting-room.html?id="
-    + encodeURIComponent(
-        meetingId
-    );
+            "meeting-room.html?id="
+            + encodeURIComponent(
+                meetingId
+            );
+
     };
 
 
