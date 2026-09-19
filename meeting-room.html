@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Zoom Meeting</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -14,9 +20,14 @@
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #181818;
+      background: #111;
       color: #fff;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
       height: 100vh;
       overflow: hidden;
     }
@@ -24,7 +35,7 @@
     button {
       font-family: inherit;
       cursor: pointer;
-      border: 0;
+      border: none;
     }
 
     .app {
@@ -33,7 +44,9 @@
       flex-direction: column;
     }
 
-    /* TOP BAR */
+    /* =====================================================
+       TOP BAR
+       ===================================================== */
 
     .topbar {
       height: 58px;
@@ -49,46 +62,51 @@
     .meeting-title {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 13px;
     }
 
     .logo {
-      font-size: 20px;
-      font-weight: bold;
       color: #2d8cff;
+      font-size: 21px;
+      font-weight: 700;
     }
 
     .meeting-id {
-      color: #ddd;
-      font-size: 14px;
+      color: #aaa;
+      font-size: 13px;
     }
 
-    .status {
+    .meeting-id strong {
+      color: #fff;
+    }
+
+    .connection {
       display: flex;
       align-items: center;
-      gap: 7px;
-      font-size: 13px;
+      gap: 8px;
       color: #bbb;
+      font-size: 13px;
     }
 
     .status-dot {
       width: 8px;
       height: 8px;
-      background: #36c76f;
+      background: #f0bd24;
       border-radius: 50%;
     }
 
-    /* VIDEO AREA */
+    /* =====================================================
+       VIDEO AREA
+       ===================================================== */
 
     .video-area {
       flex: 1;
-      position: relative;
+      min-height: 0;
+      padding: 12px;
       background: #111;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      padding: 12px;
     }
 
     .video-grid {
@@ -101,10 +119,10 @@
 
     .video-tile {
       position: relative;
+      min-height: 160px;
       background: #242424;
-      border-radius: 8px;
+      border-radius: 9px;
       overflow: hidden;
-      min-height: 180px;
     }
 
     video {
@@ -122,56 +140,56 @@
       padding: 6px 10px;
       border-radius: 5px;
       font-size: 13px;
-      z-index: 2;
+      z-index: 3;
     }
 
     .waiting {
       position: absolute;
       inset: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
       gap: 12px;
-      color: #bbb;
-      pointer-events: none;
+      color: #aaa;
+      z-index: 2;
     }
 
     .waiting-icon {
-      width: 55px;
-      height: 55px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: #333;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 25px;
+      font-size: 26px;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    /* CONTROLS */
+    /* =====================================================
+       BOTTOM CONTROLS
+       ===================================================== */
 
     .controls {
       height: 82px;
+      flex-shrink: 0;
       background: #202020;
+      border-top: 1px solid #333;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      border-top: 1px solid #333;
+      gap: 8px;
       z-index: 20;
     }
 
     .control {
       min-width: 70px;
       height: 60px;
-      padding: 5px 12px;
-      color: white;
-      background: transparent;
+      padding: 4px 10px;
       border-radius: 8px;
+      background: transparent;
+      color: white;
+
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -187,29 +205,31 @@
       font-size: 21px;
     }
 
-    .control span:last-child {
+    .control span {
       font-size: 11px;
     }
 
     .control.off {
-      background: #b52b2b;
+      background: #b83232;
     }
 
     .leave {
-      background: #d83b3b;
-      border-radius: 8px;
-      padding: 0 22px;
       height: 44px;
+      padding: 0 22px;
+      margin-left: 10px;
+      border-radius: 8px;
+      background: #d83b3b;
       color: white;
-      font-weight: bold;
-      margin-left: 12px;
+      font-weight: 700;
     }
 
     .leave:hover {
-      background: #ef4b4b;
+      background: #ed4b4b;
     }
 
-    /* SIDE PANEL */
+    /* =====================================================
+       SIDE PANEL
+       ===================================================== */
 
     .side-panel {
       position: fixed;
@@ -226,8 +246,9 @@
 
     .panel-header {
       height: 55px;
-      padding: 0 18px;
+      padding: 0 17px;
       border-bottom: 1px solid #333;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -240,19 +261,20 @@
     .close-panel {
       background: transparent;
       color: #aaa;
-      font-size: 22px;
+      font-size: 24px;
     }
 
     .panel-content {
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
-      padding: 15px;
+      padding: 14px;
     }
 
     .participant {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 11px;
       padding: 12px 5px;
       border-bottom: 1px solid #333;
     }
@@ -262,10 +284,12 @@
       height: 38px;
       border-radius: 50%;
       background: #2d8cff;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
+
+      font-weight: 700;
     }
 
     .participant-info {
@@ -277,28 +301,30 @@
     }
 
     .participant-role {
-      color: #999;
-      font-size: 11px;
       margin-top: 3px;
+      color: #888;
+      font-size: 11px;
     }
 
-    /* CHAT */
+    /* =====================================================
+       CHAT
+       ===================================================== */
 
     .chat-messages {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
     }
 
     .message {
       background: #303030;
-      border-radius: 7px;
       padding: 9px 11px;
+      border-radius: 7px;
     }
 
     .message-name {
+      color: #72afff;
       font-size: 11px;
-      color: #7db7ff;
       margin-bottom: 4px;
     }
 
@@ -308,18 +334,19 @@
     }
 
     .chat-input {
-      border-top: 1px solid #333;
       padding: 10px;
+      border-top: 1px solid #333;
       display: flex;
       gap: 7px;
     }
 
     .chat-input input {
       flex: 1;
+      min-width: 0;
       background: #303030;
+      color: white;
       border: 1px solid #444;
       border-radius: 6px;
-      color: white;
       padding: 10px;
       outline: none;
     }
@@ -331,42 +358,47 @@
       border-radius: 6px;
     }
 
-    /* MODAL */
+    /* =====================================================
+       MODALS
+       ===================================================== */
 
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.72);
+      background: rgba(0,0,0,.75);
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       z-index: 100;
+      padding: 15px;
     }
 
     .modal {
-      width: min(430px, calc(100% - 30px));
+      width: min(430px, 100%);
       background: #252525;
       border-radius: 12px;
       padding: 25px;
-      box-shadow: 0 15px 50px rgba(0,0,0,.5);
+      box-shadow: 0 15px 50px rgba(0,0,0,.55);
     }
 
     .modal h2 {
-      margin-bottom: 12px;
       font-size: 20px;
+      margin-bottom: 12px;
     }
 
     .modal p {
       color: #bbb;
-      line-height: 1.5;
       font-size: 14px;
+      line-height: 1.5;
       margin-bottom: 20px;
     }
 
     .modal-buttons {
       display: flex;
-      gap: 10px;
       justify-content: flex-end;
+      gap: 9px;
     }
 
     .btn {
@@ -385,23 +417,20 @@
       color: white;
     }
 
-    .btn-danger {
-      background: #d83b3b;
-      color: white;
-    }
-
     .share-box {
       background: #181818;
-      border: 1px solid #3a3a3a;
+      border: 1px solid #3b3b3b;
       border-radius: 8px;
       padding: 12px;
+      color: #bbb;
       font-size: 12px;
       word-break: break-all;
-      color: #bbb;
       margin-bottom: 15px;
     }
 
-    /* TOAST */
+    /* =====================================================
+       TOAST
+       ===================================================== */
 
     .toast {
       position: fixed;
@@ -417,14 +446,14 @@
       box-shadow: 0 5px 20px rgba(0,0,0,.4);
     }
 
+    .hidden {
+      display: none !important;
+    }
+
     @media (max-width: 700px) {
 
       .video-grid {
         grid-template-columns: 1fr;
-      }
-
-      .controls {
-        gap: 2px;
       }
 
       .control {
@@ -433,57 +462,76 @@
       }
 
       .control .icon {
-        font-size: 19px;
+        font-size: 18px;
       }
 
-      .control span:last-child {
+      .control span {
         font-size: 9px;
       }
 
       .leave {
-        padding: 0 12px;
-        margin-left: 3px;
-      }
-
-      .side-panel {
-        width: 100%;
+        padding: 0 13px;
+        margin-left: 2px;
       }
 
       .meeting-id {
         display: none;
       }
+
+      .side-panel {
+        width: 100%;
+      }
     }
+
   </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
+  <!-- TOP -->
+
   <header class="topbar">
 
     <div class="meeting-title">
-      <div class="logo">Zoom</div>
+
+      <div class="logo">
+        Zoom
+      </div>
 
       <div class="meeting-id">
         Meeting ID:
         <strong id="meetingIdText">--------</strong>
       </div>
+
     </div>
 
-    <div class="status">
-      <div class="status-dot" id="statusDot"></div>
-      <span id="connectionStatus">Connecting...</span>
+
+    <div class="connection">
+
+      <div
+        class="status-dot"
+        id="statusDot"
+      ></div>
+
+      <span id="connectionStatus">
+        Connecting...
+      </span>
+
     </div>
 
   </header>
 
 
+  <!-- VIDEO -->
+
   <main class="video-area">
 
     <div class="video-grid">
 
-      <!-- LOCAL VIDEO -->
+      <!-- LOCAL -->
 
       <div class="video-tile">
 
@@ -494,20 +542,32 @@
           muted
         ></video>
 
-        <div class="waiting hidden" id="localWaiting">
-          <div class="waiting-icon">👤</div>
-          <div>Camera is off</div>
+        <div
+          class="waiting hidden"
+          id="localWaiting"
+        >
+
+          <div class="waiting-icon">
+            👤
+          </div>
+
+          <div>
+            Camera is off
+          </div>
+
         </div>
 
         <div class="tile-label">
+
           You
           <span id="localRole"></span>
+
         </div>
 
       </div>
 
 
-      <!-- REMOTE VIDEO -->
+      <!-- REMOTE -->
 
       <div class="video-tile">
 
@@ -517,14 +577,25 @@
           playsinline
         ></video>
 
-        <div class="waiting" id="remoteWaiting">
-          <div class="waiting-icon">👤</div>
+        <div
+          class="waiting"
+          id="remoteWaiting"
+        >
+
+          <div class="waiting-icon">
+            👤
+          </div>
+
           <div id="remoteWaitingText">
             Waiting for another participant...
           </div>
+
         </div>
 
-        <div class="tile-label" id="remoteLabel">
+        <div
+          class="tile-label"
+          id="remoteLabel"
+        >
           Participant
         </div>
 
@@ -539,37 +610,106 @@
 
   <footer class="controls">
 
-    <button class="control" id="micButton">
-      <div class="icon">🎤</div>
-      <span>Mute</span>
+    <button
+      class="control"
+      id="micButton"
+    >
+
+      <div class="icon">
+        🎤
+      </div>
+
+      <span>
+        Mute
+      </span>
+
     </button>
 
-    <button class="control" id="cameraButton">
-      <div class="icon">📹</div>
-      <span>Stop Video</span>
+
+    <button
+      class="control"
+      id="cameraButton"
+    >
+
+      <div class="icon">
+        📹
+      </div>
+
+      <span>
+        Stop Video
+      </span>
+
     </button>
 
-    <button class="control" id="screenButton">
-      <div class="icon">🖥️</div>
-      <span>Share Screen</span>
+
+    <button
+      class="control"
+      id="screenButton"
+    >
+
+      <div class="icon">
+        🖥️
+      </div>
+
+      <span>
+        Request Screen
+      </span>
+
     </button>
 
-    <button class="control" id="participantsButton">
-      <div class="icon">👥</div>
-      <span>Participants</span>
+
+    <button
+      class="control"
+      id="participantsButton"
+    >
+
+      <div class="icon">
+        👥
+      </div>
+
+      <span>
+        Participants
+      </span>
+
     </button>
 
-    <button class="control" id="chatButton">
-      <div class="icon">💬</div>
-      <span>Chat</span>
+
+    <button
+      class="control"
+      id="chatButton"
+    >
+
+      <div class="icon">
+        💬
+      </div>
+
+      <span>
+        Chat
+      </span>
+
     </button>
 
-    <button class="control" id="fullscreenButton">
-      <div class="icon">⛶</div>
-      <span>Fullscreen</span>
+
+    <button
+      class="control"
+      id="fullscreenButton"
+    >
+
+      <div class="icon">
+        ⛶
+      </div>
+
+      <span>
+        Fullscreen
+      </span>
+
     </button>
 
-    <button class="leave" id="leaveButton">
+
+    <button
+      class="leave"
+      id="leaveButton"
+    >
       Leave
     </button>
 
@@ -578,9 +718,14 @@
 </div>
 
 
-<!-- SIDE PANEL -->
+<!-- ==========================================================
+     PARTICIPANTS / CHAT PANEL
+     ========================================================== -->
 
-<div class="side-panel hidden" id="sidePanel">
+<div
+  class="side-panel hidden"
+  id="sidePanel"
+>
 
   <div class="panel-header">
 
@@ -616,15 +761,15 @@
   >
 
     <input
-      type="text"
       id="chatInput"
-      placeholder="Type a message..."
+      type="text"
       maxlength="500"
+      placeholder="Type a message..."
     >
 
     <button
-      class="send"
       id="sendMessage"
+      class="send"
     >
       ➤
     </button>
@@ -634,7 +779,9 @@
 </div>
 
 
-<!-- SCREEN SHARE REQUEST -->
+<!-- ==========================================================
+     SCREEN SHARE REQUEST
+     ========================================================== -->
 
 <div
   class="modal-backdrop hidden"
@@ -643,7 +790,9 @@
 
   <div class="modal">
 
-    <h2>Screen sharing request</h2>
+    <h2>
+      Screen sharing request
+    </h2>
 
     <p id="screenRequestText">
       Another participant is requesting that you share your screen.
@@ -672,7 +821,9 @@
 </div>
 
 
-<!-- ERROR MODAL -->
+<!-- ==========================================================
+     ERROR
+     ========================================================== -->
 
 <div
   class="modal-backdrop hidden"
@@ -681,7 +832,9 @@
 
   <div class="modal">
 
-    <h2>Unable to join</h2>
+    <h2>
+      Unable to join
+    </h2>
 
     <p id="errorText"></p>
 
@@ -701,7 +854,9 @@
 </div>
 
 
-<!-- SHARE MODAL -->
+<!-- ==========================================================
+     SHARE
+     ========================================================== -->
 
 <div
   class="modal-backdrop hidden"
@@ -710,10 +865,12 @@
 
   <div class="modal">
 
-    <h2>Invite participants</h2>
+    <h2>
+      Invite participants
+    </h2>
 
     <p>
-      Share this link with the person you want to join your meeting.
+      Share this meeting link with the person you want to invite.
     </p>
 
     <div
@@ -752,15 +909,20 @@
 
 <script type="module">
 
+  // ==========================================================
+  // FIREBASE
+  // ==========================================================
+
   import {
     db,
     auth
   } from "./firebase-config.js";
 
+
   import {
-    signInAnonymously,
-    onAuthStateChanged
+    signInAnonymously
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
   import {
     doc,
@@ -777,9 +939,9 @@
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-  // ============================================================
+  // ==========================================================
   // ELEMENTS
-  // ============================================================
+  // ==========================================================
 
   const localVideo =
     document.getElementById("localVideo");
@@ -859,14 +1021,23 @@
   const screenRequestModal =
     document.getElementById("screenRequestModal");
 
+  const screenRequestText =
+    document.getElementById("screenRequestText");
+
   const acceptScreen =
     document.getElementById("acceptScreen");
 
   const declineScreen =
     document.getElementById("declineScreen");
 
-  const screenRequestText =
-    document.getElementById("screenRequestText");
+  const errorModal =
+    document.getElementById("errorModal");
+
+  const errorText =
+    document.getElementById("errorText");
+
+  const errorOk =
+    document.getElementById("errorOk");
 
   const shareModal =
     document.getElementById("shareModal");
@@ -880,24 +1051,16 @@
   const copyShare =
     document.getElementById("copyShare");
 
-  const errorModal =
-    document.getElementById("errorModal");
-
-  const errorText =
-    document.getElementById("errorText");
-
-  const errorOk =
-    document.getElementById("errorOk");
-
   const toast =
     document.getElementById("toast");
 
 
-  // ============================================================
+  // ==========================================================
   // STATE
-  // ============================================================
+  // ==========================================================
 
   let meetingId = null;
+
   let currentUser = null;
 
   let meetingData = null;
@@ -912,34 +1075,34 @@
 
   let callDocRef = null;
 
-  let candidateListenersStarted = false;
-
-  let offerCreated = false;
-
   let remoteParticipantUid = null;
-
-  let currentScreenStream = null;
 
   let currentVideoSender = null;
 
+  let currentScreenStream = null;
+
   let currentScreenRequestId = null;
 
-  let participantUnsubscribe = null;
+  let offerCreated = false;
 
-  let requestUnsubscribe = null;
+  let candidateListenersStarted = false;
+
+  let pendingRemoteCandidates = [];
+
+  let participantUnsubscribe = null;
 
   let callUnsubscribe = null;
 
   let remoteCandidateUnsubscribe = null;
 
-  let localCandidateUnsubscribe = null;
+  let requestUnsubscribe = null;
 
   let chatUnsubscribe = null;
 
 
-  // ============================================================
-  // WEBRTC CONFIGURATION
-  // ============================================================
+  // ==========================================================
+  // WEBRTC
+  // ==========================================================
 
   const rtcConfig = {
 
@@ -958,34 +1121,44 @@
   };
 
 
-  // ============================================================
-  // GET MEETING ID
-  // ============================================================
+  // ==========================================================
+  // MEETING ID
+  // ==========================================================
 
-  const urlParams =
-    new URLSearchParams(window.location.search);
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
 
   meetingId =
-    urlParams.get("id") ||
-    sessionStorage.getItem("currentMeetingId") ||
-    sessionStorage.getItem("meetingId");
-
-  if (!meetingId) {
-
-    showError(
-      "No meeting ID was found. Please return to the meeting page and try again."
+    params.get("id") ||
+    sessionStorage.getItem(
+      "currentMeetingId"
+    ) ||
+    sessionStorage.getItem(
+      "meetingId"
     );
+
+
+  if (meetingId) {
+
+    meetingId =
+      meetingId
+        .replace(/\D/g, "")
+        .slice(0, 9);
 
   }
 
 
   meetingIdText.textContent =
-    meetingId || "--------";
+    meetingId ||
+    "--------";
 
 
-  // ============================================================
+  // ==========================================================
   // AUTHENTICATION
-  // ============================================================
+  // ==========================================================
 
   async function authenticate() {
 
@@ -995,35 +1168,60 @@
         auth.currentUser;
 
       return currentUser;
+
     }
 
+
     const result =
-      await signInAnonymously(auth);
+      await signInAnonymously(
+        auth
+      );
+
 
     currentUser =
       result.user;
 
+
     return currentUser;
+
   }
 
 
-  // ============================================================
+  // ==========================================================
   // LOAD MEETING
-  // ============================================================
+  // ==========================================================
 
   async function loadMeeting() {
 
     try {
 
+      if (!meetingId) {
+
+        throw new Error(
+          "No meeting ID was found."
+        );
+
+      }
+
+
       await authenticate();
 
+
       const meetingRef =
-        doc(db, "meetings", meetingId);
+        doc(
+          db,
+          "meetings",
+          meetingId
+        );
 
-      const meetingSnap =
-        await getDoc(meetingRef);
 
-      if (!meetingSnap.exists()) {
+      const meetingSnapshot =
+        await getDoc(
+          meetingRef
+        );
+
+
+      if (!meetingSnapshot.exists()) {
 
         throw new Error(
           "This meeting does not exist."
@@ -1031,10 +1229,15 @@
 
       }
 
-      meetingData =
-        meetingSnap.data();
 
-      if (meetingData.status !== "active") {
+      meetingData =
+        meetingSnapshot.data();
+
+
+      if (
+        meetingData.status !==
+        "active"
+      ) {
 
         throw new Error(
           "This meeting is no longer active."
@@ -1042,33 +1245,51 @@
 
       }
 
+
       isHost =
-        meetingData.hostId === currentUser.uid;
+        meetingData.hostId ===
+        currentUser.uid;
+
 
       localRole.textContent =
-        isHost ? " (Host)" : " (Guest)";
+        isHost
+          ? " (Host)"
+          : " (Guest)";
+
 
       await startLocalMedia();
 
+
       await registerParticipant();
+
 
       createPeerConnection();
 
+
       await setupCall();
+
 
       listenForParticipants();
 
+
       listenForScreenRequests();
+
 
       listenForChat();
 
-      setConnectedStatus(
+
+      setConnectionStatus(
         "Waiting for participant..."
       );
 
+
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "MEETING ERROR:",
+        error
+      );
+
 
       showError(
         error.message ||
@@ -1080,45 +1301,59 @@
   }
 
 
-  // ============================================================
-  // LOCAL CAMERA + MICROPHONE
-  // ============================================================
+  // ==========================================================
+  // CAMERA / MICROPHONE
+  // ==========================================================
 
   async function startLocalMedia() {
+
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
+
+      throw new Error(
+        "This browser does not support camera and microphone access."
+      );
+
+    }
+
 
     try {
 
       localStream =
-        await navigator.mediaDevices.getUserMedia({
+        await navigator.mediaDevices
+          .getUserMedia({
 
-          video: {
-            width: {
-              ideal: 1280
+            video: {
+              width: {
+                ideal: 1280
+              },
+              height: {
+                ideal: 720
+              },
+              facingMode: "user"
             },
 
-            height: {
-              ideal: 720
-            },
+            audio: true
 
-            facingMode: "user"
-          },
+          });
 
-          audio: true
-
-        });
 
       localVideo.srcObject =
         localStream;
 
+
     } catch (error) {
 
       console.error(
-        "Camera/microphone error:",
+        "MEDIA ERROR:",
         error
       );
 
+
       throw new Error(
-        "Camera and microphone access was denied or is unavailable. Please allow camera and microphone access and reload the meeting."
+        "Camera and microphone access was denied. Please allow both permissions and reload the meeting."
       );
 
     }
@@ -1126,9 +1361,9 @@
   }
 
 
-  // ============================================================
+  // ==========================================================
   // REGISTER PARTICIPANT
-  // ============================================================
+  // ==========================================================
 
   async function registerParticipant() {
 
@@ -1141,17 +1376,23 @@
         currentUser.uid
       );
 
+
     await setDoc(
       participantRef,
       {
 
-        uid: currentUser.uid,
+        uid:
+          currentUser.uid,
 
         role:
-          isHost ? "host" : "guest",
+          isHost
+            ? "host"
+            : "guest",
 
         name:
-          isHost ? "Host" : "Guest",
+          isHost
+            ? "Host"
+            : "Guest",
 
         joinedAt:
           serverTimestamp(),
@@ -1171,9 +1412,9 @@
   }
 
 
-  // ============================================================
+  // ==========================================================
   // CREATE PEER CONNECTION
-  // ============================================================
+  // ==========================================================
 
   function createPeerConnection() {
 
@@ -1182,8 +1423,10 @@
         rtcConfig
       );
 
+
     remoteStream =
       new MediaStream();
+
 
     remoteVideo.srcObject =
       remoteStream;
@@ -1203,7 +1446,11 @@
               localStream
             );
 
-          if (track.kind === "video") {
+
+          if (
+            track.kind ===
+            "video"
+          ) {
 
             currentVideoSender =
               sender;
@@ -1220,62 +1467,93 @@
     peerConnection.ontrack =
       event => {
 
-        event.streams[0]
-          .getTracks()
-          .forEach(track => {
+        const streams =
+          event.streams;
 
-            if (
-              !remoteStream
-                .getTracks()
-                .some(
-                  existing =>
-                    existing.id === track.id
-                )
-            ) {
 
-              remoteStream.addTrack(
-                track
-              );
+        if (
+          streams &&
+          streams.length
+        ) {
 
-            }
+          streams[0]
+            .getTracks()
+            .forEach(track => {
 
-          });
+              const alreadyAdded =
+                remoteStream
+                  .getTracks()
+                  .some(
+                    existing =>
+                      existing.id ===
+                      track.id
+                  );
+
+
+              if (!alreadyAdded) {
+
+                remoteStream.addTrack(
+                  track
+                );
+
+              }
+
+            });
+
+        } else {
+
+          remoteStream.addTrack(
+            event.track
+          );
+
+        }
+
 
         remoteWaiting
           .classList
           .add("hidden");
 
+
         remoteWaitingText.textContent =
           "Connected";
+
 
         remoteLabel.textContent =
           isHost
             ? "Guest"
             : "Host";
 
+
+        setConnectionStatus(
+          "Connected"
+        );
+
       };
 
 
-    // ICE CONNECTION STATUS
+    // ICE STATE
 
-    peerConnection.oniceconnectionstatechange =
+    peerConnection
+      .oniceconnectionstatechange =
       () => {
 
         const state =
           peerConnection
             .iceConnectionState;
 
+
         console.log(
           "ICE state:",
           state
         );
+
 
         if (
           state === "connected" ||
           state === "completed"
         ) {
 
-          setConnectedStatus(
+          setConnectionStatus(
             "Connected"
           );
 
@@ -1283,7 +1561,7 @@
           state === "checking"
         ) {
 
-          setConnectedStatus(
+          setConnectionStatus(
             "Connecting..."
           );
 
@@ -1291,7 +1569,7 @@
           state === "disconnected"
         ) {
 
-          setConnectedStatus(
+          setConnectionStatus(
             "Connection interrupted"
           );
 
@@ -1299,7 +1577,7 @@
           state === "failed"
         ) {
 
-          setConnectedStatus(
+          setConnectionStatus(
             "Connection failed"
           );
 
@@ -1308,12 +1586,14 @@
       };
 
 
-    peerConnection.onconnectionstatechange =
+    peerConnection
+      .onconnectionstatechange =
       () => {
 
         console.log(
-          "Connection:",
-          peerConnection.connectionState
+          "Connection state:",
+          peerConnection
+            .connectionState
         );
 
       };
@@ -1321,9 +1601,9 @@
   }
 
 
-  // ============================================================
-  // FIRESTORE CALL
-  // ============================================================
+  // ==========================================================
+  // SETUP FIRESTORE WEBRTC SIGNALING
+  // ==========================================================
 
   async function setupCall() {
 
@@ -1337,9 +1617,9 @@
       );
 
 
-    // ==========================================================
-    // ICE CANDIDATES
-    // ==========================================================
+    // ----------------------------------------------------------
+    // ICE CANDIDATE HANDLER
+    // ----------------------------------------------------------
 
     peerConnection.onicecandidate =
       async event => {
@@ -1348,25 +1628,58 @@
           return;
         }
 
-        const collectionName =
-          isHost
-            ? "callerCandidates"
-            : "calleeCandidates";
 
-        await addDoc(
-          collection(
-            callDocRef,
-            collectionName
-          ),
-          event.candidate.toJSON()
-        );
+        try {
+
+          const collectionName =
+            isHost
+              ? "callerCandidates"
+              : "calleeCandidates";
+
+
+          /*
+            IMPORTANT:
+
+            Build the Firestore collection
+            directly from db.
+
+            Do NOT use:
+
+            collection(callDocRef, ...)
+          */
+
+          const candidatesRef =
+            collection(
+              db,
+              "meetings",
+              meetingId,
+              "calls",
+              "main",
+              collectionName
+            );
+
+
+          await addDoc(
+            candidatesRef,
+            event.candidate.toJSON()
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "ICE candidate error:",
+            error
+          );
+
+        }
 
       };
 
 
-    // ==========================================================
+    // ----------------------------------------------------------
     // HOST
-    // ==========================================================
+    // ----------------------------------------------------------
 
     if (isHost) {
 
@@ -1374,9 +1687,9 @@
 
     }
 
-    // ==========================================================
+    // ----------------------------------------------------------
     // GUEST
-    // ==========================================================
+    // ----------------------------------------------------------
 
     else {
 
@@ -1387,9 +1700,9 @@
   }
 
 
-  // ============================================================
+  // ==========================================================
   // HOST CREATES OFFER
-  // ============================================================
+  // ==========================================================
 
   async function createHostOffer() {
 
@@ -1397,14 +1710,20 @@
       return;
     }
 
+
     offerCreated = true;
 
-    const offer =
-      await peerConnection.createOffer();
 
-    await peerConnection.setLocalDescription(
-      offer
-    );
+    const offer =
+      await peerConnection
+        .createOffer();
+
+
+    await peerConnection
+      .setLocalDescription(
+        offer
+      );
+
 
     await setDoc(
       callDocRef,
@@ -1435,35 +1754,51 @@
 
     listenForAnswer();
 
+
     listenForGuestCandidates();
 
   }
 
 
-  // ============================================================
+  // ==========================================================
   // GUEST WAITS FOR OFFER
-  // ============================================================
+  // ==========================================================
 
   async function waitForHostOffer() {
 
-    setConnectedStatus(
+    setConnectionStatus(
       "Waiting for host..."
     );
+
 
     callUnsubscribe =
       onSnapshot(
         callDocRef,
         async snapshot => {
 
-          if (!snapshot.exists()) {
+          if (
+            !snapshot.exists()
+          ) {
+
             return;
+
           }
+
 
           const data =
             snapshot.data();
 
+
           if (
-            !data.offer ||
+            !data.offer
+          ) {
+
+            return;
+
+          }
+
+
+          if (
             peerConnection
               .currentRemoteDescription
           ) {
@@ -1472,50 +1807,77 @@
 
           }
 
-          const offer =
-            new RTCSessionDescription(
-              data.offer
-            );
 
-          await peerConnection
-            .setRemoteDescription(
-              offer
-            );
+          try {
 
-          const answer =
+            const offer =
+              new RTCSessionDescription(
+                data.offer
+              );
+
+
             await peerConnection
-              .createAnswer();
+              .setRemoteDescription(
+                offer
+              );
 
-          await peerConnection
-            .setLocalDescription(
-              answer
+
+            await flushPendingCandidates();
+
+
+            const answer =
+              await peerConnection
+                .createAnswer();
+
+
+            await peerConnection
+              .setLocalDescription(
+                answer
+              );
+
+
+            await updateDoc(
+              callDocRef,
+              {
+
+                answer: {
+
+                  type:
+                    answer.type,
+
+                  sdp:
+                    answer.sdp
+
+                },
+
+                guestId:
+                  currentUser.uid
+
+              }
             );
 
-          await updateDoc(
-            callDocRef,
-            {
 
-              answer: {
+            remoteParticipantUid =
+              data.hostId ||
+              null;
 
-                type:
-                  answer.type,
 
-                sdp:
-                  answer.sdp
+            listenForHostCandidates();
 
-              },
 
-              guestId:
-                currentUser.uid
+            setConnectionStatus(
+              "Connecting..."
+            );
 
-            }
-          );
 
-          listenForHostCandidates();
+          } catch (error) {
 
-          setConnectedStatus(
-            "Connecting..."
-          );
+            console.error(
+              "Guest offer error:",
+              error
+            );
+
+          }
 
         }
       );
@@ -1523,9 +1885,9 @@
   }
 
 
-  // ============================================================
+  // ==========================================================
   // HOST LISTENS FOR ANSWER
-  // ============================================================
+  // ==========================================================
 
   function listenForAnswer() {
 
@@ -1534,15 +1896,29 @@
         callDocRef,
         async snapshot => {
 
-          if (!snapshot.exists()) {
+          if (
+            !snapshot.exists()
+          ) {
+
             return;
+
           }
+
 
           const data =
             snapshot.data();
 
+
           if (
-            !data.answer ||
+            !data.answer
+          ) {
+
+            return;
+
+          }
+
+
+          if (
             peerConnection
               .currentRemoteDescription
           ) {
@@ -1551,22 +1927,42 @@
 
           }
 
-          const answer =
-            new RTCSessionDescription(
-              data.answer
+
+          try {
+
+            const answer =
+              new RTCSessionDescription(
+                data.answer
+              );
+
+
+            await peerConnection
+              .setRemoteDescription(
+                answer
+              );
+
+
+            remoteParticipantUid =
+              data.guestId ||
+              null;
+
+
+            await flushPendingCandidates();
+
+
+            setConnectionStatus(
+              "Connecting..."
             );
 
-          await peerConnection
-            .setRemoteDescription(
-              answer
+
+          } catch (error) {
+
+            console.error(
+              "Answer error:",
+              error
             );
 
-          remoteParticipantUid =
-            data.guestId || null;
-
-          setConnectedStatus(
-            "Connecting..."
-          );
+          }
 
         }
       );
@@ -1574,23 +1970,35 @@
   }
 
 
-  // ============================================================
-  // GUEST ICE CANDIDATES
-  // ============================================================
+  // ==========================================================
+  // GUEST LISTENS FOR HOST CANDIDATES
+  // ==========================================================
 
   function listenForHostCandidates() {
 
-    if (candidateListenersStarted) {
+    if (
+      candidateListenersStarted
+    ) {
+
       return;
+
     }
 
-    candidateListenersStarted = true;
+
+    candidateListenersStarted =
+      true;
+
 
     const candidatesRef =
       collection(
-        callDocRef,
+        db,
+        "meetings",
+        meetingId,
+        "calls",
+        "main",
         "callerCandidates"
       );
+
 
     remoteCandidateUnsubscribe =
       onSnapshot(
@@ -1601,21 +2009,18 @@
             .forEach(change => {
 
               if (
-                change.type === "added"
+                change.type !==
+                "added"
               ) {
 
-                const candidate =
-                  new RTCIceCandidate(
-                    change.doc.data()
-                  );
-
-                peerConnection
-                  .addIceCandidate(
-                    candidate
-                  )
-                  .catch(console.error);
+                return;
 
               }
+
+
+              addRemoteCandidate(
+                change.doc.data()
+              );
 
             });
 
@@ -1625,17 +2030,22 @@
   }
 
 
-  // ============================================================
-  // HOST ICE CANDIDATES
-  // ============================================================
+  // ==========================================================
+  // HOST LISTENS FOR GUEST CANDIDATES
+  // ==========================================================
 
   function listenForGuestCandidates() {
 
     const candidatesRef =
       collection(
-        callDocRef,
+        db,
+        "meetings",
+        meetingId,
+        "calls",
+        "main",
         "calleeCandidates"
       );
+
 
     remoteCandidateUnsubscribe =
       onSnapshot(
@@ -1646,21 +2056,18 @@
             .forEach(change => {
 
               if (
-                change.type === "added"
+                change.type !==
+                "added"
               ) {
 
-                const candidate =
-                  new RTCIceCandidate(
-                    change.doc.data()
-                  );
-
-                peerConnection
-                  .addIceCandidate(
-                    candidate
-                  )
-                  .catch(console.error);
+                return;
 
               }
+
+
+              addRemoteCandidate(
+                change.doc.data()
+              );
 
             });
 
@@ -1670,9 +2077,112 @@
   }
 
 
-  // ============================================================
+  // ==========================================================
+  // ADD REMOTE ICE CANDIDATE
+  // ==========================================================
+
+  async function addRemoteCandidate(
+    candidateData
+  ) {
+
+    if (
+      !peerConnection
+    ) {
+
+      return;
+
+    }
+
+
+    const candidate =
+      new RTCIceCandidate(
+        candidateData
+      );
+
+
+    if (
+      peerConnection
+        .remoteDescription
+    ) {
+
+      try {
+
+        await peerConnection
+          .addIceCandidate(
+            candidate
+          );
+
+      } catch (error) {
+
+        console.error(
+          "ICE add error:",
+          error
+        );
+
+      }
+
+    } else {
+
+      pendingRemoteCandidates
+        .push(candidate);
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // FLUSH ICE CANDIDATES
+  // ==========================================================
+
+  async function flushPendingCandidates() {
+
+    if (
+      !peerConnection ||
+      !peerConnection.remoteDescription
+    ) {
+
+      return;
+
+    }
+
+
+    const candidates =
+      pendingRemoteCandidates;
+
+
+    pendingRemoteCandidates =
+      [];
+
+
+    for (
+      const candidate of candidates
+    ) {
+
+      try {
+
+        await peerConnection
+          .addIceCandidate(
+            candidate
+          );
+
+      } catch (error) {
+
+        console.error(
+          "Pending ICE error:",
+          error
+        );
+
+      }
+
+    }
+
+  }
+
+
+  // ==========================================================
   // PARTICIPANTS
-  // ============================================================
+  // ==========================================================
 
   function listenForParticipants() {
 
@@ -1684,6 +2194,7 @@
         "participants"
       );
 
+
     participantUnsubscribe =
       onSnapshot(
         participantsRef,
@@ -1692,15 +2203,19 @@
           participantsList.innerHTML =
             "";
 
+
           let count = 0;
 
+
           snapshot.forEach(
-            participantDoc => {
+            participantSnapshot => {
 
               const participant =
-                participantDoc.data();
+                participantSnapshot.data();
+
 
               count++;
+
 
               if (
                 participant.uid !==
@@ -1712,13 +2227,15 @@
 
               }
 
-              const div =
+
+              const wrapper =
                 document.createElement(
                   "div"
                 );
 
-              div.className =
+              wrapper.className =
                 "participant";
+
 
               const avatar =
                 document.createElement(
@@ -1728,11 +2245,13 @@
               avatar.className =
                 "avatar";
 
+
               avatar.textContent =
                 participant.role ===
                 "host"
                   ? "H"
                   : "G";
+
 
               const info =
                 document.createElement(
@@ -1742,6 +2261,7 @@
               info.className =
                 "participant-info";
 
+
               const name =
                 document.createElement(
                   "div"
@@ -1749,6 +2269,7 @@
 
               name.className =
                 "participant-name";
+
 
               name.textContent =
                 participant.uid ===
@@ -1759,6 +2280,7 @@
                       "Participant"
                     );
 
+
               const role =
                 document.createElement(
                   "div"
@@ -1767,25 +2289,44 @@
               role.className =
                 "participant-role";
 
+
               role.textContent =
                 participant.role ===
                 "host"
                   ? "Host"
                   : "Guest";
 
-              info.appendChild(name);
-              info.appendChild(role);
 
-              div.appendChild(avatar);
-              div.appendChild(info);
+              info.appendChild(
+                name
+              );
+
+              info.appendChild(
+                role
+              );
+
+
+              wrapper.appendChild(
+                avatar
+              );
+
+              wrapper.appendChild(
+                info
+              );
+
 
               participantsList
-                .appendChild(div);
+                .appendChild(
+                  wrapper
+                );
 
             }
           );
 
-          if (count > 1) {
+
+          if (
+            count > 1
+          ) {
 
             remoteWaiting
               .classList
@@ -1799,9 +2340,9 @@
   }
 
 
-  // ============================================================
-  // MUTE
-  // ============================================================
+  // ==========================================================
+  // MICROPHONE
+  // ==========================================================
 
   micButton.onclick =
     async () => {
@@ -1810,50 +2351,60 @@
         return;
       }
 
+
       const tracks =
-        localStream.getAudioTracks();
+        localStream
+          .getAudioTracks();
+
 
       if (!tracks.length) {
         return;
       }
 
-      const enabled =
+
+      const wasEnabled =
         tracks[0].enabled;
+
 
       tracks.forEach(
         track => {
+
           track.enabled =
-            !enabled;
+            !wasEnabled;
+
         }
       );
+
 
       micButton
         .classList
         .toggle(
           "off",
-          enabled
+          wasEnabled
         );
+
 
       micButton
         .querySelector(
-          "span:last-child"
+          "span"
         )
         .textContent =
-          enabled
+          wasEnabled
             ? "Unmute"
             : "Mute";
 
+
       await updateParticipantStatus({
         audioEnabled:
-          !enabled
+          !wasEnabled
       });
 
     };
 
 
-  // ============================================================
+  // ==========================================================
   // CAMERA
-  // ============================================================
+  // ==========================================================
 
   cameraButton.onclick =
     async () => {
@@ -1862,57 +2413,68 @@
         return;
       }
 
+
       const tracks =
-        localStream.getVideoTracks();
+        localStream
+          .getVideoTracks();
+
 
       if (!tracks.length) {
         return;
       }
 
-      const enabled =
+
+      const wasEnabled =
         tracks[0].enabled;
+
 
       tracks.forEach(
         track => {
+
           track.enabled =
-            !enabled;
+            !wasEnabled;
+
         }
       );
+
 
       cameraButton
         .classList
         .toggle(
           "off",
-          enabled
+          wasEnabled
         );
+
 
       cameraButton
         .querySelector(
-          "span:last-child"
+          "span"
         )
         .textContent =
-          enabled
+          wasEnabled
             ? "Start Video"
             : "Stop Video";
+
 
       localWaiting
         .classList
         .toggle(
           "hidden",
-          !enabled
+          !wasEnabled
         );
+
 
       await updateParticipantStatus({
         videoEnabled:
-          !enabled
+          !wasEnabled
       });
 
     };
 
 
-  // ============================================================
+  // ==========================================================
   // PARTICIPANT STATUS
-  // ============================================================
+  // ==========================================================
 
   async function updateParticipantStatus(
     values
@@ -1929,36 +2491,44 @@
           currentUser.uid
         );
 
+
       await updateDoc(
         participantRef,
         values
       );
 
+
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "Participant status error:",
+        error
+      );
 
     }
 
   }
 
 
-  // ============================================================
-  // SCREEN SHARE REQUEST
-  // ============================================================
+  // ==========================================================
+  // REQUEST SCREEN SHARING
+  // ==========================================================
 
   screenButton.onclick =
     async () => {
 
-      if (!remoteParticipantUid) {
+      if (
+        !remoteParticipantUid
+      ) {
 
         showToast(
-          "Another participant must join before requesting screen sharing."
+          "Another participant must join first."
         );
 
         return;
 
       }
+
 
       try {
 
@@ -1992,16 +2562,23 @@
             }
           );
 
+
         currentScreenRequestId =
           requestRef.id;
+
 
         showToast(
           "Screen sharing request sent."
         );
 
+
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "Screen request error:",
+          error
+        );
+
 
         showToast(
           "Unable to send screen-sharing request."
@@ -2012,9 +2589,9 @@
     };
 
 
-  // ============================================================
-  // LISTEN FOR SCREEN SHARE REQUESTS
-  // ============================================================
+  // ==========================================================
+  // LISTEN FOR SCREEN REQUESTS
+  // ==========================================================
 
   function listenForScreenRequests() {
 
@@ -2026,6 +2603,7 @@
         "screenShareRequests"
       );
 
+
     requestUnsubscribe =
       onSnapshot(
         requestsRef,
@@ -2035,31 +2613,44 @@
             .forEach(change => {
 
               if (
-                change.type !== "added" &&
-                change.type !== "modified"
+                change.type !==
+                "added" &&
+                change.type !==
+                "modified"
               ) {
+
                 return;
+
               }
+
 
               const request =
                 change.doc.data();
+
 
               if (
                 request.targetId !==
                 currentUser.uid
               ) {
+
                 return;
+
               }
+
 
               if (
                 request.status !==
                 "pending"
               ) {
+
                 return;
+
               }
+
 
               currentScreenRequestId =
                 change.doc.id;
+
 
               screenRequestText.textContent =
                 (
@@ -2069,6 +2660,7 @@
                     : "The guest"
                 ) +
                 " is requesting that you share your screen.";
+
 
               screenRequestModal
                 .classList
@@ -2082,9 +2674,9 @@
   }
 
 
-  // ============================================================
+  // ==========================================================
   // ACCEPT SCREEN SHARE
-  // ============================================================
+  // ==========================================================
 
   acceptScreen.onclick =
     async () => {
@@ -2093,57 +2685,15 @@
         .classList
         .add("hidden");
 
-      if (!currentScreenRequestId) {
+
+      if (
+        !currentScreenRequestId
+      ) {
+
         return;
-      }
-
-      try {
-
-        const requestRef =
-          doc(
-            db,
-            "meetings",
-            meetingId,
-            "screenShareRequests",
-            currentScreenRequestId
-          );
-
-        await updateDoc(
-          requestRef,
-          {
-            status: "accepted"
-          }
-        );
-
-        await startScreenShare();
-
-      } catch (error) {
-
-        console.error(error);
-
-        showToast(
-          "Screen sharing could not be started."
-        );
 
       }
 
-    };
-
-
-  // ============================================================
-  // DECLINE SCREEN SHARE
-  // ============================================================
-
-  declineScreen.onclick =
-    async () => {
-
-      screenRequestModal
-        .classList
-        .add("hidden");
-
-      if (!currentScreenRequestId) {
-        return;
-      }
 
       try {
 
@@ -2156,22 +2706,84 @@
             currentScreenRequestId
           ),
           {
-            status: "declined"
+            status:
+              "accepted"
           }
         );
 
+
+        await startScreenShare();
+
+
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "Screen share accept error:",
+          error
+        );
+
+
+        showToast(
+          "Screen sharing could not be started."
+        );
 
       }
 
     };
 
 
-  // ============================================================
+  // ==========================================================
+  // DECLINE SCREEN SHARE
+  // ==========================================================
+
+  declineScreen.onclick =
+    async () => {
+
+      screenRequestModal
+        .classList
+        .add("hidden");
+
+
+      if (
+        !currentScreenRequestId
+      ) {
+
+        return;
+
+      }
+
+
+      try {
+
+        await updateDoc(
+          doc(
+            db,
+            "meetings",
+            meetingId,
+            "screenShareRequests",
+            currentScreenRequestId
+          ),
+          {
+            status:
+              "declined"
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+      }
+
+    };
+
+
+  // ==========================================================
   // START SCREEN SHARE
-  // ============================================================
+  // ==========================================================
 
   async function startScreenShare() {
 
@@ -2188,17 +2800,21 @@
 
     }
 
+
     try {
 
       currentScreenStream =
-        await navigator.mediaDevices.getDisplayMedia({
-          video: true,
-          audio: false
-        });
+        await navigator.mediaDevices
+          .getDisplayMedia({
+            video: true,
+            audio: false
+          });
+
 
       const screenTrack =
         currentScreenStream
           .getVideoTracks()[0];
+
 
       if (!currentVideoSender) {
 
@@ -2214,7 +2830,10 @@
 
       }
 
-      if (currentVideoSender) {
+
+      if (
+        currentVideoSender
+      ) {
 
         await currentVideoSender
           .replaceTrack(
@@ -2223,6 +2842,24 @@
 
       }
 
+
+      localVideo.srcObject =
+        currentScreenStream;
+
+
+      screenButton
+        .querySelector(
+          "span"
+        )
+        .textContent =
+          "Stop Sharing";
+
+
+      screenButton
+        .classList
+        .add("off");
+
+
       screenTrack.onended =
         async () => {
 
@@ -2230,23 +2867,19 @@
 
         };
 
-      localVideo.srcObject =
-        currentScreenStream;
-
-      screenButton
-        .querySelector(
-          "span:last-child"
-        )
-        .textContent =
-          "Stop Sharing";
 
       showToast(
         "You are sharing your screen."
       );
 
+
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "Screen share error:",
+        error
+      );
+
 
       showToast(
         "Screen sharing was cancelled."
@@ -2257,17 +2890,20 @@
   }
 
 
-  // ============================================================
+  // ==========================================================
   // STOP SCREEN SHARE
-  // ============================================================
+  // ==========================================================
 
   async function stopScreenShare() {
 
     if (
       !currentScreenStream
     ) {
+
       return;
+
     }
+
 
     currentScreenStream
       .getTracks()
@@ -2276,8 +2912,10 @@
           track.stop()
       );
 
+
     currentScreenStream =
       null;
+
 
     if (
       localStream &&
@@ -2287,6 +2925,7 @@
       const cameraTrack =
         localStream
           .getVideoTracks()[0];
+
 
       if (cameraTrack) {
 
@@ -2299,6 +2938,7 @@
 
     }
 
+
     if (localStream) {
 
       localVideo.srcObject =
@@ -2306,19 +2946,25 @@
 
     }
 
+
     screenButton
       .querySelector(
-        "span:last-child"
+        "span"
       )
       .textContent =
-        "Share Screen";
+        "Request Screen";
+
+
+    screenButton
+      .classList
+      .remove("off");
 
   }
 
 
-  // ============================================================
+  // ==========================================================
   // CHAT
-  // ============================================================
+  // ==========================================================
 
   function listenForChat() {
 
@@ -2330,6 +2976,7 @@
         "messages"
       );
 
+
     const messagesQuery =
       query(
         messagesRef,
@@ -2339,6 +2986,7 @@
         )
       );
 
+
     chatUnsubscribe =
       onSnapshot(
         messagesQuery,
@@ -2347,11 +2995,13 @@
           chatMessages.innerHTML =
             "";
 
+
           snapshot.forEach(
-            messageDoc => {
+            messageSnapshot => {
 
               const message =
-                messageDoc.data();
+                messageSnapshot.data();
+
 
               const wrapper =
                 document.createElement(
@@ -2361,6 +3011,7 @@
               wrapper.className =
                 "message";
 
+
               const name =
                 document.createElement(
                   "div"
@@ -2368,6 +3019,7 @@
 
               name.className =
                 "message-name";
+
 
               name.textContent =
                 message.senderId ===
@@ -2378,6 +3030,7 @@
                       "Participant"
                     );
 
+
               const text =
                 document.createElement(
                   "div"
@@ -2386,17 +3039,28 @@
               text.className =
                 "message-text";
 
+
               text.textContent =
-                message.text || "";
+                message.text ||
+                "";
 
-              wrapper.appendChild(name);
-              wrapper.appendChild(text);
 
-              chatMessages
-                .appendChild(wrapper);
+              wrapper.appendChild(
+                name
+              );
+
+              wrapper.appendChild(
+                text
+              );
+
+
+              chatMessages.appendChild(
+                wrapper
+              );
 
             }
           );
+
 
           chatMessages.scrollTop =
             chatMessages.scrollHeight;
@@ -2407,14 +3071,20 @@
   }
 
 
+  // ==========================================================
+  // SEND CHAT
+  // ==========================================================
+
   async function sendChatMessage() {
 
     const text =
       chatInput.value.trim();
 
+
     if (!text) {
       return;
     }
+
 
     try {
 
@@ -2427,7 +3097,8 @@
         ),
         {
 
-          text,
+          text:
+            text,
 
           senderId:
             currentUser.uid,
@@ -2443,12 +3114,18 @@
         }
       );
 
+
       chatInput.value =
         "";
 
+
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "Chat error:",
+        error
+      );
+
 
       showToast(
         "Unable to send message."
@@ -2468,7 +3145,8 @@
     event => {
 
       if (
-        event.key === "Enter"
+        event.key ===
+        "Enter"
       ) {
 
         event.preventDefault();
@@ -2481,9 +3159,9 @@
   );
 
 
-  // ============================================================
+  // ==========================================================
   // PARTICIPANTS PANEL
-  // ============================================================
+  // ==========================================================
 
   participantsButton.onclick =
     () => {
@@ -2492,16 +3170,20 @@
         .classList
         .remove("hidden");
 
+
       panelTitle.textContent =
         "Participants";
+
 
       participantsList
         .classList
         .remove("hidden");
 
+
       chatMessages
         .classList
         .add("hidden");
+
 
       chatInputArea
         .classList
@@ -2510,9 +3192,9 @@
     };
 
 
-  // ============================================================
+  // ==========================================================
   // CHAT PANEL
-  // ============================================================
+  // ==========================================================
 
   chatButton.onclick =
     () => {
@@ -2521,16 +3203,20 @@
         .classList
         .remove("hidden");
 
+
       panelTitle.textContent =
         "Chat";
+
 
       participantsList
         .classList
         .add("hidden");
 
+
       chatMessages
         .classList
         .remove("hidden");
+
 
       chatInputArea
         .classList
@@ -2549,50 +3235,61 @@
     };
 
 
-  // ============================================================
+  // ==========================================================
   // FULLSCREEN
-  // ============================================================
+  // ==========================================================
 
   fullscreenButton.onclick =
     async () => {
 
       try {
 
-        if (!document.fullscreenElement) {
+        if (
+          !document.fullscreenElement
+        ) {
 
-          await document.documentElement
+          await document
+            .documentElement
             .requestFullscreen();
 
         } else {
 
-          await document.exitFullscreen();
+          await document
+            .exitFullscreen();
 
         }
 
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "Fullscreen error:",
+          error
+        );
 
       }
 
     };
 
 
-  // ============================================================
-  // SHARE INVITATION
-  // ============================================================
+  // ==========================================================
+  // SHARE LINK
+  // ==========================================================
 
   function openShareModal() {
 
-    const joinUrl =
+    const url =
       new URL(
         "join.html?meeting=" +
-        encodeURIComponent(meetingId),
+        encodeURIComponent(
+          meetingId
+        ),
         window.location.href
       ).href;
 
+
     shareLink.textContent =
-      joinUrl;
+      url;
+
 
     shareModal
       .classList
@@ -2614,19 +3311,25 @@
   copyShare.onclick =
     async () => {
 
-      const url =
-        shareLink.textContent;
-
       try {
 
         await navigator.clipboard
-          .writeText(url);
+          .writeText(
+            shareLink.textContent
+          );
+
 
         showToast(
           "Meeting link copied."
         );
 
-      } catch {
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
 
         showToast(
           "Unable to copy link."
@@ -2637,14 +3340,59 @@
     };
 
 
-  // ============================================================
-  // LEAVE MEETING
-  // ============================================================
+  // ==========================================================
+  // LEAVE
+  // ==========================================================
 
   leaveButton.onclick =
     async () => {
 
       try {
+
+        if (
+          participantUnsubscribe
+        ) {
+
+          participantUnsubscribe();
+
+        }
+
+
+        if (
+          callUnsubscribe
+        ) {
+
+          callUnsubscribe();
+
+        }
+
+
+        if (
+          remoteCandidateUnsubscribe
+        ) {
+
+          remoteCandidateUnsubscribe();
+
+        }
+
+
+        if (
+          requestUnsubscribe
+        ) {
+
+          requestUnsubscribe();
+
+        }
+
+
+        if (
+          chatUnsubscribe
+        ) {
+
+          chatUnsubscribe();
+
+        }
+
 
         if (localStream) {
 
@@ -2657,7 +3405,10 @@
 
         }
 
-        if (currentScreenStream) {
+
+        if (
+          currentScreenStream
+        ) {
 
           currentScreenStream
             .getTracks()
@@ -2668,13 +3419,19 @@
 
         }
 
-        if (peerConnection) {
+
+        if (
+          peerConnection
+        ) {
 
           peerConnection.close();
 
         }
 
-        if (currentUser) {
+
+        if (
+          currentUser
+        ) {
 
           await deleteDoc(
             doc(
@@ -2690,9 +3447,13 @@
 
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "Leave error:",
+          error
+        );
 
       }
+
 
       window.location.href =
         "./index.html";
@@ -2700,16 +3461,17 @@
     };
 
 
-  // ============================================================
-  // CONNECTION STATUS
-  // ============================================================
+  // ==========================================================
+  // STATUS
+  // ==========================================================
 
-  function setConnectedStatus(
+  function setConnectionStatus(
     text
   ) {
 
     connectionStatus.textContent =
       text;
+
 
     if (
       text === "Connected"
@@ -2719,7 +3481,8 @@
         "#36c76f";
 
     } else if (
-      text.includes("failed")
+      text.toLowerCase()
+        .includes("failed")
     ) {
 
       statusDot.style.background =
@@ -2728,16 +3491,16 @@
     } else {
 
       statusDot.style.background =
-        "#f1c40f";
+        "#f0bd24";
 
     }
 
   }
 
 
-  // ============================================================
+  // ==========================================================
   // ERROR
-  // ============================================================
+  // ==========================================================
 
   function showError(
     message
@@ -2745,6 +3508,7 @@
 
     errorText.textContent =
       message;
+
 
     errorModal
       .classList
@@ -2760,17 +3524,19 @@
         .classList
         .add("hidden");
 
+
       window.location.href =
         "./index.html";
 
     };
 
 
-  // ============================================================
+  // ==========================================================
   // TOAST
-  // ============================================================
+  // ==========================================================
 
   let toastTimer = null;
+
 
   function showToast(
     message
@@ -2779,12 +3545,15 @@
     toast.textContent =
       message;
 
+
     toast.classList
       .remove("hidden");
+
 
     clearTimeout(
       toastTimer
     );
+
 
     toastTimer =
       setTimeout(
@@ -2800,9 +3569,9 @@
   }
 
 
-  // ============================================================
+  // ==========================================================
   // START
-  // ============================================================
+  // ==========================================================
 
   loadMeeting();
 
