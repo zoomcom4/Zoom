@@ -1,815 +1,832 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
-
-    <meta name="theme-color" content="#222222">
-
-    <title>Join Meeting</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html,
-        body {
-            width: 100%;
-            min-height: 100%;
-            background: #222222;
-            color: #ffffff;
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "SF Pro Display",
-                "SF Pro Text",
-                "Helvetica Neue",
-                Arial,
-                sans-serif;
-        }
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta name="theme-color" content="#222222">
 
-        body {
-            overflow-x: hidden;
-        }
+<title>Join Meeting</title>
 
-        button,
-        input {
-            font-family: inherit;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
 
-        /* ==================================
-           MAIN APP
-        ================================== */
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    background: #222222;
+    color: #fff;
 
-        .app {
-            width: 100%;
-            min-height: 100dvh;
-            background: #222222;
-            overflow: hidden;
-        }
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+}
 
-        /* ==================================
-           HEADER
-        ================================== */
+body {
+    overflow-x: hidden;
+}
 
-        .header {
-            height: 112px;
+button,
+input {
+    font: inherit;
+}
 
-            padding:
-                max(12px, env(safe-area-inset-top))
-                22px
-                0;
+/* =========================
+   PAGE
+========================= */
 
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
+.app {
+    width: 100%;
+    min-height: 100dvh;
+    background: #222222;
+}
 
-            align-items: center;
-        }
+/* =========================
+   HEADER
+========================= */
 
-        .cancel {
-            justify-self: start;
+.header {
+    height: 112px;
 
-            border: 0;
-            background: transparent;
+    padding:
+        max(10px, env(safe-area-inset-top))
+        44px
+        0;
 
-            color: #ffffff;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
 
-            font-size: 19px;
-            font-weight: 400;
+    align-items: center;
+}
 
-            padding: 10px 0;
+.cancel {
+    border: 0;
+    background: transparent;
 
-            cursor: pointer;
-        }
+    color: #fff;
 
-        .page-title {
-            justify-self: center;
+    font-size: 19px;
+    font-weight: 400;
 
-            color: #ffffff;
+    text-align: left;
 
-            font-size: 22px;
-            font-weight: 700;
-        }
+    cursor: pointer;
+}
 
-        /* ==================================
-           TOP AREA
-        ================================== */
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+}
 
-        .top-area {
-            padding: 4px 22px 30px;
-        }
+/* =========================
+   TABS
+========================= */
 
-        /* ==================================
-           TABS
-        ================================== */
+.tabs-area {
+    padding: 0 44px 40px;
+}
 
-        .tabs {
-            width: 100%;
-            height: 54px;
+.tabs {
+    height: 54px;
 
-            padding: 3px;
+    padding: 3px;
 
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
-            background: #39393d;
+    background: #3a3a3e;
 
-            border-radius: 15px;
-        }
+    border-radius: 16px;
+}
 
-        .tab {
-            border: 0;
-            border-radius: 12px;
+.tab {
+    border: 0;
 
-            background: transparent;
+    border-radius: 13px;
 
-            color: #ffffff;
+    background: transparent;
 
-            font-size: 18px;
-            font-weight: 500;
+    color: #fff;
 
-            cursor: pointer;
-        }
+    font-size: 18px;
+    font-weight: 500;
+}
 
-        .tab.active {
-            background: #77777e;
-        }
+.tab.active {
+    background: #79797f;
+}
 
-        /* ==================================
-           MEETING ID
-        ================================== */
+/* =========================
+   INPUT
+========================= */
 
-        .field {
-            height: 70px;
+.meeting-field {
+    height: 70px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    background: #2d2d2f;
 
-            background: #2d2d2f;
+    border-top: 1px solid #3b3b3d;
+    border-bottom: 1px solid #3b3b3d;
 
-            border-top: 1px solid #39393b;
-            border-bottom: 1px solid #39393b;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .meeting-input {
-            width: 100%;
+.meeting-input {
+    width: 100%;
+    height: 100%;
 
-            height: 100%;
+    border: 0;
+    outline: none;
 
-            border: 0;
-            outline: none;
+    background: transparent;
 
-            background: transparent;
+    color: #fff;
 
-            color: #ffffff;
+    text-align: center;
 
-            text-align: center;
+    font-size: 22px;
+}
 
-            font-size: 22px;
-            font-weight: 400;
-        }
+.meeting-input::placeholder {
+    color: #9b9b9f;
+}
 
-        .meeting-input::placeholder {
-            color: #9c9ca1;
-        }
+/* =========================
+   PERSONAL LINK
+========================= */
 
-        /* ==================================
-           PERSONAL LINK
-        ================================== */
+.personal-link {
+    width: 100%;
+    height: 72px;
 
-        .personal-link {
-            height: 72px;
+    border: 0;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    background: #222222;
 
-            padding: 0 20px;
+    border-bottom: 1px solid #3b3b3d;
 
-            background: #222222;
+    color: #4797ff;
 
-            border-bottom: 1px solid #39393b;
+    font-size: 18px;
+    font-weight: 500;
 
-            color: #4797ff;
+    text-align: center;
+}
 
-            font-size: 18px;
-            font-weight: 500;
+/* =========================
+   DEVICE
+========================= */
 
-            text-align: center;
+.device {
+    height: 70px;
 
-            cursor: pointer;
-        }
+    background: #2d2d2f;
 
-        /* ==================================
-           DEVICE
-        ================================== */
+    border-bottom: 1px solid #3b3b3d;
 
-        .device {
-            height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.device-name {
+    font-size: 22px;
+}
 
-            background: #2d2d2f;
+/* =========================
+   TERMS
+========================= */
 
-            border-bottom: 1px solid #39393b;
-        }
+.terms {
+    padding: 20px 44px 0;
 
-        .device-name {
-            color: #ffffff;
+    color: #aaaab0;
 
-            font-size: 22px;
-            font-weight: 400;
-        }
+    font-size: 15px;
+    line-height: 1.45;
+}
 
-        /* ==================================
-           TERMS
-        ================================== */
+.link {
+    color: #91c5ff;
+}
 
-        .terms {
-            padding: 17px 22px 0;
+/* =========================
+   JOIN BUTTON
+========================= */
 
-            color: #a9a9ad;
+.join-area {
+    padding: 16px 40px 0;
+}
 
-            font-size: 15px;
-            line-height: 1.35;
+.join-button {
+    width: 100%;
+    height: 58px;
 
-            text-align: left;
-        }
+    border: 0;
+    border-radius: 20px;
 
-        .terms-link {
-            color: #9bc9ff;
-        }
+    background: #1478f2;
 
-        /* ==================================
-           JOIN BUTTON
-        ================================== */
+    color: #fff;
 
-        .join-area {
-            padding: 16px 20px 0;
-        }
+    font-size: 21px;
+    font-weight: 700;
+}
 
-        .join-button {
-            width: 100%;
-            height: 58px;
+.join-button:disabled {
+    background: #3a3a3c;
+    color: #77777b;
+}
 
-            border: 0;
-            border-radius: 19px;
+/* =========================
+   INVITATION
+========================= */
 
-            background: #3a3a3c;
+.invitation {
+    padding: 14px 44px 0;
 
-            color: #77777b;
+    color: #aaaab0;
 
-            font-size: 21px;
-            font-weight: 700;
+    font-size: 15px;
+    line-height: 1.4;
+}
 
-            cursor: pointer;
-        }
+/* =========================
+   JOIN OPTIONS
+========================= */
 
-        .join-button.enabled {
-            background: #1478f2;
-            color: #ffffff;
-        }
+.options {
+    margin-top: 26px;
 
-        .join-button:active {
-            transform: scale(.985);
-        }
+    border-top: 1px solid #3b3b3d;
 
-        /* ==================================
-           INVITATION
-        ================================== */
+    background: #222222;
+}
 
-        .invitation {
-            padding: 11px 22px 0;
+.options-title {
+    padding: 18px 44px 12px;
 
-            color: #a9a9ad;
+    color: #aaaab0;
 
-            font-size: 15px;
-            line-height: 1.35;
-        }
+    font-size: 16px;
+}
 
-        /* ==================================
-           JOIN OPTIONS
-        ================================== */
+/* =========================
+   OPTION ROW
+========================= */
 
-        .options {
-            margin-top: 30px;
+.option {
+    min-height: 66px;
 
-            padding: 0 22px 30px;
+    padding: 0 44px;
 
-            color: #a9a9ad;
+    border-top: 1px solid #363638;
 
-            font-size: 16px;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        /* ==================================
-           ANDROID BLOCK
-        ================================== */
+    color: #fff;
 
-        .blocked {
-            display: none;
+    font-size: 17px;
+}
 
-            min-height: 100dvh;
+.option-text {
+    padding-right: 20px;
+}
 
-            padding: 100px 28px 40px;
+/* =========================
+   SWITCH
+========================= */
 
-            background: #222222;
+.switch {
+    position: relative;
 
-            text-align: center;
-        }
+    width: 48px;
+    height: 29px;
 
-        .blocked h1 {
-            font-size: 28px;
-            margin-bottom: 16px;
-        }
+    flex-shrink: 0;
 
-        .blocked p {
-            color: #aaa;
+    border: 0;
+    border-radius: 20px;
 
-            font-size: 17px;
-            line-height: 1.5;
-        }
+    background: #555559;
 
-        .back-button {
-            margin-top: 28px;
+    transition: .2s;
+}
 
-            width: 100%;
-            max-width: 350px;
+.switch::after {
+    content: "";
 
-            height: 54px;
+    position: absolute;
 
-            border: 0;
-            border-radius: 17px;
+    width: 25px;
+    height: 25px;
 
-            background: #1478f2;
+    top: 2px;
+    left: 2px;
 
-            color: #fff;
+    border-radius: 50%;
 
-            font-size: 18px;
-            font-weight: 600;
-        }
+    background: #fff;
 
-        /* ==================================
-           SMALL HEIGHT PHONES
-        ================================== */
+    transition: .2s;
+}
 
-        @media (max-height: 720px) {
+.switch.on {
+    background: #1478f2;
+}
 
-            .header {
-                height: 92px;
-            }
+.switch.on::after {
+    transform: translateX(19px);
+}
 
-            .top-area {
-                padding-bottom: 20px;
-            }
+/* =========================
+   ANDROID BLOCK
+========================= */
 
-            .tabs {
-                height: 48px;
-            }
+.blocked {
+    display: none;
 
-            .tab {
-                font-size: 17px;
-            }
+    min-height: 100dvh;
 
-            .field {
-                height: 62px;
-            }
+    padding: 100px 28px;
 
-            .personal-link {
-                height: 62px;
-                font-size: 17px;
-            }
+    background: #222;
 
-            .device {
-                height: 62px;
-            }
+    text-align: center;
+}
 
-            .device-name {
-                font-size: 20px;
-            }
+.blocked h1 {
+    font-size: 27px;
+    margin-bottom: 15px;
+}
 
-            .terms {
-                padding-top: 12px;
-                font-size: 14px;
-            }
+.blocked p {
+    color: #aaa;
+    font-size: 17px;
+    line-height: 1.5;
+}
 
-            .join-area {
-                padding-top: 12px;
-            }
+/* =========================
+   SMALL HEIGHT DEVICES
+========================= */
 
-            .join-button {
-                height: 52px;
-                font-size: 19px;
-            }
+@media (max-height: 720px) {
 
-            .invitation {
-                padding-top: 8px;
-                font-size: 14px;
-            }
+    .header {
+        height: 92px;
+    }
 
-            .options {
-                margin-top: 20px;
-            }
-        }
+    .tabs-area {
+        padding-bottom: 25px;
+    }
 
-        /* ==================================
-           WINDOWS / DESKTOP
-        ================================== */
+    .tabs {
+        height: 49px;
+    }
 
-        @media (min-width: 700px) {
+    .meeting-field {
+        height: 62px;
+    }
 
-            .app {
-                max-width: 760px;
-                margin: 0 auto;
-            }
+    .personal-link {
+        height: 62px;
+        font-size: 17px;
+    }
 
-            .header {
-                height: 120px;
-            }
+    .device {
+        height: 62px;
+    }
 
-            .top-area {
-                padding-left: 35px;
-                padding-right: 35px;
-            }
+    .terms {
+        padding-top: 14px;
+    }
 
-            .terms,
-            .invitation,
-            .options {
-                padding-left: 35px;
-                padding-right: 35px;
-            }
+    .join-area {
+        padding-top: 12px;
+    }
 
-            .join-area {
-                padding-left: 30px;
-                padding-right: 30px;
-            }
-        }
-    </style>
+    .join-button {
+        height: 52px;
+    }
+
+    .invitation {
+        padding-top: 10px;
+    }
+
+    .options {
+        margin-top: 20px;
+    }
+
+    .option {
+        min-height: 58px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <!-- ==================================
-         JOIN PAGE
-    ================================== -->
+<main id="joinPage" class="app">
 
-    <main
-        id="joinPage"
-        class="app"
-    >
+    <!-- HEADER -->
 
-        <!-- HEADER -->
-        <header class="header">
-
-            <button
-                class="cancel"
-                type="button"
-                onclick="goBack()"
-            >
-                Cancel
-            </button>
-
-            <div class="page-title">
-                Join
-            </div>
-
-            <div></div>
-
-        </header>
-
-
-        <!-- TABS -->
-        <section class="top-area">
-
-            <div class="tabs">
-
-                <button
-                    class="tab active"
-                    type="button"
-                >
-                    Meeting
-                </button>
-
-                <button
-                    class="tab"
-                    type="button"
-                >
-                    Event
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- MEETING ID -->
-        <section class="field">
-
-            <input
-                id="meetingId"
-                class="meeting-input"
-                type="text"
-                inputmode="numeric"
-                autocomplete="off"
-                placeholder="Meeting ID"
-                maxlength="20"
-            >
-
-        </section>
-
-
-        <!-- PERSONAL LINK -->
-        <button
-            class="personal-link"
-            type="button"
-            onclick="personalLink()"
-        >
-            Join with a personal link name
-        </button>
-
-
-        <!-- DEVICE -->
-        <section class="device">
-
-            <div
-                id="deviceName"
-                class="device-name"
-            >
-                Detecting device...
-            </div>
-
-        </section>
-
-
-        <!-- TERMS -->
-        <div class="terms">
-
-            By clicking “Join”, you agree to our
-            <span class="terms-link">
-                Terms of Service
-            </span>
-            and
-            <span class="terms-link">
-                Privacy Statement
-            </span>
-
-        </div>
-
-
-        <!-- JOIN BUTTON -->
-        <div class="join-area">
-
-            <button
-                id="joinButton"
-                class="join-button"
-                type="button"
-                disabled
-                onclick="joinMeeting()"
-            >
-                Join
-            </button>
-
-        </div>
-
-
-        <!-- INVITATION -->
-        <div class="invitation">
-
-            If you received an invitation link, tap on the link again
-            to join the meeting.
-
-        </div>
-
-
-        <!-- OPTIONS -->
-        <div class="options">
-
-            Join options
-
-        </div>
-
-    </main>
-
-
-    <!-- ==================================
-         UNSUPPORTED DEVICE
-    ================================== -->
-
-    <main
-        id="blockedPage"
-        class="blocked"
-    >
-
-        <h1>
-            This device isn't supported
-        </h1>
-
-        <p>
-            Meeting access is currently available on supported
-            iPhone and Windows devices.
-        </p>
+    <header class="header">
 
         <button
-            class="back-button"
-            type="button"
+            class="cancel"
             onclick="goBack()"
         >
-            Go back
+            Cancel
         </button>
 
-    </main>
+        <div class="page-title">
+            Join
+        </div>
+
+        <div></div>
+
+    </header>
+
+
+    <!-- TABS -->
+
+    <section class="tabs-area">
+
+        <div class="tabs">
+
+            <button class="tab active">
+                Meeting
+            </button>
+
+            <button class="tab">
+                Event
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- MEETING ID -->
+
+    <section class="meeting-field">
+
+        <input
+            id="meetingId"
+            class="meeting-input"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="Meeting ID"
+            maxlength="20"
+        >
+
+    </section>
+
+
+    <!-- PERSONAL LINK -->
+
+    <button
+        class="personal-link"
+        onclick="personalLink()"
+    >
+        Join with a personal link name
+    </button>
+
+
+    <!-- DEVICE -->
+
+    <section class="device">
+
+        <span
+            id="deviceName"
+            class="device-name"
+        >
+            Detecting device...
+        </span>
+
+    </section>
+
+
+    <!-- TERMS -->
+
+    <div class="terms">
+
+        By clicking “Join”, you agree to our
+
+        <span class="link">
+            Terms of Service
+        </span>
+
+        and
+
+        <span class="link">
+            Privacy Statement
+        </span>
+
+    </div>
+
+
+    <!-- JOIN -->
+
+    <div class="join-area">
+
+        <button
+            id="joinButton"
+            class="join-button"
+            disabled
+        >
+            Join
+        </button>
+
+    </div>
+
+
+    <!-- INVITATION -->
+
+    <div class="invitation">
+
+        If you received an invitation link, tap on the link again
+        to join the meeting.
+
+    </div>
+
+
+    <!-- OPTIONS -->
+
+    <section class="options">
+
+        <div class="options-title">
+            Join options
+        </div>
+
+
+        <div class="option">
+
+            <span class="option-text">
+                Don't connect to audio
+            </span>
+
+            <button
+                class="switch"
+                onclick="toggleSwitch(this)"
+                aria-label="Don't connect to audio"
+            ></button>
+
+        </div>
+
+
+        <div class="option">
+
+            <span class="option-text">
+                Turn off my video
+            </span>
+
+            <button
+                class="switch"
+                onclick="toggleSwitch(this)"
+                aria-label="Turn off my video"
+            ></button>
+
+        </div>
+
+
+        <div class="option">
+
+            <span class="option-text">
+                Use original audio
+            </span>
+
+            <button
+                class="switch"
+                onclick="toggleSwitch(this)"
+                aria-label="Use original audio"
+            ></button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- BLOCKED DEVICE -->
+
+<main
+    id="blockedPage"
+    class="blocked"
+>
+
+    <h1>
+        This device isn't supported
+    </h1>
+
+    <p>
+        Meeting access is currently available on supported
+        iPhone and Windows devices.
+    </p>
+
+</main>
 
 
 <script>
 
-    /* ==================================
-       DEVICE DETECTION
-    ================================== */
+/* =========================
+   DEVICE DETECTION
+========================= */
 
-    function detectDevice() {
+function detectDevice() {
 
-        const ua =
-            navigator.userAgent || "";
+    const ua = navigator.userAgent || "";
 
-        const isAndroid =
-            /Android/i.test(ua);
+    const android =
+        /Android/i.test(ua);
 
-        const isIPhone =
-            /iPhone/i.test(ua);
+    const iphone =
+        /iPhone/i.test(ua);
 
-        const isIPad =
-            /iPad/i.test(ua) ||
-            (
-                /Macintosh/i.test(ua) &&
-                navigator.maxTouchPoints > 1
-            );
+    const ipad =
+        /iPad/i.test(ua) ||
+        (
+            /Macintosh/i.test(ua) &&
+            navigator.maxTouchPoints > 1
+        );
 
-        const isWindows =
-            /Windows NT/i.test(ua);
-
-
-        /* Android = blocked */
-
-        if (isAndroid) {
-
-            document.getElementById(
-                "joinPage"
-            ).style.display = "none";
-
-            document.getElementById(
-                "blockedPage"
-            ).style.display = "block";
-
-            return;
-        }
+    const windows =
+        /Windows NT/i.test(ua);
 
 
-        /* iPhone */
-
-        if (isIPhone) {
-
-            document.getElementById(
-                "deviceName"
-            ).textContent = "iPhone";
-
-            return;
-        }
-
-
-        /* iPad */
-
-        if (isIPad) {
-
-            document.getElementById(
-                "deviceName"
-            ).textContent = "iPad";
-
-            return;
-        }
-
-
-        /* Windows */
-
-        if (isWindows) {
-
-            document.getElementById(
-                "deviceName"
-            ).textContent = "Windows";
-
-            return;
-        }
-
-
-        /* Other */
+    if (android) {
 
         document.getElementById(
-            "deviceName"
-        ).textContent = "Unsupported device";
+            "joinPage"
+        ).style.display = "none";
+
+        document.getElementById(
+            "blockedPage"
+        ).style.display = "block";
+
+        return;
     }
 
 
-    /* ==================================
-       MEETING ID
-    ================================== */
+    if (iphone) {
 
-    const meetingId =
-        document.getElementById("meetingId");
+        document.getElementById(
+            "deviceName"
+        ).textContent = "iPhone";
 
-    const joinButton =
-        document.getElementById("joinButton");
+        return;
+    }
 
 
-    meetingId.addEventListener(
-        "input",
-        function () {
+    if (ipad) {
 
-            const value =
-                meetingId.value.trim();
+        document.getElementById(
+            "deviceName"
+        ).textContent = "iPad";
 
-            if (value.length >= 5) {
+        return;
+    }
 
-                joinButton.disabled = false;
 
-                joinButton.classList.add(
-                    "enabled"
-                );
+    if (windows) {
 
-            } else {
+        document.getElementById(
+            "deviceName"
+        ).textContent = "Windows";
 
-                joinButton.disabled = true;
+        return;
+    }
 
-                joinButton.classList.remove(
-                    "enabled"
-                );
-            }
+
+    document.getElementById(
+        "deviceName"
+    ).textContent = "Unsupported device";
+}
+
+
+/* =========================
+   MEETING ID
+========================= */
+
+const meetingId =
+    document.getElementById("meetingId");
+
+const joinButton =
+    document.getElementById("joinButton");
+
+
+meetingId.addEventListener(
+    "input",
+    function () {
+
+        const value =
+            meetingId.value.trim();
+
+        if (value.length >= 5) {
+
+            joinButton.disabled = false;
+
+        } else {
+
+            joinButton.disabled = true;
+
         }
-    );
+
+    }
+);
 
 
-    /* ==================================
-       JOIN MEETING
-    ================================== */
+/* =========================
+   JOIN
+========================= */
 
-    function joinMeeting() {
+joinButton.addEventListener(
+    "click",
+    function () {
 
         const id =
             meetingId.value.trim();
 
-        if (!id) {
-            return;
-        }
+        if (!id) return;
 
         window.location.href =
             "meeting.html?meeting=" +
             encodeURIComponent(id);
+
+    }
+);
+
+
+/* =========================
+   SWITCH
+========================= */
+
+function toggleSwitch(button) {
+
+    button.classList.toggle("on");
+
+}
+
+
+/* =========================
+   PERSONAL LINK
+========================= */
+
+function personalLink() {
+
+    alert(
+        "Enter the personal link provided by the host."
+    );
+
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+function goBack() {
+
+    if (history.length > 1) {
+
+        history.back();
+
+    } else {
+
+        window.location.href =
+            "index.html";
+
     }
 
-
-    /* ==================================
-       PERSONAL LINK
-    ================================== */
-
-    function personalLink() {
-
-        alert(
-            "Enter the personal link provided by the host."
-        );
-    }
+}
 
 
-    /* ==================================
-       CANCEL
-    ================================== */
+/* =========================
+   START
+========================= */
 
-    function goBack() {
-
-        if (window.history.length > 1) {
-
-            window.history.back();
-
-        } else {
-
-            window.location.href =
-                "index.html";
-        }
-    }
-
-
-    /* ==================================
-       START
-    ================================== */
-
-    detectDevice();
+detectDevice();
 
 </script>
 
