@@ -129,14 +129,100 @@
     }
 
     .video-card video {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  background: #222;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    background: #222;
 
-  /* Prevent the browser's video controls/overlay */
+    /* Prevent the browser's video controls/overlay */
+    pointer-events: none;
+}
+
+/* VIDEO TAP CONTROLS */
+
+.video-card {
+  cursor: pointer;
+}
+
+.video-card video {
   pointer-events: none;
+}
+
+/* Controls that appear when video is tapped */
+
+.video-overlay-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+
+  display: flex;
+  gap: 8px;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity .2s ease,
+    visibility .2s ease;
+}
+
+/* Show controls */
+
+.video-card.controls-visible
+.video-overlay-controls {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Round video control */
+
+.video-control-button {
+  width: 44px;
+  height: 44px;
+
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, .72);
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 21px;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,.35);
+}
+
+.video-control-button:active {
+  transform: scale(.94);
+}
+
+/* Muted state */
+
+.video-control-button.muted {
+  background: rgba(210, 45, 45, .85);
+}
+
+/* Mobile sizing */
+
+@media (max-width: 700px) {
+
+  .video-control-button {
+    width: 46px;
+    height: 46px;
+    font-size: 20px;
+  }
+
 }
 
 .video-card {
@@ -584,74 +670,97 @@
 
     <!-- LOCAL VIDEO -->
 
-    <div class="video-card">
+    <div class="video-card" id="localVideoCard">
 
-      <video
-        id="localVideo"
-        autoplay
-        muted
-        playsinline
-        webkit-playsinline
-      ></video>
+  <video
+    id="localVideo"
+    autoplay
+    muted
+    playsinline
+    webkit-playsinline
+  ></video>
 
-      <div class="video-label">
+  <div class="video-overlay-controls" id="localVideoControls">
 
-        You -
-        <span id="localRole">
-          Guest
-        </span>
+    <button
+      id="flipCameraButton"
+      class="video-control-button"
+      type="button"
+      aria-label="Switch camera"
+    >
+      🔄
+    </button>
 
-      </div>
+  </div>
 
-    </div>
+  <div class="video-label">
+    You -
+    <span id="localRole">
+      Guest
+    </span>
+  </div>
 
+</div>
 
     <!-- REMOTE VIDEO -->
 
     <div
-      class="video-card remote"
-      id="remoteCard"
+  class="video-card remote"
+  id="remoteCard"
+>
+
+  <video
+    id="remoteVideo"
+    autoplay
+    playsinline
+    webkit-playsinline
+  ></video>
+
+  <div
+    class="video-overlay-controls"
+    id="remoteVideoControls"
+  >
+
+    <button
+      id="remoteVolumeButton"
+      class="video-control-button"
+      type="button"
+      aria-label="Mute or unmute"
     >
+      🔊
+    </button>
 
-      <video
-        id="remoteVideo"
-        autoplay
-        playsinline
-        webkit-playsinline
-      ></video>
+  </div>
 
+  <div
+    id="remoteWaiting"
+    class="waiting-overlay"
+  >
 
-      <div
-        id="remoteWaiting"
-        class="waiting-overlay"
-      >
-
-        <div class="waiting-icon">
-          👤
-        </div>
-
-        <div class="waiting-title">
-          Waiting for participant
-        </div>
-
-        <div class="waiting-subtitle">
-          The other person will appear here when connected.
-        </div>
-
-      </div>
-
-
-      <div class="video-label">
-
-        <span id="remoteLabel">
-          Other participant
-        </span>
-
-      </div>
-
+    <div class="waiting-icon">
+      👤
     </div>
 
-  </main>
+    <div class="waiting-title">
+      Waiting for participant
+    </div>
+
+    <div class="waiting-subtitle">
+      The other person will appear here when connected.
+    </div>
+
+  </div>
+
+  <div class="video-label">
+
+    <span id="remoteLabel">
+      Other participant
+    </span>
+
+  </div>
+
+</div>
+</main>
 
 
   <!-- AUDIO PROMPT -->
