@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 
 <meta
@@ -8,23 +10,32 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
 
-<meta name="theme-color" content="#222222">
+<meta
+    name="theme-color"
+    content="#222222"
+>
 
 <title>Join Meeting</title>
 
+
 <style>
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
     -webkit-tap-highlight-color: transparent;
 }
 
 html,
 body {
+
     width: 100%;
     min-height: 100%;
+
     background: #222222;
+
     color: #fff;
 
     font-family:
@@ -46,21 +57,26 @@ input {
     font: inherit;
 }
 
+
 /* =========================
    PAGE
 ========================= */
 
 .app {
+
     width: 100%;
     min-height: 100dvh;
+
     background: #222222;
 }
+
 
 /* =========================
    HEADER
 ========================= */
 
 .header {
+
     height: 112px;
 
     padding:
@@ -69,13 +85,17 @@ input {
         0;
 
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+
+    grid-template-columns:
+        1fr auto 1fr;
 
     align-items: center;
 }
 
 .cancel {
+
     border: 0;
+
     background: transparent;
 
     color: #fff;
@@ -89,25 +109,33 @@ input {
 }
 
 .page-title {
+
     font-size: 22px;
+
     font-weight: 700;
 }
+
 
 /* =========================
    TABS
 ========================= */
 
 .tabs-area {
-    padding: 0 44px 40px;
+
+    padding:
+        0 44px 40px;
 }
 
 .tabs {
+
     height: 54px;
 
     padding: 3px;
 
     display: grid;
-    grid-template-columns: 1fr 1fr;
+
+    grid-template-columns:
+        1fr 1fr;
 
     background: #3a3a3e;
 
@@ -115,6 +143,7 @@ input {
 }
 
 .tab {
+
     border: 0;
 
     border-radius: 13px;
@@ -124,35 +153,46 @@ input {
     color: #fff;
 
     font-size: 18px;
+
     font-weight: 500;
 }
 
 .tab.active {
+
     background: #79797f;
 }
+
 
 /* =========================
    INPUT
 ========================= */
 
 .meeting-field {
+
     height: 70px;
 
     background: #2d2d2f;
 
-    border-top: 1px solid #3b3b3d;
-    border-bottom: 1px solid #3b3b3d;
+    border-top:
+        1px solid #3b3b3d;
+
+    border-bottom:
+        1px solid #3b3b3d;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
 
 .meeting-input {
+
     width: 100%;
     height: 100%;
 
     border: 0;
+
     outline: none;
 
     background: transparent;
@@ -162,17 +202,24 @@ input {
     text-align: center;
 
     font-size: 22px;
+
+    letter-spacing: 1px;
 }
 
 .meeting-input::placeholder {
+
     color: #9b9b9f;
+
+    letter-spacing: 0;
 }
+
 
 /* =========================
    PERSONAL LINK
 ========================= */
 
 .personal-link {
+
     width: 100%;
     height: 72px;
 
@@ -180,66 +227,84 @@ input {
 
     background: #222222;
 
-    border-bottom: 1px solid #3b3b3d;
+    border-bottom:
+        1px solid #3b3b3d;
 
     color: #4797ff;
 
     font-size: 18px;
+
     font-weight: 500;
 
     text-align: center;
 }
+
 
 /* =========================
    DEVICE
 ========================= */
 
 .device {
+
     height: 70px;
 
     background: #2d2d2f;
 
-    border-bottom: 1px solid #3b3b3d;
+    border-bottom:
+        1px solid #3b3b3d;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
 
 .device-name {
+
     font-size: 22px;
 }
+
 
 /* =========================
    TERMS
 ========================= */
 
 .terms {
-    padding: 20px 44px 0;
+
+    padding:
+        20px 44px 0;
 
     color: #aaaab0;
 
     font-size: 15px;
+
     line-height: 1.45;
 }
 
 .link {
+
     color: #91c5ff;
 }
+
 
 /* =========================
    JOIN BUTTON
 ========================= */
 
 .join-area {
-    padding: 16px 40px 0;
+
+    padding:
+        16px 40px 0;
 }
 
 .join-button {
+
     width: 100%;
     height: 58px;
 
     border: 0;
+
     border-radius: 20px;
 
     background: #1478f2;
@@ -247,60 +312,106 @@ input {
     color: #fff;
 
     font-size: 21px;
+
     font-weight: 700;
+
+    cursor: pointer;
 }
 
 .join-button:disabled {
+
     background: #3a3a3c;
+
     color: #77777b;
+
+    cursor: default;
 }
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+
+    min-height: 22px;
+
+    padding:
+        10px 44px 0;
+
+    color: #aaaab0;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+.status.error {
+
+    color: #ff7272;
+}
+
+.status.success {
+
+    color: #55d98a;
+}
+
 
 /* =========================
    INVITATION
 ========================= */
 
 .invitation {
-    padding: 14px 44px 0;
+
+    padding:
+        14px 44px 0;
 
     color: #aaaab0;
 
     font-size: 15px;
+
     line-height: 1.4;
 }
 
+
 /* =========================
-   JOIN OPTIONS
+   OPTIONS
 ========================= */
 
 .options {
+
     margin-top: 26px;
 
-    border-top: 1px solid #3b3b3d;
+    border-top:
+        1px solid #3b3b3d;
 
     background: #222222;
 }
 
 .options-title {
-    padding: 18px 44px 12px;
+
+    padding:
+        18px 44px 12px;
 
     color: #aaaab0;
 
     font-size: 16px;
 }
 
-/* =========================
-   OPTION ROW
-========================= */
-
 .option {
+
     min-height: 66px;
 
-    padding: 0 44px;
+    padding:
+        0 44px;
 
-    border-top: 1px solid #363638;
+    border-top:
+        1px solid #363638;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     color: #fff;
@@ -309,14 +420,17 @@ input {
 }
 
 .option-text {
+
     padding-right: 20px;
 }
+
 
 /* =========================
    SWITCH
 ========================= */
 
 .switch {
+
     position: relative;
 
     width: 48px;
@@ -325,6 +439,7 @@ input {
     flex-shrink: 0;
 
     border: 0;
+
     border-radius: 20px;
 
     background: #555559;
@@ -333,6 +448,7 @@ input {
 }
 
 .switch::after {
+
     content: "";
 
     position: absolute;
@@ -351,23 +467,29 @@ input {
 }
 
 .switch.on {
+
     background: #1478f2;
 }
 
 .switch.on::after {
-    transform: translateX(19px);
+
+    transform:
+        translateX(19px);
 }
 
+
 /* =========================
-   ANDROID BLOCK
+   BLOCKED DEVICE
 ========================= */
 
 .blocked {
+
     display: none;
 
     min-height: 100dvh;
 
-    padding: 100px 28px;
+    padding:
+        100px 28px;
 
     background: #222;
 
@@ -375,18 +497,24 @@ input {
 }
 
 .blocked h1 {
+
     font-size: 27px;
+
     margin-bottom: 15px;
 }
 
 .blocked p {
+
     color: #aaa;
+
     font-size: 17px;
+
     line-height: 1.5;
 }
 
+
 /* =========================
-   SMALL HEIGHT DEVICES
+   SMALL HEIGHT
 ========================= */
 
 @media (max-height: 720px) {
@@ -439,13 +567,22 @@ input {
     .option {
         min-height: 58px;
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
-<main id="joinPage" class="app">
+
+<main
+    id="joinPage"
+    class="app"
+>
+
 
     <!-- HEADER -->
 
@@ -453,6 +590,7 @@ input {
 
         <button
             class="cancel"
+            type="button"
             onclick="goBack()"
         >
             Cancel
@@ -473,11 +611,17 @@ input {
 
         <div class="tabs">
 
-            <button class="tab active">
+            <button
+                class="tab active"
+                type="button"
+            >
                 Meeting
             </button>
 
-            <button class="tab">
+            <button
+                class="tab"
+                type="button"
+            >
                 Event
             </button>
 
@@ -507,6 +651,7 @@ input {
 
     <button
         class="personal-link"
+        type="button"
         onclick="personalLink()"
     >
         Join with a personal link name
@@ -553,6 +698,7 @@ input {
         <button
             id="joinButton"
             class="join-button"
+            type="button"
             disabled
         >
             Join
@@ -561,12 +707,20 @@ input {
     </div>
 
 
+    <!-- STATUS -->
+
+    <div
+        id="status"
+        class="status"
+    ></div>
+
+
     <!-- INVITATION -->
 
     <div class="invitation">
 
-        If you received an invitation link, tap on the link again
-        to join the meeting.
+        If you received an invitation link, tap on the link
+        again to join the meeting.
 
     </div>
 
@@ -588,6 +742,7 @@ input {
 
             <button
                 class="switch"
+                type="button"
                 onclick="toggleSwitch(this)"
                 aria-label="Don't connect to audio"
             ></button>
@@ -603,6 +758,7 @@ input {
 
             <button
                 class="switch"
+                type="button"
                 onclick="toggleSwitch(this)"
                 aria-label="Turn off my video"
             ></button>
@@ -618,6 +774,7 @@ input {
 
             <button
                 class="switch"
+                type="button"
                 onclick="toggleSwitch(this)"
                 aria-label="Use original audio"
             ></button>
@@ -625,6 +782,7 @@ input {
         </div>
 
     </section>
+
 
 </main>
 
@@ -648,28 +806,81 @@ input {
 </main>
 
 
-<script>
+<script type="module">
 
-/* =========================
+
+/* =====================================
+   FIREBASE
+===================================== */
+
+import {
+    db,
+    auth
+} from "./firebase-config.js";
+
+
+import {
+    signInAnonymously
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+import {
+    doc,
+    getDoc
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* =====================================
+   ELEMENTS
+===================================== */
+
+const meetingIdInput =
+    document.getElementById(
+        "meetingId"
+    );
+
+
+const joinButton =
+    document.getElementById(
+        "joinButton"
+    );
+
+
+const statusElement =
+    document.getElementById(
+        "status"
+    );
+
+
+/* =====================================
    DEVICE DETECTION
-========================= */
+===================================== */
 
 function detectDevice() {
 
-    const ua = navigator.userAgent || "";
+    const ua =
+        navigator.userAgent || "";
+
 
     const android =
         /Android/i.test(ua);
 
+
     const iphone =
         /iPhone/i.test(ua);
 
+
     const ipad =
-        /iPad/i.test(ua) ||
+        /iPad/i.test(ua)
+        ||
         (
-            /Macintosh/i.test(ua) &&
+            /Macintosh/i.test(ua)
+            &&
             navigator.maxTouchPoints > 1
         );
+
 
     const windows =
         /Windows NT/i.test(ua);
@@ -693,7 +904,8 @@ function detectDevice() {
 
         document.getElementById(
             "deviceName"
-        ).textContent = "iPhone";
+        ).textContent =
+            "iPhone";
 
         return;
     }
@@ -703,7 +915,8 @@ function detectDevice() {
 
         document.getElementById(
             "deviceName"
-        ).textContent = "iPad";
+        ).textContent =
+            "iPad";
 
         return;
     }
@@ -713,7 +926,8 @@ function detectDevice() {
 
         document.getElementById(
             "deviceName"
-        ).textContent = "Windows";
+        ).textContent =
+            "Windows";
 
         return;
     }
@@ -721,35 +935,295 @@ function detectDevice() {
 
     document.getElementById(
         "deviceName"
-    ).textContent = "Unsupported device";
+    ).textContent =
+        "Browser";
+
 }
 
 
-/* =========================
-   MEETING ID
-========================= */
+/* =====================================
+   GET MEETING ID FROM URL
+===================================== */
 
-const meetingId =
-    document.getElementById("meetingId");
+function getMeetingIdFromUrl() {
 
-const joinButton =
-    document.getElementById("joinButton");
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
 
-meetingId.addEventListener(
+    /*
+     * Shared invitation links use:
+     *
+     * join.html?meeting=123456789
+     */
+
+    return params.get(
+        "meeting"
+    );
+
+}
+
+
+/* =====================================
+   FORMAT MEETING ID
+===================================== */
+
+function cleanMeetingId(value) {
+
+    return value
+        .replace(/\D/g, "")
+        .trim();
+
+}
+
+
+/* =====================================
+   LOAD INVITATION ID
+===================================== */
+
+const invitationId =
+    getMeetingIdFromUrl();
+
+
+if (invitationId) {
+
+    meetingIdInput.value =
+        cleanMeetingId(
+            invitationId
+        );
+
+}
+
+
+/* =====================================
+   VALIDATE INPUT
+===================================== */
+
+function updateJoinButton() {
+
+    const id =
+        cleanMeetingId(
+            meetingIdInput.value
+        );
+
+
+    meetingIdInput.value =
+        id;
+
+
+    /*
+     * A generated meeting ID is 9 digits.
+     */
+
+    if (id.length === 9) {
+
+        joinButton.disabled =
+            false;
+
+    } else {
+
+        joinButton.disabled =
+            true;
+
+    }
+
+}
+
+
+meetingIdInput.addEventListener(
     "input",
-    function () {
+    updateJoinButton
+);
 
-        const value =
-            meetingId.value.trim();
 
-        if (value.length >= 5) {
+/*
+ * Run once in case the page was
+ * opened from an invitation link.
+ */
 
-            joinButton.disabled = false;
+updateJoinButton();
 
-        } else {
 
-            joinButton.disabled = true;
+/* =====================================
+   JOIN MEETING
+===================================== */
+
+joinButton.addEventListener(
+    "click",
+    async function() {
+
+        const id =
+            cleanMeetingId(
+                meetingIdInput.value
+            );
+
+
+        if (id.length !== 9) {
+
+            return;
+
+        }
+
+
+        joinButton.disabled =
+            true;
+
+        joinButton.textContent =
+            "Checking meeting...";
+
+
+        statusElement.textContent =
+            "";
+
+        statusElement.classList.remove(
+            "error",
+            "success"
+        );
+
+
+        try {
+
+            /*
+             * Authenticate guest anonymously.
+             *
+             * This allows guests to join without
+             * creating an account.
+             */
+
+            if (!auth.currentUser) {
+
+                await signInAnonymously(
+                    auth
+                );
+
+            }
+
+
+            /*
+             * Look up the meeting.
+             */
+
+            const meetingRef =
+                doc(
+                    db,
+                    "meetings",
+                    id
+                );
+
+
+            const meetingSnapshot =
+                await getDoc(
+                    meetingRef
+                );
+
+
+            /*
+             * Meeting doesn't exist.
+             */
+
+            if (
+                !meetingSnapshot.exists()
+            ) {
+
+                statusElement.textContent =
+                    "We couldn't find a meeting with that ID.";
+
+                statusElement.classList.add(
+                    "error"
+                );
+
+                joinButton.disabled =
+                    false;
+
+                joinButton.textContent =
+                    "Join";
+
+                return;
+
+            }
+
+
+            const meeting =
+                meetingSnapshot.data();
+
+
+            /*
+             * Check meeting status.
+             */
+
+            if (
+                meeting.status &&
+                meeting.status !== "active"
+            ) {
+
+                statusElement.textContent =
+                    "This meeting is no longer active.";
+
+                statusElement.classList.add(
+                    "error"
+                );
+
+                joinButton.disabled =
+                    false;
+
+                joinButton.textContent =
+                    "Join";
+
+                return;
+
+            }
+
+
+            /*
+             * Store guest's meeting ID.
+             */
+
+            sessionStorage.setItem(
+                "currentMeetingId",
+                id
+            );
+
+
+            sessionStorage.setItem(
+                "joiningAsGuest",
+                "true"
+            );
+
+
+            /*
+             * Go directly to the actual
+             * meeting room.
+             */
+
+            window.location.href =
+                "meeting-room.html?id="
+                + encodeURIComponent(
+                    id
+                );
+
+        } catch (error) {
+
+            console.error(
+                "Join meeting error:",
+                error
+            );
+
+
+            statusElement.textContent =
+                "Unable to connect to the meeting. Please try again.";
+
+            statusElement.classList.add(
+                "error"
+            );
+
+
+            joinButton.disabled =
+                false;
+
+            joinButton.textContent =
+                "Join";
 
         }
 
@@ -757,78 +1231,64 @@ meetingId.addEventListener(
 );
 
 
-/* =========================
-   JOIN
-========================= */
-
-joinButton.addEventListener(
-    "click",
-    function () {
-
-        const id =
-            meetingId.value.trim();
-
-        if (!id) return;
-
-        window.location.href =
-            "meeting.html?meeting=" +
-            encodeURIComponent(id);
-
-    }
-);
-
-
-/* =========================
+/* =====================================
    SWITCH
-========================= */
+===================================== */
 
-function toggleSwitch(button) {
+window.toggleSwitch =
+    function(button) {
 
-    button.classList.toggle("on");
+        button.classList.toggle(
+            "on"
+        );
 
-}
+    };
 
 
-/* =========================
+/* =====================================
    PERSONAL LINK
-========================= */
+===================================== */
 
-function personalLink() {
+window.personalLink =
+    function() {
 
-    alert(
-        "Enter the personal link provided by the host."
-    );
+        statusElement.textContent =
+            "Personal link joining will be available soon.";
 
-}
+    };
 
 
-/* =========================
+/* =====================================
    BACK
-========================= */
+===================================== */
 
-function goBack() {
+window.goBack =
+    function() {
 
-    if (history.length > 1) {
+        if (
+            window.history.length > 1
+        ) {
 
-        history.back();
+            window.history.back();
 
-    } else {
+        } else {
 
-        window.location.href =
-            "index.html";
+            window.location.href =
+                "index.html";
 
-    }
+        }
 
-}
+    };
 
 
-/* =========================
+/* =====================================
    START
-========================= */
+===================================== */
 
 detectDevice();
 
 </script>
 
 </body>
+
 </html>
