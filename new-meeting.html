@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Start a Meeting</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f9fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 460px;
+            background: white;
+            border-radius: 18px;
+            padding: 35px 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 35px;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 28px;
+            color: #1f2937;
+        }
+
+        .subtitle {
+            margin: 0 auto 30px;
+            color: #6b7280;
+            line-height: 1.5;
+            max-width: 350px;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #2d8cff;
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .meeting-box {
+            display: none;
+            margin-top: 25px;
+            padding: 22px;
+            border-radius: 12px;
+            background: #f3f6fa;
+        }
+
+        .meeting-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .meeting-id {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        .secondary {
+            background: #111827;
+            margin-top: 10px;
+        }
+
+        .copy-button {
+            background: #e5e7eb;
+            color: #111827;
+            margin-top: 10px;
+        }
+
+        .message {
+            margin-top: 18px;
+            color: #dc2626;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .success {
+            color: #16a34a;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            color: #2d8cff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">Zoom</div>
+
+    <h1>Start a Meeting</h1>
+
+    <p class="subtitle">
+        Create a new meeting and receive a unique Meeting ID that you can share with your guests.
+    </p>
+
+    <button id="createMeetingBtn">
+        Create Meeting
+    </button>
+
+    <div class="meeting-box" id="meetingBox">
+
+        <div class="meeting-label">
+            Your Meeting ID
+        </div>
+
+        <div class="meeting-id" id="meetingId">
+            ---
+        </div>
+
+        <button class="copy-button" id="copyBtn">
+            Copy Meeting ID
+        </button>
+
+        <button class="secondary" id="startMeetingBtn">
+            Start Meeting
+        </button>
+
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <a class="back" href="index.html">
+        Back to home
+    </a>
+
+</div>
+
+<script type="module">
+
+    import {
+        auth,
+        db
+    } from "./firebase-config.js";
+
+    import {
+        signInAnonymously
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+    import {
+        doc,
+        getDoc,
+        setDoc,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+    const createMeetingBtn =
+        document.getElementById("createMeetingBtn");
+
+    const meetingBox =
+        document.getElementById("meetingBox");
+
+    const meetingIdElement =
+        document.getElementById("meetingId");
+
+    const copyBtn =
+        document.getElementById("copyBtn");
+
+    const startMeetingBtn =
+        document.getElementById("startMeetingBtn");
+
+    const message =
+        document.getElementById("message");
+
+
+    let currentMeetingId = null;
+
+
+    /*
+     * Make sure the host has an authenticated
+     * Firebase session.
+     */
+    async function ensureAuthentication() {
+
+        if (auth.currentUser) {
+            return auth.currentUser;
+        }
+
+        const result =
+            await signInAnonymously(auth);
+
+        return result.user;
+    }
+
+
+    /*
+     * Generate a 9-digit Meeting ID.
+     */
+    function generateMeetingId() {
+
+        const number =
+            Math.floor(
+                100000000 +
+                Math.random() * 900000000
+            );
+
+        return String(number);
+    }
+
+
+    /*
+     * Create the meeting.
+     */
+    async function createMeeting() {
+
+        createMeetingBtn.disabled = true;
+        createMeetingBtn.textContent = "Creating...";
+
+        message.textContent = "";
+        message.className = "message";
+
+        try {
+
+            const user =
+                await ensureAuthentication();
+
+            let meetingId;
+            let meetingRef;
+            let existingMeeting;
+
+            /*
+             * Generate an ID and make sure it isn't
+             * already being used.
+             */
+            do {
+
+                meetingId =
+                    generateMeetingId();
+
+                meetingRef =
+                    doc(
+                        db,
+                        "meetings",
+                        meetingId
+                    );
+
+                existingMeeting =
+                    await getDoc(meetingRef);
+
+            } while (existingMeeting.exists());
+
+
+            /*
+             * Save the meeting in Firestore.
+             */
+            await setDoc(
+                meetingRef,
+                {
+                    meetingId: meetingId,
+                    hostId: user.uid,
+                    status: "active",
+                    createdAt: serverTimestamp()
+                }
+            );
+
+
+            currentMeetingId =
+                meetingId;
+
+
+            meetingIdElement.textContent =
+                meetingId;
+
+            meetingBox.style.display =
+                "block";
+
+            createMeetingBtn.style.display =
+                "none";
+
+            message.textContent =
+                "Meeting created successfully.";
+
+            message.className =
+                "message success";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.textContent =
+                "Unable to create the meeting. Please try again.";
+
+            message.className =
+                "message";
+
+            createMeetingBtn.disabled =
+                false;
+
+            createMeetingBtn.textContent =
+                "Create Meeting";
+        }
+    }
+
+
+    /*
+     * Copy Meeting ID.
+     */
+    copyBtn.addEventListener(
+        "click",
+        async () => {
+
+            if (!currentMeetingId) {
+                return;
+            }
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    currentMeetingId
+                );
+
+                copyBtn.textContent =
+                    "Copied!";
+
+                setTimeout(() => {
+
+                    copyBtn.textContent =
+                        "Copy Meeting ID";
+
+                }, 1500);
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Start the actual meeting.
+     */
+    startMeetingBtn.addEventListener(
+        "click",
+        () => {
+
+            if (!currentMeetingId) {
+                return;
+            }
+
+            window.location.href =
+                "meeting.html?meeting=" +
+                encodeURIComponent(
+                    currentMeetingId
+                );
+        }
+    );
+
+
+    createMeetingBtn.addEventListener(
+        "click",
+        createMeeting
+    );
+
+</script>
+
+</body>
+</html>
