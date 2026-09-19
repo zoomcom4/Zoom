@@ -1085,77 +1085,214 @@
 
 </div>
 
+<script type="module">
 
-<script>
+/* =================================
+   FIREBASE
+================================= */
 
-    /* =================================
-       PAGE NAVIGATION
-    ================================= */
+import {
+    db,
+    auth
+} from "./firebase-config.js";
 
-    function goTo(page) {
+import {
+    signInAnonymously
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        if (page === "signin") {
-
-            window.location.href =
-                "signin.html";
-
-        }
-
-        if (page === "signup") {
-
-            window.location.href =
-                "signup.html";
-
-        }
-
-        if (page === "join") {
-
-            window.location.href =
-                "join.html";
-
-        }
-
-    }
+import {
+    doc,
+    setDoc,
+    serverTimestamp
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-    /* =================================
-       SETTINGS
-    ================================= */
+/* =================================
+   PAGE NAVIGATION
+================================= */
 
-    function openSettings() {
+window.goTo = function(page) {
+
+    if (page === "signin") {
 
         window.location.href =
-            "settings.html";
+            "signin.html";
 
     }
 
+    if (page === "signup") {
 
-    /* =================================
-       CREATE MEETING
-    ================================= */
+        window.location.href =
+            "signup.html";
 
-    function createMeeting() {
+    }
+
+    if (page === "join") {
+
+        window.location.href =
+            "join.html";
+
+    }
+
+};
+
+
+/* =================================
+   SETTINGS
+================================= */
+
+window.openSettings = function() {
+
+    window.location.href =
+        "settings.html";
+
+};
+
+
+/* =================================
+   FORMAT MEETING ID
+================================= */
+
+function formatMeetingId(id) {
+
+    return id.substring(0, 3)
+        + " "
+        + id.substring(3, 6)
+        + " "
+        + id.substring(6, 9);
+
+}
+
+
+/* =================================
+   CREATE MEETING
+================================= */
+
+window.createMeeting = async function() {
+
+    const overlay =
+        document.getElementById(
+            "meetingOverlay"
+        );
+
+    const display =
+        document.getElementById(
+            "meetingIdDisplay"
+        );
+
+    const status =
+        document.getElementById(
+            "copyStatus"
+        );
+
+
+    /*
+     * Generate a 9-digit Meeting ID.
+     */
+
+    const part1 =
+        Math.floor(
+            100 + Math.random() * 900
+        );
+
+    const part2 =
+        Math.floor(
+            100 + Math.random() * 900
+        );
+
+    const part3 =
+        Math.floor(
+            100 + Math.random() * 900
+        );
+
+
+    const meetingId =
+        `${part1}${part2}${part3}`;
+
+
+    /*
+     * Show the ID immediately.
+     */
+
+    display.textContent =
+        formatMeetingId(
+            meetingId
+        );
+
+
+    status.classList.remove(
+        "visible"
+    );
+
+
+    /*
+     * Show the modal.
+     */
+
+    overlay.classList.add(
+        "show"
+    );
+
+
+    try {
 
         /*
-         * Generate a 9-digit meeting ID.
+         * Authenticate the host anonymously.
+         *
+         * This means a host can create a meeting
+         * without creating a normal account.
          */
 
-        const part1 =
-            Math.floor(100 + Math.random() * 900);
+        if (!auth.currentUser) {
 
-        const part2 =
-            Math.floor(100 + Math.random() * 900);
+            await signInAnonymously(
+                auth
+            );
 
-        const part3 =
-            Math.floor(100 + Math.random() * 900);
-
-        const meetingId =
-            `${part1}${part2}${part3}`;
+        }
 
 
         /*
-         * Save the ID so meeting.html
-         * can use the same meeting.
+         * Create the Firestore meeting document.
+         *
+         * meetings
+         *    └── 123456789
+         */
+
+        const meetingRef =
+            doc(
+                db,
+                "meetings",
+                meetingId
+            );
+
+
+        await setDoc(
+            meetingRef,
+            {
+
+                meetingId:
+                    meetingId,
+
+                hostId:
+                    auth.currentUser.uid,
+
+                status:
+                    "active",
+
+                createdAt:
+                    serverTimestamp(),
+
+                participants: {}
+
+            }
+        );
+
+
+        /*
+         * Save locally too.
          */
 
         sessionStorage.setItem(
@@ -1164,131 +1301,74 @@
         );
 
 
+        sessionStorage.setItem(
+            "currentMeetingId",
+            meetingId
+        );
+
+
+        sessionStorage.setItem(
+            "joiningAsHost",
+            "true"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Create meeting error:",
+            error
+        );
+
+
         /*
-         * Display it in the modal.
+         * Remove the modal if creation failed.
          */
 
-        document.getElementById(
-            "meetingIdDisplay"
-        ).textContent =
-            formatMeetingId(meetingId);
+        overlay.classList.remove(
+            "show"
+        );
 
 
-        /*
-         * Reset copied status.
-         */
-
-        document
-            .getElementById("copyStatus")
-            .classList.remove("visible");
-
-
-        /*
-         * Open modal.
-         */
-
-        document
-            .getElementById("meetingOverlay")
-            .classList.add("show");
+        alert(
+            "Unable to create the meeting. Please check your connection and try again."
+        );
 
     }
 
-
-    /* =================================
-       FORMAT MEETING ID
-    ================================= */
-
-    function formatMeetingId(id) {
-
-        return id
-            .substring(0, 3)
-            + " "
-            + id.substring(3, 6)
-            + " "
-            + id.substring(6, 9);
-
-    }
+};
 
 
-    /* =================================
-       CLOSE MODAL
-    ================================= */
+/* =================================
+   CLOSE MODAL
+================================= */
 
-    function closeMeetingModal() {
+window.closeMeetingModal =
+    function() {
 
         document
-            .getElementById("meetingOverlay")
-            .classList.remove("show");
-
-    }
-
-
-    /* =================================
-       COPY MEETING ID
-    ================================= */
-
-    async function copyMeetingId() {
-
-        const meetingId =
-            sessionStorage.getItem("meetingId");
-
-        if (!meetingId) {
-            return;
-        }
-
-
-        try {
-
-            await navigator.clipboard.writeText(
-                formatMeetingId(meetingId)
+            .getElementById(
+                "meetingOverlay"
+            )
+            .classList.remove(
+                "show"
             );
 
-        } catch (error) {
-
-            /*
-             * Fallback for browsers where
-             * clipboard API is unavailable.
-             */
-
-            const input =
-                document.createElement("textarea");
-
-            input.value =
-                formatMeetingId(meetingId);
-
-            document.body.appendChild(input);
-
-            input.select();
-
-            document.execCommand("copy");
-
-            input.remove();
-
-        }
+    };
 
 
-        const status =
-            document.getElementById("copyStatus");
+/* =================================
+   COPY MEETING ID
+================================= */
 
-        status.classList.add("visible");
-
-        setTimeout(() => {
-
-            status.classList.remove("visible");
-
-        }, 2200);
-
-    }
-
-
-    /* =================================
-       SHARE INVITATION
-    ================================= */
-
-    async function shareInvitation() {
+window.copyMeetingId =
+    async function() {
 
         const meetingId =
-            sessionStorage.getItem("meetingId");
+            sessionStorage.getItem(
+                "meetingId"
+            );
+
 
         if (!meetingId) {
             return;
@@ -1296,23 +1376,122 @@
 
 
         const formattedId =
-            formatMeetingId(meetingId);
+            formatMeetingId(
+                meetingId
+            );
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                formattedId
+            );
+
+        } catch (error) {
+
+            const input =
+                document.createElement(
+                    "textarea"
+                );
+
+            input.value =
+                formattedId;
+
+            document.body.appendChild(
+                input
+            );
+
+            input.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            input.remove();
+
+        }
+
+
+        const status =
+            document.getElementById(
+                "copyStatus"
+            );
+
+
+        status.textContent =
+            "Meeting ID copied";
+
+
+        status.classList.add(
+            "visible"
+        );
+
+
+        setTimeout(
+            () => {
+
+                status.classList.remove(
+                    "visible"
+                );
+
+            },
+            2200
+        );
+
+    };
+
+
+/* =================================
+   SHARE INVITATION
+================================= */
+
+window.shareInvitation =
+    async function() {
+
+        const meetingId =
+            sessionStorage.getItem(
+                "meetingId"
+            );
+
+
+        if (!meetingId) {
+            return;
+        }
+
+
+        const formattedId =
+            formatMeetingId(
+                meetingId
+            );
+
+
+        /*
+         * The invitation link now points
+         * directly to join.html with the ID.
+         */
+
+        const joinUrl =
+            window.location.origin
+            + window.location.pathname
+                .replace(
+                    "index.html",
+                    "join.html"
+                )
+            + "?meeting="
+            + encodeURIComponent(
+                meetingId
+            );
 
 
         const invitation =
             "Join my Zoom meeting.\n\n"
             + "Meeting ID: "
-            + formattedId;
+            + formattedId
+            + "\n\n"
+            + joinUrl;
 
 
-        /*
-         * Use the phone/browser's native
-         * share menu when available.
-         */
-
-        if (
-            navigator.share
-        ) {
+        if (navigator.share) {
 
             try {
 
@@ -1329,18 +1508,12 @@
             } catch (error) {
 
                 /*
-                 * User cancelled sharing.
-                 * Nothing needs to happen.
+                 * Sharing was cancelled.
                  */
 
             }
 
         } else {
-
-            /*
-             * If native sharing isn't available,
-             * copy the invitation instead.
-             */
 
             try {
 
@@ -1348,48 +1521,61 @@
                     invitation
                 );
 
+
                 const status =
                     document.getElementById(
                         "copyStatus"
                     );
 
+
                 status.textContent =
                     "Invitation copied";
+
 
                 status.classList.add(
                     "visible"
                 );
 
-                setTimeout(() => {
 
-                    status.classList.remove(
-                        "visible"
-                    );
+                setTimeout(
+                    () => {
 
-                    status.textContent =
-                        "Meeting ID copied";
+                        status.classList.remove(
+                            "visible"
+                        );
 
-                }, 2200);
+                        status.textContent =
+                            "Meeting ID copied";
+
+                    },
+                    2200
+                );
 
             } catch (error) {
 
-                alert(invitation);
+                alert(
+                    invitation
+                );
 
             }
 
         }
 
-    }
+    };
 
 
-    /* =================================
-       START MEETING
-    ================================= */
+/* =================================
+   START MEETING
+================================= */
 
-    function startMeeting() {
+window.startMeeting =
+    function() {
 
         const meetingId =
-            sessionStorage.getItem("meetingId");
+            sessionStorage.getItem(
+                "meetingId"
+            );
+
 
         if (!meetingId) {
 
@@ -1401,49 +1587,34 @@
 
 
         /*
-         * Now take the host to meeting.html
-         * with the generated meeting ID.
+         * Host enters the meeting using
+         * the same ID that was stored
+         * in Firestore.
          */
 
         window.location.href =
             "meeting.html?id="
-            + encodeURIComponent(meetingId);
+            + encodeURIComponent(
+                meetingId
+            );
 
-    }
-
-
-    /* =================================
-       CLOSE WHEN CLICKING OUTSIDE
-    ================================= */
-
-    document
-        .getElementById("meetingOverlay")
-        .addEventListener(
-            "click",
-            function(event) {
-
-                if (
-                    event.target === this
-                ) {
-
-                    closeMeetingModal();
-
-                }
-
-            }
-        );
+    };
 
 
-    /* =================================
-       ESCAPE KEY
-    ================================= */
+/* =================================
+   CLOSE WHEN CLICKING OUTSIDE
+================================= */
 
-    document.addEventListener(
-        "keydown",
+document
+    .getElementById(
+        "meetingOverlay"
+    )
+    .addEventListener(
+        "click",
         function(event) {
 
             if (
-                event.key === "Escape"
+                event.target === this
             ) {
 
                 closeMeetingModal();
@@ -1452,6 +1623,26 @@
 
         }
     );
+
+
+/* =================================
+   ESCAPE KEY
+================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeMeetingModal();
+
+        }
+
+    }
+);
 
 </script>
 
