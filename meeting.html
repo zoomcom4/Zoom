@@ -10,7 +10,10 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta name="theme-color" content="#222222">
+    <meta
+        name="theme-color"
+        content="#222222"
+    >
 
     <title>New Meeting</title>
 
@@ -50,7 +53,9 @@
             flex-direction: column;
         }
 
-        /* HEADER */
+        /* =========================
+           HEADER
+        ========================= */
 
         .header {
             height: 90px;
@@ -85,7 +90,9 @@
             margin-right: 55px;
         }
 
-        /* CONTENT */
+        /* =========================
+           CONTENT
+        ========================= */
 
         .content {
             flex: 1;
@@ -94,7 +101,7 @@
             flex-direction: column;
             align-items: center;
 
-            padding: 70px 24px 40px;
+            padding: 60px 24px 40px;
         }
 
         .icon {
@@ -109,9 +116,21 @@
             align-items: center;
             justify-content: center;
 
-            font-size: 34px;
-
             margin-bottom: 28px;
+        }
+
+        .icon svg {
+            width: 36px;
+            height: 36px;
+
+            fill: none;
+
+            stroke: white;
+
+            stroke-width: 2;
+
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         h1 {
@@ -131,12 +150,14 @@
 
             text-align: center;
 
-            max-width: 340px;
+            max-width: 350px;
 
-            margin-bottom: 42px;
+            margin-bottom: 38px;
         }
 
-        /* MEETING CARD */
+        /* =========================
+           MEETING CARD
+        ========================= */
 
         .meeting-card {
             width: 100%;
@@ -163,9 +184,10 @@
 
         .meeting-id {
             font-size: 32px;
+
             font-weight: 700;
 
-            letter-spacing: 2px;
+            letter-spacing: 3px;
 
             margin-bottom: 20px;
         }
@@ -186,7 +208,9 @@
             word-break: break-all;
         }
 
-        /* BUTTON */
+        /* =========================
+           START BUTTON
+        ========================= */
 
         .start-button {
             width: 100%;
@@ -197,6 +221,7 @@
             margin-top: 25px;
 
             border: none;
+
             border-radius: 18px;
 
             background: #1478f2;
@@ -204,6 +229,7 @@
             color: white;
 
             font-size: 19px;
+
             font-weight: 700;
 
             cursor: pointer;
@@ -212,6 +238,16 @@
         .start-button:active {
             transform: scale(.98);
         }
+
+        .start-button:disabled {
+            opacity: .6;
+
+            cursor: default;
+        }
+
+        /* =========================
+           COPY BUTTON
+        ========================= */
 
         .copy-button {
             width: 100%;
@@ -222,6 +258,7 @@
             margin-top: 12px;
 
             border: none;
+
             border-radius: 17px;
 
             background: #3a3a3d;
@@ -229,10 +266,15 @@
             color: white;
 
             font-size: 17px;
+
             font-weight: 600;
 
             cursor: pointer;
         }
+
+        /* =========================
+           STATUS
+        ========================= */
 
         .status {
             min-height: 24px;
@@ -246,7 +288,17 @@
             text-align: center;
         }
 
-        /* MOBILE */
+        .status.success {
+            color: #49d17d;
+        }
+
+        .status.error {
+            color: #ff7373;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media (max-height: 700px) {
 
@@ -272,11 +324,14 @@
 
 <div class="page">
 
+    <!-- HEADER -->
+
     <header class="header">
 
         <button
             class="back"
-            onclick="history.back()"
+            type="button"
+            onclick="goBack()"
         >
             Cancel
         </button>
@@ -288,10 +343,26 @@
     </header>
 
 
+    <!-- CONTENT -->
+
     <main class="content">
 
         <div class="icon">
-            +
+
+            <svg
+                viewBox="0 0 24 24"
+            >
+
+                <path
+                    d="M8 12h8"
+                />
+
+                <path
+                    d="M12 8v8"
+                />
+
+            </svg>
+
         </div>
 
 
@@ -301,15 +372,16 @@
 
 
         <p class="description">
-            Create a meeting and share the meeting ID
-            with the person you want to call.
+            Your meeting is ready. Share the meeting ID
+            with the people you want to invite.
         </p>
 
+
+        <!-- MEETING INFORMATION -->
 
         <div
             id="meetingCard"
             class="meeting-card"
-            style="display:none;"
         >
 
             <div class="label">
@@ -327,23 +399,29 @@
                 id="shareLink"
                 class="share-link"
             >
+                Preparing meeting link...
             </div>
 
         </div>
 
 
+        <!-- START -->
+
         <button
             id="startButton"
             class="start-button"
+            type="button"
         >
-            Start New Meeting
+            Start Meeting
         </button>
 
+
+        <!-- COPY -->
 
         <button
             id="copyButton"
             class="copy-button"
-            style="display:none;"
+            type="button"
         >
             Copy Meeting Link
         </button>
@@ -362,252 +440,535 @@
 
 <script type="module">
 
-    /*
-     * IMPORTANT:
-     * This imports the Firebase connection
-     * you already created for your project.
-     */
+    /* =====================================
+       FIREBASE
+    ===================================== */
 
     import {
         db,
         auth
     } from "./firebase-config.js";
 
+
     import {
-        collection,
+        signInAnonymously
+    } from
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+    import {
         doc,
         setDoc,
+        getDoc,
         serverTimestamp
     } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-    const startButton =
-        document.getElementById("startButton");
-
-    const copyButton =
-        document.getElementById("copyButton");
-
-    const meetingCard =
-        document.getElementById("meetingCard");
+    /* =====================================
+       ELEMENTS
+    ===================================== */
 
     const meetingIdElement =
-        document.getElementById("meetingId");
+        document.getElementById(
+            "meetingId"
+        );
+
 
     const shareLinkElement =
-        document.getElementById("shareLink");
+        document.getElementById(
+            "shareLink"
+        );
+
+
+    const startButton =
+        document.getElementById(
+            "startButton"
+        );
+
+
+    const copyButton =
+        document.getElementById(
+            "copyButton"
+        );
+
 
     const statusElement =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
 
-    /*
-     * Generate a 9-digit Meeting ID.
-     */
+    /* =====================================
+       GET MEETING ID
+    ===================================== */
 
-    function generateMeetingId() {
+    function getMeetingId() {
 
-        const min = 100000000;
-        const max = 999999999;
+        /*
+         * First check the URL.
+         *
+         * Example:
+         *
+         * meeting.html?id=123456789
+         */
 
-        return String(
-            Math.floor(
-                Math.random() *
-                (max - min + 1)
-            ) + min
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const urlId =
+            params.get("id");
+
+
+        if (urlId) {
+
+            return urlId;
+
+        }
+
+
+        /*
+         * If there is no URL ID,
+         * use the ID stored by index.html.
+         */
+
+        const storedId =
+            sessionStorage.getItem(
+                "meetingId"
+            );
+
+
+        return storedId;
+
+    }
+
+
+    /* =====================================
+       FORMAT ID
+    ===================================== */
+
+    function formatMeetingId(id) {
+
+        if (!id) {
+            return "---";
+        }
+
+
+        if (id.length !== 9) {
+            return id;
+        }
+
+
+        return (
+            id.substring(0, 3)
+            + " "
+            + id.substring(3, 6)
+            + " "
+            + id.substring(6, 9)
         );
 
     }
 
 
-    /*
-     * Create the meeting.
-     */
+    /* =====================================
+       MEETING ID
+    ===================================== */
 
-    async function createMeeting() {
-
-        startButton.disabled = true;
-
-        startButton.textContent =
-            "Creating meeting...";
-
-        statusElement.textContent = "";
+    const meetingId =
+        getMeetingId();
 
 
-        try {
+    if (!meetingId) {
 
-            /*
-             * Make sure the user is signed in.
-             */
+        meetingIdElement.textContent =
+            "Unavailable";
 
-            const user =
-                auth.currentUser;
+        shareLinkElement.textContent =
+            "No meeting ID was provided.";
 
+        startButton.disabled =
+            true;
 
-            if (!user) {
+        statusElement.textContent =
+            "Please return to the home page and create a new meeting.";
 
-                statusElement.textContent =
-                    "Please sign in before starting a meeting.";
+        statusElement.classList.add(
+            "error"
+        );
 
-                startButton.disabled = false;
+    } else {
 
-                startButton.textContent =
-                    "Start New Meeting";
+        /*
+         * Display existing ID.
+         */
 
-                return;
-            }
-
-
-            /*
-             * Generate ID.
-             */
-
-            const meetingId =
-                generateMeetingId();
-
-
-            /*
-             * Create meeting document.
-             */
-
-            await setDoc(
-                doc(
-                    db,
-                    "meetings",
-                    meetingId
-                ),
-                {
-
-                    meetingId: meetingId,
-
-                    hostId: user.uid,
-
-                    status: "active",
-
-                    createdAt:
-                        serverTimestamp()
-
-                }
-            );
-
-
-            /*
-             * Create shareable URL.
-             */
-
-            const shareUrl =
-                window.location.origin +
-                "/join.html?meeting=" +
-                encodeURIComponent(
-                    meetingId
-                );
-
-
-            /*
-             * Display information.
-             */
-
-            meetingIdElement.textContent =
-                meetingId;
-
-            shareLinkElement.textContent =
-                shareUrl;
-
-
-            meetingCard.style.display =
-                "block";
-
-
-            copyButton.style.display =
-                "block";
-
-
-            startButton.textContent =
-                "Meeting Created";
-
-
-            statusElement.textContent =
-                "Share this meeting link with your guest.";
-
-
-            /*
-             * Store the ID locally so the
-             * next meeting page can use it.
-             */
-
-            sessionStorage.setItem(
-                "currentMeetingId",
+        meetingIdElement.textContent =
+            formatMeetingId(
                 meetingId
             );
 
 
-        } catch (error) {
+        /*
+         * Build join URL.
+         */
 
-            console.error(error);
-
-            statusElement.textContent =
-                "Unable to create the meeting. Please try again.";
-
-            startButton.disabled = false;
-
-            startButton.textContent =
-                "Start New Meeting";
-
-        }
-
-    }
-
-
-    /*
-     * Copy share link.
-     */
-
-    async function copyMeetingLink() {
-
-        const link =
-            shareLinkElement.textContent;
-
-
-        try {
-
-            await navigator.clipboard.writeText(
-                link
+        const joinUrl =
+            window.location.origin
+            + "/join.html?meeting="
+            + encodeURIComponent(
+                meetingId
             );
 
-            copyButton.textContent =
-                "Copied!";
+
+        shareLinkElement.textContent =
+            joinUrl;
 
 
-            setTimeout(() => {
+        /*
+         * Save it again so every page
+         * uses the same meeting.
+         */
 
-                copyButton.textContent =
-                    "Copy Meeting Link";
-
-            }, 2000);
-
-
-        } catch (error) {
-
-            statusElement.textContent =
-                "Copy failed. Please copy the link manually.";
-
-        }
+        sessionStorage.setItem(
+            "currentMeetingId",
+            meetingId
+        );
 
     }
 
+
+    /* =====================================
+       CREATE FIRESTORE MEETING
+    ===================================== */
+
+    async function prepareMeeting() {
+
+        if (!meetingId) {
+            return false;
+        }
+
+
+        /*
+         * Use existing Firebase user
+         * if one exists.
+         */
+
+        let user =
+            auth.currentUser;
+
+
+        /*
+         * Otherwise create an anonymous
+         * Firebase user.
+         */
+
+        if (!user) {
+
+            statusElement.textContent =
+                "Preparing secure meeting...";
+
+            try {
+
+                const result =
+                    await signInAnonymously(
+                        auth
+                    );
+
+                user =
+                    result.user;
+
+            } catch (error) {
+
+                console.error(
+                    "Anonymous authentication failed:",
+                    error
+                );
+
+                statusElement.textContent =
+                    "Unable to authenticate. Please try again.";
+
+                statusElement.classList.add(
+                    "error"
+                );
+
+                return false;
+
+            }
+
+        }
+
+
+        /*
+         * Check whether the meeting already
+         * exists.
+         */
+
+        const meetingRef =
+            doc(
+                db,
+                "meetings",
+                meetingId
+            );
+
+
+        const existingMeeting =
+            await getDoc(
+                meetingRef
+            );
+
+
+        /*
+         * Don't overwrite an existing
+         * meeting belonging to another host.
+         */
+
+        if (
+            existingMeeting.exists()
+        ) {
+
+            const existingData =
+                existingMeeting.data();
+
+
+            if (
+                existingData.hostId &&
+                existingData.hostId !== user.uid
+            ) {
+
+                statusElement.textContent =
+                    "This meeting ID is already in use. Please create a new meeting.";
+
+                statusElement.classList.add(
+                    "error"
+                );
+
+                return false;
+
+            }
+
+        }
+
+
+        /*
+         * Create/update meeting.
+         */
+
+        await setDoc(
+            meetingRef,
+            {
+
+                meetingId:
+                    meetingId,
+
+                hostId:
+                    user.uid,
+
+                status:
+                    "active",
+
+                createdAt:
+                    existingMeeting.exists()
+                        ? existingMeeting.data().createdAt
+                        : serverTimestamp()
+
+            },
+            {
+                merge: true
+            }
+        );
+
+
+        /*
+         * Save host information.
+         */
+
+        sessionStorage.setItem(
+            "meetingHostId",
+            user.uid
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================
+       START MEETING
+    ===================================== */
 
     startButton.addEventListener(
         "click",
-        createMeeting
+        async function() {
+
+            if (!meetingId) {
+                return;
+            }
+
+
+            startButton.disabled =
+                true;
+
+            startButton.textContent =
+                "Preparing meeting...";
+
+
+            statusElement.textContent =
+                "";
+
+
+            try {
+
+                const ready =
+                    await prepareMeeting();
+
+
+                if (!ready) {
+
+                    startButton.disabled =
+                        false;
+
+                    startButton.textContent =
+                        "Start Meeting";
+
+                    return;
+
+                }
+
+
+                /*
+                 * IMPORTANT:
+                 * Keep the exact same meeting ID.
+                 */
+
+                window.location.href =
+                    "meeting-room.html?id="
+                    + encodeURIComponent(
+                        meetingId
+                    );
+
+            } catch (error) {
+
+                console.error(error);
+
+                statusElement.textContent =
+                    "Unable to start the meeting. Please try again.";
+
+                statusElement.classList.add(
+                    "error"
+                );
+
+                startButton.disabled =
+                    false;
+
+                startButton.textContent =
+                    "Start Meeting";
+
+            }
+
+        }
     );
 
+
+    /* =====================================
+       COPY LINK
+    ===================================== */
 
     copyButton.addEventListener(
         "click",
-        copyMeetingLink
+        async function() {
+
+            if (!meetingId) {
+                return;
+            }
+
+
+            const joinUrl =
+                window.location.origin
+                + "/join.html?meeting="
+                + encodeURIComponent(
+                    meetingId
+                );
+
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    joinUrl
+                );
+
+
+                copyButton.textContent =
+                    "Copied!";
+
+
+                statusElement.textContent =
+                    "Meeting link copied.";
+
+
+                statusElement.classList.remove(
+                    "error"
+                );
+
+
+                statusElement.classList.add(
+                    "success"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        copyButton.textContent =
+                            "Copy Meeting Link";
+
+                        statusElement.textContent =
+                            "";
+
+                        statusElement.classList.remove(
+                            "success"
+                        );
+
+                    },
+                    2000
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                statusElement.textContent =
+                    "Unable to copy the link.";
+
+                statusElement.classList.add(
+                    "error"
+                );
+
+            }
+
+        }
     );
+
+
+    /* =====================================
+       CANCEL
+    ===================================== */
+
+    window.goBack =
+        function() {
+
+            window.location.href =
+                "index.html";
+
+        };
+
 
 </script>
 
 </body>
+
 </html>
