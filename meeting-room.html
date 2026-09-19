@@ -4395,8 +4395,13 @@ remoteVolumeButton.addEventListener(
       remoteVideo.muted
     ) {
 
-      remoteVolumeButton.textContent =
-        "🔇";
+      remoteVolumeButton.innerHTML = `
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M4 10v4h4l5 4V6l-5 4H4Z"/>
+    <path d="m16 9-5 6"/>
+    <path d="m11 9 5 6"/>
+  </svg>
+`;
 
       remoteVolumeButton.classList.add(
         "muted"
@@ -4406,8 +4411,13 @@ remoteVolumeButton.addEventListener(
 
     else {
 
-      remoteVolumeButton.textContent =
-        "🔊";
+      remoteVolumeButton.innerHTML = `
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M4 10v4h4l5 4V6l-5 4H4Z"/>
+    <path d="M16 9.5a4 4 0 0 1 0 5"/>
+    <path d="M18.5 7a7.5 7.5 0 0 1 0 10"/>
+  </svg>
+`;
 
       remoteVolumeButton.classList.remove(
         "muted"
