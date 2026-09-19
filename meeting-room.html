@@ -4028,13 +4028,23 @@
 
           }
         );
-
-
-        cameraButton.innerHTML =
-          enabled
-            ? "📷<span>Camera</span>"
-            : "🚫<span>Camera</span>";
-
+        
+        cameraButton.innerHTML = enabled
+  ? `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="6" width="13" height="12" rx="2"/>
+      <path d="m16 10 5-3v10l-5-3"/>
+    </svg>
+    <span>Camera</span>
+  `
+  : `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="6" width="13" height="12" rx="2"/>
+      <path d="m16 10 5-3v10l-5-3"/>
+      <path d="m4 4 16 16"/>
+    </svg>
+    <span>Camera</span>
+  `;
 
         cameraButton.classList.toggle(
           "active",
