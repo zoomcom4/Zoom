@@ -1282,7 +1282,23 @@
     const toast =
       document.getElementById("toast");
 
+    const localVideoCard =
+  document.getElementById("localVideoCard");
 
+const remoteVideoCard =
+  document.getElementById("remoteCard");
+
+const localVideoControls =
+  document.getElementById("localVideoControls");
+
+const remoteVideoControls =
+  document.getElementById("remoteVideoControls");
+
+const flipCameraButton =
+  document.getElementById("flipCameraButton");
+
+const remoteVolumeButton =
+  document.getElementById("remoteVolumeButton");
     /* =====================================================
        STATE
     ===================================================== */
@@ -1338,7 +1354,8 @@
     let currentScreenRequestId = null;
 
     let toastTimer = null;
-
+    
+    let currentFacingMode = "user";
 
     /* =====================================================
        TOAST
@@ -1685,7 +1702,193 @@
       );
 
     }
+    
+        /* =====================================================
+       SWITCH FRONT / BACK CAMERA
+    ===================================================== */
 
+    async function switchCamera() {
+
+      if (
+        !localStream ||
+        !peerConnection
+      ) {
+
+        showToast(
+          "Camera connection is not ready."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        screenStream
+      ) {
+
+        showToast(
+          "Stop screen sharing before switching camera."
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        currentFacingMode =
+          currentFacingMode === "user"
+            ? "environment"
+            : "user";
+
+
+        const newStream =
+          await navigator.mediaDevices.getUserMedia({
+
+            video: {
+
+              width: {
+                ideal: 1280
+              },
+
+              height: {
+                ideal: 720
+              },
+
+              facingMode:
+                currentFacingMode
+
+            },
+
+            audio: false
+
+          });
+
+
+        const newVideoTrack =
+          newStream.getVideoTracks()[0];
+
+
+        if (!newVideoTrack) {
+
+          throw new Error(
+            "Could not get the new camera."
+          );
+
+        }
+
+
+        /*
+          Replace the camera track being sent
+          through the existing WebRTC connection.
+        */
+
+        const videoSender =
+          peerConnection
+            .getSenders()
+            .find(
+              sender =>
+                sender.track &&
+                sender.track.kind ===
+                  "video"
+            );
+
+
+        if (!videoSender) {
+
+          newVideoTrack.stop();
+
+          throw new Error(
+            "WebRTC video sender not found."
+          );
+
+        }
+
+
+        await videoSender.replaceTrack(
+          newVideoTrack
+        );
+
+
+        /*
+          Stop the old camera track.
+        */
+
+        const oldVideoTrack =
+          localStream.getVideoTracks()[0];
+
+
+        if (oldVideoTrack) {
+
+          oldVideoTrack.stop();
+
+        }
+
+
+        /*
+          Keep the same local MediaStream,
+          but replace its video track.
+        */
+
+        localStream.removeTrack(
+          oldVideoTrack
+        );
+
+
+        localStream.addTrack(
+          newVideoTrack
+        );
+
+
+        /*
+          Update local preview.
+        */
+
+        localVideo.srcObject =
+          localStream;
+
+
+        await playVideo(
+          localVideo
+        );
+
+
+        showToast(
+          currentFacingMode === "user"
+            ? "Front camera"
+            : "Back camera"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Camera switch failed:",
+          error
+        );
+
+
+        /*
+          If the requested camera fails,
+          restore the previous facing mode.
+        */
+
+        currentFacingMode =
+          currentFacingMode === "user"
+            ? "environment"
+            : "user";
+
+
+        showToast(
+          "Could not switch camera."
+        );
+
+      }
+
+    }
 
     /* =====================================================
        PEER CONNECTION
@@ -4049,7 +4252,181 @@
       }
     );
 
+   /* =====================================================
+   VIDEO TAP CONTROLS
+===================================================== */
 
+let localControlsTimer = null;
+let remoteControlsTimer = null;
+
+
+function showVideoControls(card, timerName) {
+
+  card.classList.add(
+    "controls-visible"
+  );
+
+  if (timerName === "local") {
+
+    clearTimeout(
+      localControlsTimer
+    );
+
+    localControlsTimer =
+      setTimeout(
+        () => {
+
+          card.classList.remove(
+            "controls-visible"
+          );
+
+        },
+        4000
+      );
+
+  }
+
+  else {
+
+    clearTimeout(
+      remoteControlsTimer
+    );
+
+    remoteControlsTimer =
+      setTimeout(
+        () => {
+
+          card.classList.remove(
+            "controls-visible"
+          );
+
+        },
+        4000
+      );
+
+  }
+
+}
+
+
+/* Tap local video */
+
+localVideoCard.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target.closest(
+        ".video-control-button"
+      )
+    ) {
+
+      return;
+
+    }
+
+    showVideoControls(
+      localVideoCard,
+      "local"
+    );
+
+  }
+);
+
+
+/* Tap remote video */
+
+remoteVideoCard.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target.closest(
+        ".video-control-button"
+      )
+    ) {
+
+      return;
+
+    }
+
+    showVideoControls(
+      remoteVideoCard,
+      "remote"
+    );
+
+  }
+);
+
+/* =====================================================
+   REMOTE VOLUME
+===================================================== */
+
+remoteVolumeButton.addEventListener(
+  "click",
+  event => {
+
+    event.stopPropagation();
+
+    remoteVideo.muted =
+      !remoteVideo.muted;
+
+    if (
+      remoteVideo.muted
+    ) {
+
+      remoteVolumeButton.textContent =
+        "🔇";
+
+      remoteVolumeButton.classList.add(
+        "muted"
+      );
+
+    }
+
+    else {
+
+      remoteVolumeButton.textContent =
+        "🔊";
+
+      remoteVolumeButton.classList.remove(
+        "muted"
+      );
+
+      playVideo(
+        remoteVideo,
+        true
+      );
+
+    }
+
+    showVideoControls(
+      remoteVideoCard,
+      "remote"
+    );
+
+  }
+);
+
+    /* =====================================================
+       CAMERA SWITCH BUTTON
+    ===================================================== */
+
+    flipCameraButton.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+        switchCamera();
+
+        showVideoControls(
+          localVideoCard,
+          "local"
+        );
+
+      }
+    );
     /* =====================================================
        CONTROLS
     ===================================================== */
