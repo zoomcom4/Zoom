@@ -1273,3 +1273,648 @@
 
 
         if (cameraEnabled) {
+
+            cameraIcon.textContent =
+                "📹";
+
+            cameraLabel.textContent =
+                "Stop Video";
+
+            cameraBtn.classList.remove(
+                "off"
+            );
+
+        } else {
+
+            cameraIcon.textContent =
+                "🚫";
+
+            cameraLabel.textContent =
+                "Start Video";
+
+            cameraBtn.classList.add(
+                "off"
+            );
+        }
+
+
+        document
+            .getElementById(
+                "localMicStatus"
+            )
+            .textContent =
+                micEnabled
+                    ? "🎤"
+                    : "🔇";
+    }
+
+
+    document
+        .getElementById("micBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                if (!localStream) {
+
+                    showToast(
+                        "Microphone is not available."
+                    );
+
+                    return;
+                }
+
+
+                const tracks =
+                    localStream
+                        .getAudioTracks();
+
+
+                if (!tracks.length) {
+
+                    showToast(
+                        "No microphone detected."
+                    );
+
+                    return;
+                }
+
+
+                micEnabled =
+                    !micEnabled;
+
+
+                tracks.forEach(
+                    track => {
+
+                        track.enabled =
+                            micEnabled;
+
+                    }
+                );
+
+
+                updateMediaButtons();
+            }
+        );
+
+
+    document
+        .getElementById("cameraBtn")
+        .addEventListener(
+            "click",
+            async () => {
+
+                if (!localStream) {
+
+                    await startMedia();
+
+                    return;
+                }
+
+
+                const tracks =
+                    localStream
+                        .getVideoTracks();
+
+
+                if (!tracks.length) {
+
+                    try {
+
+                        const cameraStream =
+                            await navigator
+                                .mediaDevices
+                                .getUserMedia({
+                                    video: true
+                                });
+
+
+                        cameraStream
+                            .getVideoTracks()
+                            .forEach(
+                                track => {
+
+                                    localStream
+                                        .addTrack(
+                                            track
+                                        );
+
+                                }
+                            );
+
+
+                        localVideo.srcObject =
+                            localStream;
+
+
+                        cameraEnabled =
+                            true;
+
+                    } catch (error) {
+
+                        console.error(
+                            error
+                        );
+
+                        showToast(
+                            "Camera permission was denied."
+                        );
+
+                        return;
+                    }
+
+                } else {
+
+                    cameraEnabled =
+                        !cameraEnabled;
+
+
+                    tracks.forEach(
+                        track => {
+
+                            track.enabled =
+                                cameraEnabled;
+
+                        }
+                    );
+                }
+
+
+                if (cameraEnabled) {
+
+                    localVideo.style.display =
+                        "block";
+
+                    localAvatar.style.display =
+                        "none";
+
+                } else {
+
+                    localVideo.style.display =
+                        "none";
+
+                    localAvatar.style.display =
+                        "flex";
+                }
+
+
+                updateMediaButtons();
+            }
+        );
+
+
+    /* ===============================
+       SCREEN SHARE REQUEST
+    =============================== */
+
+    document
+        .getElementById("shareBtn")
+        .addEventListener(
+            "click",
+            async () => {
+
+                /*
+                 * This is the point where the
+                 * Firebase/WebRTC signaling
+                 * will send the request to
+                 * the other participant.
+                 */
+
+                showToast(
+                    "Screen sharing request sent."
+                );
+
+                /*
+                 * Temporary local browser
+                 * capability check.
+                 */
+
+                if (
+                    !navigator
+                        .mediaDevices ||
+                    !navigator
+                        .mediaDevices
+                        .getDisplayMedia
+                ) {
+
+                    showToast(
+                        "Screen sharing is not supported here."
+                    );
+
+                    return;
+                }
+
+
+                try {
+
+                    const stream =
+                        await navigator
+                            .mediaDevices
+                            .getDisplayMedia({
+                                video: true
+                            });
+
+
+                    /*
+                     * For now this previews
+                     * the shared screen locally.
+                     *
+                     * In the next connection
+                     * stage this track will be
+                     * sent through WebRTC.
+                     */
+
+                    localVideo.srcObject =
+                        stream;
+
+                    localVideo.style.display =
+                        "block";
+
+                    localAvatar.style.display =
+                        "none";
+
+
+                    const track =
+                        stream.getVideoTracks()[0];
+
+
+                    track.addEventListener(
+                        "ended",
+                        async () => {
+
+                            if (localStream) {
+
+                                localVideo.srcObject =
+                                    localStream;
+
+                                localVideo.style.display =
+                                    cameraEnabled
+                                        ? "block"
+                                        : "none";
+
+                                localAvatar.style.display =
+                                    cameraEnabled
+                                        ? "none"
+                                        : "flex";
+                            }
+                        }
+                    );
+
+                } catch (error) {
+
+                    console.log(
+                        "Screen sharing cancelled."
+                    );
+                }
+            }
+        );
+
+
+    /* ===============================
+       SCREEN REQUEST DIALOG
+    =============================== */
+
+    const screenRequest =
+        document.getElementById(
+            "screenRequest"
+        );
+
+
+    document
+        .getElementById(
+            "acceptShare"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                screenRequest.classList.remove(
+                    "show"
+                );
+
+                showToast(
+                    "Screen sharing accepted."
+                );
+            }
+        );
+
+
+    document
+        .getElementById(
+            "declineShare"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                screenRequest.classList.remove(
+                    "show"
+                );
+
+                showToast(
+                    "Screen sharing declined."
+                );
+            }
+        );
+
+
+    /* ===============================
+       PARTICIPANTS
+    =============================== */
+
+    function openPanel(
+        title,
+        content
+    ) {
+
+        panelTitle.textContent =
+            title;
+
+        panelBody.innerHTML =
+            content;
+
+        panel.classList.add(
+            "open"
+        );
+    }
+
+
+    document
+        .getElementById(
+            "participantsBtn"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                openPanel(
+                    "Participants",
+                    `
+                    <div class="person">
+
+                        <div class="small-avatar">
+                            Y
+                        </div>
+
+                        <div class="person-name">
+                            You
+                            <span class="host-label">
+                                Host
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="person">
+
+                        <div class="small-avatar">
+                            ?
+                        </div>
+
+                        <div class="person-name">
+                            Waiting for participant...
+                        </div>
+
+                    </div>
+                    `
+                );
+            }
+        );
+
+
+    /* ===============================
+       CHAT
+    =============================== */
+
+    document
+        .getElementById("chatBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                openPanel(
+                    "Chat",
+                    `
+                    <div style="
+                        color:#aaa;
+                        font-size:13px;
+                        line-height:1.5;
+                    ">
+                        Chat will be connected to
+                        the meeting in the next
+                        signaling stage.
+                    </div>
+                    `
+                );
+            }
+        );
+
+
+    /* ===============================
+       SETTINGS
+    =============================== */
+
+    document
+        .getElementById("settingsBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                openPanel(
+                    "Settings",
+                    `
+                    <div style="
+                        color:#ccc;
+                        font-size:14px;
+                        line-height:1.8;
+                    ">
+
+                        <strong>
+                            Audio
+                        </strong>
+
+                        <br>
+
+                        Microphone:
+                        Browser microphone
+
+                        <br><br>
+
+                        <strong>
+                            Video
+                        </strong>
+
+                        <br>
+
+                        Camera:
+                        Browser camera
+
+                        <br><br>
+
+                        <strong>
+                            Connection
+                        </strong>
+
+                        <br>
+
+                        WebRTC connection
+
+                    </div>
+                    `
+                );
+            }
+        );
+
+
+    /* ===============================
+       SECURITY
+    =============================== */
+
+    document
+        .getElementById("securityBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                openPanel(
+                    "Security",
+                    `
+                    <div style="
+                        color:#ccc;
+                        font-size:14px;
+                        line-height:1.6;
+                    ">
+
+                        🔒 Meeting ID protected
+
+                        <br><br>
+
+                        Only participants who
+                        have the meeting link or
+                        meeting ID can attempt to
+                        join.
+
+                    </div>
+                    `
+                );
+            }
+        );
+
+
+    /* ===============================
+       CLOSE PANEL
+    =============================== */
+
+    document
+        .getElementById("closePanel")
+        .addEventListener(
+            "click",
+            () => {
+
+                panel.classList.remove(
+                    "open"
+                );
+            }
+        );
+
+
+    /* ===============================
+       FULLSCREEN
+    =============================== */
+
+    document
+        .getElementById("fullscreenBtn")
+        .addEventListener(
+            "click",
+            async () => {
+
+                try {
+
+                    if (
+                        !document.fullscreenElement
+                    ) {
+
+                        await document
+                            .documentElement
+                            .requestFullscreen();
+
+                    } else {
+
+                        await document
+                            .exitFullscreen();
+                    }
+
+                } catch (error) {
+
+                    console.log(
+                        "Fullscreen unavailable."
+                    );
+                }
+            }
+        );
+
+
+    /* ===============================
+       LEAVE
+    =============================== */
+
+    document
+        .getElementById("leaveBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                if (localStream) {
+
+                    localStream
+                        .getTracks()
+                        .forEach(
+                            track => track.stop()
+                        );
+                }
+
+
+                location.href =
+                    "index.html";
+            }
+        );
+
+
+    /* ===============================
+       START
+    =============================== */
+
+    async function startMeeting() {
+
+        const valid =
+            await verifyMeeting();
+
+
+        if (!valid) {
+            return;
+        }
+
+
+        connectionText.textContent =
+            "Preparing camera...";
+
+
+        await startMedia();
+
+
+        connectionText.textContent =
+            "Waiting for participant...";
+
+        statusDot.classList.remove(
+            "error"
+        );
+    }
+
+
+    startMeeting();
+
+</script>
+
+</body>
+</html>
