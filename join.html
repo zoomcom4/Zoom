@@ -5,7 +5,7 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
 
     <meta name="theme-color" content="#222222">
@@ -25,10 +25,11 @@
             width: 100%;
             min-height: 100%;
             background: #222222;
-            color: #f5f5f5;
+            color: #ffffff;
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
+                "SF Pro Display",
                 "SF Pro Text",
                 "Helvetica Neue",
                 Arial,
@@ -36,119 +37,133 @@
         }
 
         body {
-            min-height: 100dvh;
-        }
-
-        /* =========================
-           APP
-        ========================= */
-
-        .app {
-            min-height: 100dvh;
-            background: #222222;
             overflow-x: hidden;
         }
 
-        /* =========================
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        /* ==================================
+           MAIN APP
+        ================================== */
+
+        .app {
+            width: 100%;
+            min-height: 100dvh;
+            background: #222222;
+            overflow: hidden;
+        }
+
+        /* ==================================
            HEADER
-        ========================= */
+        ================================== */
 
         .header {
-            height: 155px;
-
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-
-            align-items: center;
+            height: 112px;
 
             padding:
-                max(20px, env(safe-area-inset-top))
-                28px
+                max(12px, env(safe-area-inset-top))
+                22px
                 0;
+
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+
+            align-items: center;
         }
 
         .cancel {
             justify-self: start;
 
             border: 0;
-            background: none;
+            background: transparent;
 
             color: #ffffff;
 
-            font-size: 22px;
+            font-size: 19px;
             font-weight: 400;
+
+            padding: 10px 0;
 
             cursor: pointer;
         }
 
-        .title {
+        .page-title {
             justify-self: center;
 
             color: #ffffff;
 
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
         }
 
-        /* =========================
-           TABS
-        ========================= */
+        /* ==================================
+           TOP AREA
+        ================================== */
 
-        .tabs-wrapper {
-            padding: 15px 48px 112px;
+        .top-area {
+            padding: 4px 22px 30px;
         }
+
+        /* ==================================
+           TABS
+        ================================== */
 
         .tabs {
             width: 100%;
-            height: 64px;
+            height: 54px;
+
+            padding: 3px;
 
             display: grid;
             grid-template-columns: 1fr 1fr;
 
-            padding: 4px;
-
-            background: #38383c;
+            background: #39393d;
 
             border-radius: 15px;
         }
 
         .tab {
             border: 0;
-
             border-radius: 12px;
 
             background: transparent;
 
             color: #ffffff;
 
-            font-family: inherit;
-            font-size: 21px;
+            font-size: 18px;
             font-weight: 500;
+
+            cursor: pointer;
         }
 
         .tab.active {
             background: #77777e;
         }
 
-        /* =========================
+        /* ==================================
            MEETING ID
-        ========================= */
+        ================================== */
 
-        .meeting-id-row {
-            height: 97px;
+        .field {
+            height: 70px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            background: #2d2d2d;
+            background: #2d2d2f;
 
-            border-top: 1px solid #3a3a3a;
-            border-bottom: 1px solid #3a3a3a;
+            border-top: 1px solid #39393b;
+            border-bottom: 1px solid #39393b;
         }
 
-        .meeting-id {
+        .meeting-input {
             width: 100%;
+
+            height: 100%;
 
             border: 0;
             outline: none;
@@ -159,100 +174,103 @@
 
             text-align: center;
 
-            font-family: inherit;
-            font-size: 27px;
+            font-size: 22px;
             font-weight: 400;
         }
 
-        .meeting-id::placeholder {
-            color: #a3a3a7;
+        .meeting-input::placeholder {
+            color: #9c9ca1;
         }
 
-        /* =========================
+        /* ==================================
            PERSONAL LINK
-        ========================= */
+        ================================== */
 
         .personal-link {
-            height: 108px;
+            height: 72px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            border-bottom: 1px solid #3a3a3a;
+            padding: 0 20px;
+
+            background: #222222;
+
+            border-bottom: 1px solid #39393b;
 
             color: #4797ff;
 
-            font-size: 21px;
+            font-size: 18px;
             font-weight: 500;
+
+            text-align: center;
 
             cursor: pointer;
         }
 
-        /* =========================
+        /* ==================================
            DEVICE
-        ========================= */
+        ================================== */
 
-        .device-row {
-            height: 97px;
+        .device {
+            height: 70px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            background: #2d2d2d;
+            background: #2d2d2f;
 
-            border-bottom: 1px solid #3a3a3a;
+            border-bottom: 1px solid #39393b;
         }
 
         .device-name {
             color: #ffffff;
 
-            font-size: 27px;
+            font-size: 22px;
             font-weight: 400;
-
-            text-align: center;
         }
 
-        /* =========================
+        /* ==================================
            TERMS
-        ========================= */
+        ================================== */
 
         .terms {
-            padding: 28px 28px 0;
+            padding: 17px 22px 0;
 
             color: #a9a9ad;
 
-            font-size: 20px;
-            line-height: 1.45;
+            font-size: 15px;
+            line-height: 1.35;
+
+            text-align: left;
         }
 
-        .terms span {
+        .terms-link {
             color: #9bc9ff;
         }
 
-        /* =========================
+        /* ==================================
            JOIN BUTTON
-        ========================= */
+        ================================== */
 
-        .join-container {
-            padding: 27px 20px 0;
+        .join-area {
+            padding: 16px 20px 0;
         }
 
         .join-button {
             width: 100%;
-            height: 96px;
+            height: 58px;
 
             border: 0;
-            border-radius: 28px;
+            border-radius: 19px;
 
             background: #3a3a3c;
 
             color: #77777b;
 
-            font-family: inherit;
-
-            font-size: 28px;
+            font-size: 21px;
             font-weight: 700;
 
             cursor: pointer;
@@ -264,88 +282,149 @@
         }
 
         .join-button:active {
-            transform: scale(.99);
+            transform: scale(.985);
         }
 
-        /* =========================
-           INVITATION MESSAGE
-        ========================= */
+        /* ==================================
+           INVITATION
+        ================================== */
 
         .invitation {
-            padding: 15px 28px 0;
+            padding: 11px 22px 0;
 
             color: #a9a9ad;
 
-            font-size: 20px;
-            line-height: 1.4;
+            font-size: 15px;
+            line-height: 1.35;
         }
 
-        /* =========================
+        /* ==================================
            JOIN OPTIONS
-        ========================= */
+        ================================== */
 
-        .join-options {
-            margin-top: 118px;
+        .options {
+            margin-top: 30px;
 
-            padding: 0 30px 40px;
+            padding: 0 22px 30px;
 
             color: #a9a9ad;
 
-            font-size: 20px;
+            font-size: 16px;
         }
 
-        /* =========================
-           BLOCKED DEVICE
-        ========================= */
+        /* ==================================
+           ANDROID BLOCK
+        ================================== */
 
-        .blocked-screen {
+        .blocked {
             display: none;
 
             min-height: 100dvh;
 
-            padding:
-                100px
-                30px
-                40px;
-
-            text-align: center;
+            padding: 100px 28px 40px;
 
             background: #222222;
+
+            text-align: center;
         }
 
-        .blocked-screen h1 {
-            font-size: 30px;
-            margin-bottom: 18px;
+        .blocked h1 {
+            font-size: 28px;
+            margin-bottom: 16px;
         }
 
-        .blocked-screen p {
-            color: #aaaaae;
-            font-size: 19px;
+        .blocked p {
+            color: #aaa;
+
+            font-size: 17px;
             line-height: 1.5;
         }
 
         .back-button {
-            margin-top: 30px;
+            margin-top: 28px;
 
             width: 100%;
             max-width: 350px;
 
-            height: 60px;
+            height: 54px;
 
             border: 0;
-            border-radius: 18px;
+            border-radius: 17px;
 
             background: #1478f2;
 
-            color: #ffffff;
+            color: #fff;
 
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 600;
         }
 
-        /* =========================
-           DESKTOP
-        ========================= */
+        /* ==================================
+           SMALL HEIGHT PHONES
+        ================================== */
+
+        @media (max-height: 720px) {
+
+            .header {
+                height: 92px;
+            }
+
+            .top-area {
+                padding-bottom: 20px;
+            }
+
+            .tabs {
+                height: 48px;
+            }
+
+            .tab {
+                font-size: 17px;
+            }
+
+            .field {
+                height: 62px;
+            }
+
+            .personal-link {
+                height: 62px;
+                font-size: 17px;
+            }
+
+            .device {
+                height: 62px;
+            }
+
+            .device-name {
+                font-size: 20px;
+            }
+
+            .terms {
+                padding-top: 12px;
+                font-size: 14px;
+            }
+
+            .join-area {
+                padding-top: 12px;
+            }
+
+            .join-button {
+                height: 52px;
+                font-size: 19px;
+            }
+
+            .invitation {
+                padding-top: 8px;
+                font-size: 14px;
+            }
+
+            .options {
+                margin-top: 20px;
+            }
+        }
+
+        /* ==================================
+           WINDOWS / DESKTOP
+        ================================== */
 
         @media (min-width: 700px) {
 
@@ -355,16 +434,22 @@
             }
 
             .header {
+                height: 120px;
+            }
+
+            .top-area {
                 padding-left: 35px;
                 padding-right: 35px;
             }
 
-            .tabs-wrapper {
-                padding-left: 50px;
-                padding-right: 50px;
+            .terms,
+            .invitation,
+            .options {
+                padding-left: 35px;
+                padding-right: 35px;
             }
 
-            .terms {
+            .join-area {
                 padding-left: 30px;
                 padding-right: 30px;
             }
@@ -374,20 +459,27 @@
 
 <body>
 
-    <!-- NORMAL JOIN PAGE -->
-    <main class="app" id="joinPage">
+    <!-- ==================================
+         JOIN PAGE
+    ================================== -->
+
+    <main
+        id="joinPage"
+        class="app"
+    >
 
         <!-- HEADER -->
         <header class="header">
 
             <button
                 class="cancel"
+                type="button"
                 onclick="goBack()"
             >
                 Cancel
             </button>
 
-            <div class="title">
+            <div class="page-title">
                 Join
             </div>
 
@@ -397,15 +489,21 @@
 
 
         <!-- TABS -->
-        <section class="tabs-wrapper">
+        <section class="top-area">
 
             <div class="tabs">
 
-                <button class="tab active">
+                <button
+                    class="tab active"
+                    type="button"
+                >
                     Meeting
                 </button>
 
-                <button class="tab">
+                <button
+                    class="tab"
+                    type="button"
+                >
                     Event
                 </button>
 
@@ -415,11 +513,11 @@
 
 
         <!-- MEETING ID -->
-        <section class="meeting-id-row">
+        <section class="field">
 
             <input
                 id="meetingId"
-                class="meeting-id"
+                class="meeting-input"
                 type="text"
                 inputmode="numeric"
                 autocomplete="off"
@@ -431,16 +529,17 @@
 
 
         <!-- PERSONAL LINK -->
-        <div
+        <button
             class="personal-link"
+            type="button"
             onclick="personalLink()"
         >
             Join with a personal link name
-        </div>
+        </button>
 
 
         <!-- DEVICE -->
-        <section class="device-row">
+        <section class="device">
 
             <div
                 id="deviceName"
@@ -456,19 +555,24 @@
         <div class="terms">
 
             By clicking “Join”, you agree to our
-            <span>Terms of Service</span>
+            <span class="terms-link">
+                Terms of Service
+            </span>
             and
-            <span>Privacy Statement</span>
+            <span class="terms-link">
+                Privacy Statement
+            </span>
 
         </div>
 
 
-        <!-- JOIN -->
-        <div class="join-container">
+        <!-- JOIN BUTTON -->
+        <div class="join-area">
 
             <button
                 id="joinButton"
                 class="join-button"
+                type="button"
                 disabled
                 onclick="joinMeeting()"
             >
@@ -482,13 +586,13 @@
         <div class="invitation">
 
             If you received an invitation link, tap on the link again
-            to join the meeting
+            to join the meeting.
 
         </div>
 
 
         <!-- OPTIONS -->
-        <div class="join-options">
+        <div class="options">
 
             Join options
 
@@ -497,10 +601,13 @@
     </main>
 
 
-    <!-- ANDROID BLOCK PAGE -->
+    <!-- ==================================
+         UNSUPPORTED DEVICE
+    ================================== -->
+
     <main
         id="blockedPage"
-        class="blocked-screen"
+        class="blocked"
     >
 
         <h1>
@@ -514,6 +621,7 @@
 
         <button
             class="back-button"
+            type="button"
             onclick="goBack()"
         >
             Go back
@@ -524,101 +632,95 @@
 
 <script>
 
-    /* =========================
+    /* ==================================
        DEVICE DETECTION
-    ========================= */
+    ================================== */
 
     function detectDevice() {
 
-        const userAgent = navigator.userAgent || "";
-        const platform = navigator.platform || "";
+        const ua =
+            navigator.userAgent || "";
 
         const isAndroid =
-            /Android/i.test(userAgent);
+            /Android/i.test(ua);
 
         const isIPhone =
-            /iPhone/i.test(userAgent);
+            /iPhone/i.test(ua);
 
         const isIPad =
-            /iPad/i.test(userAgent) ||
+            /iPad/i.test(ua) ||
             (
-                /Macintosh/i.test(userAgent) &&
-                navigator.maxTouchPoints &&
+                /Macintosh/i.test(ua) &&
                 navigator.maxTouchPoints > 1
             );
 
         const isWindows =
-            /Windows NT/i.test(userAgent);
+            /Windows NT/i.test(ua);
 
-        /*
-         * Android is blocked.
-         */
+
+        /* Android = blocked */
 
         if (isAndroid) {
 
-            document.getElementById("joinPage").style.display = "none";
-            document.getElementById("blockedPage").style.display = "block";
+            document.getElementById(
+                "joinPage"
+            ).style.display = "none";
+
+            document.getElementById(
+                "blockedPage"
+            ).style.display = "block";
 
             return;
-
         }
 
 
-        /*
-         * iPhone
-         */
+        /* iPhone */
 
         if (isIPhone) {
 
-            document.getElementById("deviceName").textContent =
-                "iPhone";
+            document.getElementById(
+                "deviceName"
+            ).textContent = "iPhone";
 
             return;
-
         }
 
 
-        /*
-         * iPad
-         */
+        /* iPad */
 
         if (isIPad) {
 
-            document.getElementById("deviceName").textContent =
-                "iPad";
+            document.getElementById(
+                "deviceName"
+            ).textContent = "iPad";
 
             return;
-
         }
 
 
-        /*
-         * Windows
-         */
+        /* Windows */
 
         if (isWindows) {
 
-            document.getElementById("deviceName").textContent =
-                "Windows";
+            document.getElementById(
+                "deviceName"
+            ).textContent = "Windows";
 
             return;
-
         }
 
 
-        /*
-         * Other devices
-         */
+        /* Other */
 
-        document.getElementById("deviceName").textContent =
-            "Unsupported device";
-
+        document.getElementById(
+            "deviceName"
+        ).textContent = "Unsupported device";
     }
 
 
-    /* =========================
-       MEETING ID VALIDATION
-    ========================= */
+    /* ==================================
+       MEETING ID
+    ================================== */
 
     const meetingId =
         document.getElementById("meetingId");
@@ -638,23 +740,25 @@
 
                 joinButton.disabled = false;
 
-                joinButton.classList.add("enabled");
+                joinButton.classList.add(
+                    "enabled"
+                );
 
             } else {
 
                 joinButton.disabled = true;
 
-                joinButton.classList.remove("enabled");
-
+                joinButton.classList.remove(
+                    "enabled"
+                );
             }
-
         }
     );
 
 
-    /* =========================
-       JOIN
-    ========================= */
+    /* ==================================
+       JOIN MEETING
+    ================================== */
 
     function joinMeeting() {
 
@@ -665,52 +769,45 @@
             return;
         }
 
-        /*
-         * Pass the meeting ID to your meeting page.
-         */
-
         window.location.href =
             "meeting.html?meeting=" +
             encodeURIComponent(id);
-
     }
 
 
-    /* =========================
+    /* ==================================
        PERSONAL LINK
-    ========================= */
+    ================================== */
 
     function personalLink() {
 
         alert(
             "Enter the personal link provided by the host."
         );
-
     }
 
 
-    /* =========================
+    /* ==================================
        CANCEL
-    ========================= */
+    ================================== */
 
     function goBack() {
 
-        if (history.length > 1) {
+        if (window.history.length > 1) {
 
-            history.back();
+            window.history.back();
 
         } else {
 
-            window.location.href = "index.html";
-
+            window.location.href =
+                "index.html";
         }
-
     }
 
 
-    /* =========================
+    /* ==================================
        START
-    ========================= */
+    ================================== */
 
     detectDevice();
 
