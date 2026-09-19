@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Firebase Test | Zoom</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111318;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 420px;
+            padding: 30px;
+            background: #1d2028;
+            border-radius: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        #status {
+            margin-top: 20px;
+            line-height: 1.5;
+            color: #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 14px 24px;
+            border: 0;
+            border-radius: 10px;
+            background: #2d8cff;
+            color: white;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Firebase Test</h1>
+
+    <div id="status">
+        Connecting to Firebase...
+    </div>
+
+    <button onclick="location.href='index.html'">
+        Back to Zoom
+    </button>
+
+</div>
+
+
+<script type="module">
+
+    import {
+        auth
+    } from "./firebase-config.js";
+
+    import {
+        signInAnonymously
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    const status = document.getElementById("status");
+
+
+    try {
+
+        const result = await signInAnonymously(auth);
+
+        status.innerHTML =
+            "✅ Firebase is connected!<br><br>" +
+            "Anonymous authentication is working.<br><br>" +
+            "Guest UID:<br>" +
+            result.user.uid;
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.innerHTML =
+            "❌ Firebase connection failed.<br><br>" +
+            error.message;
+
+    }
+
+</script>
+
+</body>
+</html>
