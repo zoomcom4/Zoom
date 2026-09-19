@@ -125,11 +125,31 @@
       overflow: hidden;
     }
 
+    /*
+      LIVE VIDEO
+      No browser media-player controls.
+    */
+
     video {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
       background: #222;
+      border: 0;
+      outline: none;
+    }
+
+    video::-webkit-media-controls {
+      display: none !important;
+    }
+
+    video::-webkit-media-controls-enclosure {
+      display: none !important;
+    }
+
+    video::-webkit-media-controls-panel {
+      display: none !important;
     }
 
     .tile-label {
@@ -167,201 +187,198 @@
     }
 
     /* =====================================================
-       BOTTOM CONTROLS
+       MODERN VIDEO CALL CONTROLS
        ===================================================== */
 
-    /* =====================================================
-   MODERN VIDEO CALL CONTROLS
-   ===================================================== */
+    .controls {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      width: auto;
+      min-width: 320px;
+      max-width: calc(100% - 24px);
+      height: 70px;
 
-.controls {
-  position: fixed;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  width: auto;
-  min-width: 320px;
-  max-width: calc(100% - 24px);
-  height: 70px;
+      padding: 8px 10px;
 
-  padding: 8px 10px;
+      background: rgba(32, 32, 32, .94);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 20px;
 
-  background: rgba(32, 32, 32, .94);
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 20px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
 
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+      gap: 5px;
 
-  gap: 5px;
+      z-index: 20;
 
-  z-index: 20;
+      box-shadow:
+        0 12px 35px rgba(0,0,0,.45);
 
-  box-shadow:
-    0 12px 35px rgba(0,0,0,.45);
+      transition:
+        transform .28s ease,
+        opacity .28s ease;
+    }
 
-  transition:
-    transform .28s ease,
-    opacity .28s ease;
-}
+    .controls.controls-hidden {
+      transform:
+        translate(-50%, 120px);
+      opacity: 0;
+      pointer-events: none;
+    }
 
-.controls.controls-hidden {
-  transform:
-    translate(-50%, 120px);
-  opacity: 0;
-  pointer-events: none;
-}
+    .control {
+      width: 58px;
+      min-width: 58px;
+      height: 58px;
 
-.control {
-  width: 58px;
-  min-width: 58px;
-  height: 58px;
+      padding: 0;
 
-  padding: 0;
+      border-radius: 15px;
 
-  border-radius: 15px;
+      background: transparent;
+      color: #fff;
 
-  background: transparent;
-  color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+      gap: 4px;
 
-  gap: 4px;
+      transition:
+        background .18s ease,
+        transform .18s ease;
+    }
 
-  transition:
-    background .18s ease,
-    transform .18s ease;
-}
+    .control:hover {
+      background: rgba(255,255,255,.10);
+    }
 
-.control:hover {
-  background: rgba(255,255,255,.10);
-}
+    .control:active {
+      transform: scale(.94);
+    }
 
-.control:active {
-  transform: scale(.94);
-}
+    .control .icon {
+      width: 23px;
+      height: 23px;
 
-.control .icon {
-  width: 23px;
-  height: 23px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .control .icon svg {
+      width: 22px;
+      height: 22px;
 
-.control .icon svg {
-  width: 22px;
-  height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+    .control span {
+      font-size: 10px;
+      line-height: 1;
+      color: #ddd;
+      white-space: nowrap;
+    }
 
-.control span {
-  font-size: 10px;
-  line-height: 1;
-  color: #ddd;
-  white-space: nowrap;
-}
+    .control.off {
+      background: #d93636;
+    }
 
-.control.off {
-  background: #d93636;
-}
+    .control.off:hover {
+      background: #e64545;
+    }
 
-.control.off:hover {
-  background: #e64545;
-}
+    .leave {
+      width: 70px;
+      height: 44px;
 
-.leave {
-  width: 70px;
-  height: 44px;
+      padding: 0 16px;
 
-  padding: 0 16px;
+      margin-left: 7px;
 
-  margin-left: 7px;
+      border-radius: 13px;
 
-  border-radius: 13px;
+      background: #d83b3b;
+      color: white;
 
-  background: #d83b3b;
-  color: white;
+      font-weight: 700;
+      font-size: 13px;
 
-  font-weight: 700;
-  font-size: 13px;
+      transition:
+        background .18s ease,
+        transform .18s ease;
+    }
 
-  transition:
-    background .18s ease,
-    transform .18s ease;
-}
+    .leave:hover {
+      background: #ed4b4b;
+    }
 
-.leave:hover {
-  background: #ed4b4b;
-}
+    .leave:active {
+      transform: scale(.95);
+    }
 
-.leave:active {
-  transform: scale(.95);
-}
+    @media (max-width: 700px) {
 
-@media (max-width: 700px) {
+      .controls {
+        bottom: 12px;
 
-  .controls {
-    bottom: 12px;
+        width: calc(100% - 18px);
+        min-width: 0;
 
-    width: calc(100% - 18px);
-    min-width: 0;
+        height: 66px;
 
-    height: 66px;
+        padding: 7px 6px;
 
-    padding: 7px 6px;
+        border-radius: 18px;
 
-    border-radius: 18px;
+        gap: 2px;
+      }
 
-    gap: 2px;
-  }
+      .control {
+        width: 52px;
+        min-width: 52px;
+        height: 52px;
 
-  .control {
-    width: 52px;
-    min-width: 52px;
-    height: 52px;
+        border-radius: 14px;
+      }
 
-    border-radius: 14px;
-  }
+      .control .icon {
+        width: 21px;
+        height: 21px;
+      }
 
-  .control .icon {
-    width: 21px;
-    height: 21px;
-  }
+      .control .icon svg {
+        width: 20px;
+        height: 20px;
+      }
 
-  .control .icon svg {
-    width: 20px;
-    height: 20px;
-  }
+      .control span {
+        font-size: 8px;
+      }
 
-  .control span {
-    font-size: 8px;
-  }
+      .leave {
+        width: 58px;
+        height: 40px;
 
-  .leave {
-    width: 58px;
-    height: 40px;
+        padding: 0 10px;
 
-    padding: 0 10px;
+        margin-left: 3px;
 
-    margin-left: 3px;
+        font-size: 11px;
+      }
+    }
 
-    font-size: 11px;
-  }
-}
     /* =====================================================
        SIDE PANEL
        ===================================================== */
@@ -616,6 +633,7 @@
       .side-panel {
         width: 100%;
       }
+
     }
 
   </style>
@@ -642,7 +660,6 @@
       </div>
 
     </div>
-
 
     <div class="connection">
 
@@ -710,6 +727,7 @@
           id="remoteVideo"
           autoplay
           playsinline
+          muted
         ></video>
 
         <div
@@ -745,410 +763,391 @@
 
   <footer class="controls" id="controls">
 
-  <!-- MICROPHONE -->
+    <button
+      class="control"
+      id="micButton"
+      type="button"
+      aria-label="Mute microphone"
+    >
 
-  <button
-    class="control"
-    id="micButton"
-    type="button"
-    aria-label="Mute microphone"
-  >
+      <div class="icon" id="micIcon">
 
-    <div class="icon" id="micIcon">
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <path d="M12 19v3"/>
+          <path d="M8 22h8"/>
+        </svg>
 
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <path d="M12 19v3"/>
-        <path d="M8 22h8"/>
-      </svg>
+      </div>
 
-    </div>
+      <span>
+        Mute
+      </span>
 
-    <span>
-      Mute
-    </span>
+    </button>
 
-  </button>
-
-
-  <!-- CAMERA -->
-
-  <button
-    class="control"
-    id="cameraButton"
-    type="button"
-    aria-label="Stop video"
-  >
-
-    <div class="icon" id="cameraIcon">
-
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <rect
-          x="3"
-          y="6"
-          width="13"
-          height="12"
-          rx="2"
-        />
-
-        <path
-          d="m16 10 5-3v10l-5-3z"
-        />
-      </svg>
-
-    </div>
-
-    <span>
-      Stop Video
-    </span>
-
-  </button>
-
-
-  <!-- SCREEN SHARE -->
-
-  <button
-    class="control"
-    id="screenButton"
-    type="button"
-    aria-label="Request screen sharing"
-  >
-
-    <div class="icon">
-
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <rect
-          x="3"
-          y="4"
-          width="18"
-          height="13"
-          rx="2"
-        />
-
-        <path d="M8 21h8"/>
-        <path d="M12 17v4"/>
-      </svg>
-
-    </div>
-
-    <span>
-      Share
-    </span>
-
-  </button>
-
-
-  <!-- PARTICIPANTS -->
-
-  <button
-    class="control"
-    id="participantsButton"
-    type="button"
-    aria-label="Participants"
-  >
-
-    <div class="icon">
-
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <circle
-          cx="9"
-          cy="8"
-          r="3"
-        />
-
-        <path
-          d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"
-        />
-
-        <path
-          d="M16 5.5a3 3 0 0 1 0 5.8"
-        />
-
-        <path
-          d="M18 14c2.2.7 3.5 2.6 3.5 5"
-        />
-      </svg>
-
-    </div>
-
-    <span>
-      People
-    </span>
-
-  </button>
-
-
-  <!-- CHAT -->
-
-  <button
-    class="control"
-    id="chatButton"
-    type="button"
-    aria-label="Chat"
-  >
-
-    <div class="icon">
-
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 3v-6.5A7.5 7.5 0 1 1 20 11.5Z"
-        />
-      </svg>
-
-    </div>
-
-    <span>
-      Chat
-    </span>
-
-  </button>
-
-
-  <!-- FULLSCREEN -->
-
-  <button
-    class="control"
-    id="fullscreenButton"
-    type="button"
-    aria-label="Fullscreen"
-  >
-
-    <div class="icon">
-
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path d="M8 3H3v5"/>
-        <path d="M16 3h5v5"/>
-        <path d="M21 16v5h-5"/>
-        <path d="M3 16v5h5"/>
-      </svg>
-
-    </div>
-
-    <span>
-      Fullscreen
-    </span>
-
-  </button>
-
-
-  <!-- LEAVE -->
-
-  <button
-    class="leave"
-    id="leaveButton"
-    type="button"
-  >
-    Leave
-  </button>
-
-</footer>
-
-<!-- ==========================================================
-     PARTICIPANTS / CHAT PANEL
-     ========================================================== -->
-
-<div
-  class="side-panel hidden"
-  id="sidePanel"
->
-
-  <div class="panel-header">
-
-    <h3 id="panelTitle">
-      Participants
-    </h3>
 
     <button
-      class="close-panel"
-      id="closePanel"
+      class="control"
+      id="cameraButton"
+      type="button"
+      aria-label="Stop video"
     >
-      ×
+
+      <div class="icon" id="cameraIcon">
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <rect
+            x="3"
+            y="6"
+            width="13"
+            height="12"
+            rx="2"
+          />
+
+          <path
+            d="m16 10 5-3v10l-5-3z"
+          />
+        </svg>
+
+      </div>
+
+      <span>
+        Stop Video
+      </span>
+
     </button>
+
+
+    <button
+      class="control"
+      id="screenButton"
+      type="button"
+      aria-label="Request screen sharing"
+    >
+
+      <div class="icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <rect
+            x="3"
+            y="4"
+            width="18"
+            height="13"
+            rx="2"
+          />
+
+          <path d="M8 21h8"/>
+          <path d="M12 17v4"/>
+        </svg>
+
+      </div>
+
+      <span>
+        Share
+      </span>
+
+    </button>
+
+
+    <button
+      class="control"
+      id="participantsButton"
+      type="button"
+      aria-label="Participants"
+    >
+
+      <div class="icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle
+            cx="9"
+            cy="8"
+            r="3"
+          />
+
+          <path
+            d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"
+          />
+
+          <path
+            d="M16 5.5a3 3 0 0 0 0 5.8"
+          />
+
+          <path
+            d="M18 14c2.2.7 3.5 2.6 3.5 5"
+          />
+        </svg>
+
+      </div>
+
+      <span>
+        People
+      </span>
+
+    </button>
+
+
+    <button
+      class="control"
+      id="chatButton"
+      type="button"
+      aria-label="Chat"
+    >
+
+      <div class="icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 3v-6.5A7.5 7.5 0 1 1 20 11.5Z"
+          />
+        </svg>
+
+      </div>
+
+      <span>
+        Chat
+      </span>
+
+    </button>
+
+
+    <button
+      class="control"
+      id="fullscreenButton"
+      type="button"
+      aria-label="Fullscreen"
+    >
+
+      <div class="icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M8 3H3v5"/>
+          <path d="M16 3h5v5"/>
+          <path d="M21 16v5h-5"/>
+          <path d="M3 16v5h5"/>
+        </svg>
+
+      </div>
+
+      <span>
+        Fullscreen
+      </span>
+
+    </button>
+
+
+    <button
+      class="leave"
+      id="leaveButton"
+      type="button"
+    >
+      Leave
+    </button>
+
+  </footer>
+
+
+  <!-- PARTICIPANTS / CHAT PANEL -->
+
+  <div
+    class="side-panel hidden"
+    id="sidePanel"
+  >
+
+    <div class="panel-header">
+
+      <h3 id="panelTitle">
+        Participants
+      </h3>
+
+      <button
+        class="close-panel"
+        id="closePanel"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="panel-content">
+
+      <div id="participantsList"></div>
+
+      <div
+        id="chatMessages"
+        class="chat-messages hidden"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="chat-input hidden"
+      id="chatInputArea"
+    >
+
+      <input
+        id="chatInput"
+        type="text"
+        maxlength="500"
+        placeholder="Type a message..."
+      >
+
+      <button
+        id="sendMessage"
+        class="send"
+      >
+        ➤
+      </button>
+
+    </div>
 
   </div>
 
 
-  <div class="panel-content">
+  <!-- SCREEN SHARE REQUEST -->
 
-    <div id="participantsList"></div>
+  <div
+    class="modal-backdrop hidden"
+    id="screenRequestModal"
+  >
 
-    <div
-      id="chatMessages"
-      class="chat-messages hidden"
-    ></div>
+    <div class="modal">
+
+      <h2>
+        Screen sharing request
+      </h2>
+
+      <p id="screenRequestText">
+        Another participant is requesting that you share your screen.
+      </p>
+
+      <div class="modal-buttons">
+
+        <button
+          class="btn btn-secondary"
+          id="declineScreen"
+        >
+          Decline
+        </button>
+
+        <button
+          class="btn btn-primary"
+          id="acceptScreen"
+        >
+          Accept
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    class="modal-backdrop hidden"
+    id="errorModal"
+  >
+
+    <div class="modal">
+
+      <h2>
+        Unable to join
+      </h2>
+
+      <p id="errorText"></p>
+
+      <div class="modal-buttons">
+
+        <button
+          class="btn btn-primary"
+          id="errorOk"
+        >
+          OK
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SHARE -->
+
+  <div
+    class="modal-backdrop hidden"
+    id="shareModal"
+  >
+
+    <div class="modal">
+
+      <h2>
+        Invite participants
+      </h2>
+
+      <p>
+        Share this meeting link with the person you want to invite.
+      </p>
+
+      <div
+        class="share-box"
+        id="shareLink"
+      ></div>
+
+      <div class="modal-buttons">
+
+        <button
+          class="btn btn-secondary"
+          id="closeShare"
+        >
+          Close
+        </button>
+
+        <button
+          class="btn btn-primary"
+          id="copyShare"
+        >
+          Copy Link
+        </button>
+
+      </div>
+
+    </div>
 
   </div>
 
 
   <div
-    class="chat-input hidden"
-    id="chatInputArea"
-  >
-
-    <input
-      id="chatInput"
-      type="text"
-      maxlength="500"
-      placeholder="Type a message..."
-    >
-
-    <button
-      id="sendMessage"
-      class="send"
-    >
-      ➤
-    </button>
-
-  </div>
+    class="toast hidden"
+    id="toast"
+  ></div>
 
 </div>
-
-
-<!-- ==========================================================
-     SCREEN SHARE REQUEST
-     ========================================================== -->
-
-<div
-  class="modal-backdrop hidden"
-  id="screenRequestModal"
->
-
-  <div class="modal">
-
-    <h2>
-      Screen sharing request
-    </h2>
-
-    <p id="screenRequestText">
-      Another participant is requesting that you share your screen.
-    </p>
-
-    <div class="modal-buttons">
-
-      <button
-        class="btn btn-secondary"
-        id="declineScreen"
-      >
-        Decline
-      </button>
-
-      <button
-        class="btn btn-primary"
-        id="acceptScreen"
-      >
-        Accept
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ==========================================================
-     ERROR
-     ========================================================== -->
-
-<div
-  class="modal-backdrop hidden"
-  id="errorModal"
->
-
-  <div class="modal">
-
-    <h2>
-      Unable to join
-    </h2>
-
-    <p id="errorText"></p>
-
-    <div class="modal-buttons">
-
-      <button
-        class="btn btn-primary"
-        id="errorOk"
-      >
-        OK
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ==========================================================
-     SHARE
-     ========================================================== -->
-
-<div
-  class="modal-backdrop hidden"
-  id="shareModal"
->
-
-  <div class="modal">
-
-    <h2>
-      Invite participants
-    </h2>
-
-    <p>
-      Share this meeting link with the person you want to invite.
-    </p>
-
-    <div
-      class="share-box"
-      id="shareLink"
-    ></div>
-
-    <div class="modal-buttons">
-
-      <button
-        class="btn btn-secondary"
-        id="closeShare"
-      >
-        Close
-      </button>
-
-      <button
-        class="btn btn-primary"
-        id="copyShare"
-      >
-        Copy Link
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<div
-  class="toast hidden"
-  id="toast"
-></div>
 
 
 <script type="module">
@@ -1164,22 +1163,24 @@
 
 
   import {
-  signInAnonymously
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+    signInAnonymously
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
 
   import {
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  addDoc,
-  collection,
-  onSnapshot,
-  serverTimestamp,
-  query,
-  orderBy,
-  deleteDoc
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    addDoc,
+    collection,
+    onSnapshot,
+    serverTimestamp,
+    query,
+    orderBy,
+    deleteDoc
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
 
   // ==========================================================
   // ELEMENTS
@@ -1325,12 +1326,6 @@
 
   let currentScreenRequestId = null;
 
-  let offerCreated = false;
-
-  let candidateListenersStarted = false;
-
-  let pendingRemoteCandidates = [];
-
   let participantUnsubscribe = null;
 
   let callUnsubscribe = null;
@@ -1341,9 +1336,19 @@
 
   let chatUnsubscribe = null;
 
+  let offerCreated = false;
+
+  let answerCreated = false;
+
+  let remoteDescriptionSet = false;
+
+  let pendingRemoteCandidates = [];
+
+  const processedCandidateIds = new Set();
+
 
   // ==========================================================
-  // WEBRTC
+  // WEBRTC CONFIGURATION
   // ==========================================================
 
   const rtcConfig = {
@@ -1430,6 +1435,82 @@
 
 
   // ==========================================================
+  // START LOCAL MEDIA
+  // ==========================================================
+
+  async function startLocalMedia() {
+
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
+
+      throw new Error(
+        "This browser does not support camera and microphone access."
+      );
+
+    }
+
+
+    try {
+
+      localStream =
+        await navigator.mediaDevices.getUserMedia({
+
+          video: {
+            width: {
+              ideal: 1280
+            },
+            height: {
+              ideal: 720
+            },
+            facingMode: "user"
+          },
+
+          audio: true
+
+        });
+
+
+      localVideo.srcObject =
+        localStream;
+
+
+      localVideo.muted =
+        true;
+
+
+      try {
+
+        await localVideo.play();
+
+      } catch (playError) {
+
+        console.log(
+          "Local video autoplay:",
+          playError
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "MEDIA ERROR:",
+        error
+      );
+
+
+      throw new Error(
+        "Camera and microphone access was denied. Please allow both permissions and reload the meeting."
+      );
+
+    }
+
+  }
+
+
+  // ==========================================================
   // LOAD MEETING
   // ==========================================================
 
@@ -1499,6 +1580,13 @@
           : " (Guest)";
 
 
+      setConnectionStatus(
+        isHost
+          ? "Waiting for participant..."
+          : "Waiting for host..."
+      );
+
+
       await startLocalMedia();
 
 
@@ -1513,16 +1601,9 @@
 
       listenForParticipants();
 
-
       listenForScreenRequests();
 
-
       listenForChat();
-
-
-      setConnectionStatus(
-        "Waiting for participant..."
-      );
 
 
     } catch (error) {
@@ -1536,66 +1617,6 @@
       showError(
         error.message ||
         "Unable to join this meeting."
-      );
-
-    }
-
-  }
-
-
-  // ==========================================================
-  // CAMERA / MICROPHONE
-  // ==========================================================
-
-  async function startLocalMedia() {
-
-    if (
-      !navigator.mediaDevices ||
-      !navigator.mediaDevices.getUserMedia
-    ) {
-
-      throw new Error(
-        "This browser does not support camera and microphone access."
-      );
-
-    }
-
-
-    try {
-
-      localStream =
-        await navigator.mediaDevices
-          .getUserMedia({
-
-            video: {
-              width: {
-                ideal: 1280
-              },
-              height: {
-                ideal: 720
-              },
-              facingMode: "user"
-            },
-
-            audio: true
-
-          });
-
-
-      localVideo.srcObject =
-        localStream;
-
-
-    } catch (error) {
-
-      console.error(
-        "MEDIA ERROR:",
-        error
-      );
-
-
-      throw new Error(
-        "Camera and microphone access was denied. Please allow both permissions and reload the meeting."
       );
 
     }
@@ -1660,6 +1681,15 @@
 
   function createPeerConnection() {
 
+    if (peerConnection) {
+
+      try {
+        peerConnection.close();
+      } catch (error) {}
+
+    }
+
+
     peerConnection =
       new RTCPeerConnection(
         rtcConfig
@@ -1674,7 +1704,19 @@
       remoteStream;
 
 
+    /*
+      We mute the remote element initially so Safari
+      can start rendering the video stream. The actual
+      incoming audio tracks are still received by WebRTC.
+    */
+
+    remoteVideo.muted =
+      false;
+
+
+    // --------------------------------------------------------
     // LOCAL TRACKS
+    // --------------------------------------------------------
 
     if (localStream) {
 
@@ -1704,51 +1746,72 @@
     }
 
 
+    // --------------------------------------------------------
     // REMOTE TRACKS
+    // --------------------------------------------------------
 
     peerConnection.ontrack =
-      event => {
+      async event => {
 
-        const streams =
-          event.streams;
+        console.log(
+          "REMOTE TRACK:",
+          event.track.kind,
+          event.track.id
+        );
 
 
         if (
-          streams &&
-          streams.length
+          event.streams &&
+          event.streams.length > 0
         ) {
 
-          streams[0]
-            .getTracks()
-            .forEach(track => {
-
-              const alreadyAdded =
-                remoteStream
-                  .getTracks()
-                  .some(
-                    existing =>
-                      existing.id ===
-                      track.id
-                  );
+          const incomingStream =
+            event.streams[0];
 
 
-              if (!alreadyAdded) {
+          remoteStream =
+            incomingStream;
 
-                remoteStream.addTrack(
-                  track
-                );
 
-              }
-
-            });
+          remoteVideo.srcObject =
+            incomingStream;
 
         } else {
 
-          remoteStream.addTrack(
-            event.track
-          );
+          const alreadyExists =
+            remoteStream
+              .getTracks()
+              .some(
+                track =>
+                  track.id ===
+                  event.track.id
+              );
+
+
+          if (!alreadyExists) {
+
+            remoteStream.addTrack(
+              event.track
+            );
+
+          }
+
+
+          remoteVideo.srcObject =
+            remoteStream;
 
         }
+
+
+        event.track.onended =
+          () => {
+
+            console.log(
+              "REMOTE TRACK ENDED:",
+              event.track.kind
+            );
+
+          };
 
 
         remoteWaiting
@@ -1770,57 +1833,16 @@
           "Connected"
         );
 
-      };
 
+        try {
 
-    // ICE STATE
+          await remoteVideo.play();
 
-    peerConnection
-      .oniceconnectionstatechange =
-      () => {
+        } catch (error) {
 
-        const state =
-          peerConnection
-            .iceConnectionState;
-
-
-        console.log(
-          "ICE state:",
-          state
-        );
-
-
-        if (
-          state === "connected" ||
-          state === "completed"
-        ) {
-
-          setConnectionStatus(
-            "Connected"
-          );
-
-        } else if (
-          state === "checking"
-        ) {
-
-          setConnectionStatus(
-            "Connecting..."
-          );
-
-        } else if (
-          state === "disconnected"
-        ) {
-
-          setConnectionStatus(
-            "Connection interrupted"
-          );
-
-        } else if (
-          state === "failed"
-        ) {
-
-          setConnectionStatus(
-            "Connection failed"
+          console.log(
+            "Remote video play:",
+            error
           );
 
         }
@@ -1828,46 +1850,21 @@
       };
 
 
-    peerConnection
-      .onconnectionstatechange =
-      () => {
-
-        console.log(
-          "Connection state:",
-          peerConnection
-            .connectionState
-        );
-
-      };
-
-  }
-
-
-  // ==========================================================
-  // SETUP FIRESTORE WEBRTC SIGNALING
-  // ==========================================================
-
-  async function setupCall() {
-
-    callDocRef =
-      doc(
-        db,
-        "meetings",
-        meetingId,
-        "calls",
-        "main"
-      );
-
-
-    // ----------------------------------------------------------
-    // ICE CANDIDATE HANDLER
-    // ----------------------------------------------------------
+    // --------------------------------------------------------
+    // ICE
+    // --------------------------------------------------------
 
     peerConnection.onicecandidate =
       async event => {
 
         if (!event.candidate) {
+
+          console.log(
+            "ICE gathering complete"
+          );
+
           return;
+
         }
 
 
@@ -1878,17 +1875,6 @@
               ? "callerCandidates"
               : "calleeCandidates";
 
-
-          /*
-            IMPORTANT:
-
-            Build the Firestore collection
-            directly from db.
-
-            Do NOT use:
-
-            collection(callDocRef, ...)
-          */
 
           const candidatesRef =
             collection(
@@ -1907,10 +1893,15 @@
           );
 
 
+          console.log(
+            "ICE candidate saved:",
+            collectionName
+          );
+
         } catch (error) {
 
           console.error(
-            "ICE candidate error:",
+            "ICE candidate save error:",
             error
           );
 
@@ -1919,21 +1910,183 @@
       };
 
 
-    // ----------------------------------------------------------
-    // HOST
-    // ----------------------------------------------------------
+    peerConnection.onicecandidateerror =
+      event => {
+
+        console.error(
+          "ICE candidate error:",
+          event
+        );
+
+      };
+
+
+    // --------------------------------------------------------
+    // ICE CONNECTION STATE
+    // --------------------------------------------------------
+
+    peerConnection
+      .oniceconnectionstatechange =
+      () => {
+
+        if (!peerConnection) {
+          return;
+        }
+
+
+        const state =
+          peerConnection
+            .iceConnectionState;
+
+
+        console.log(
+          "ICE connection state:",
+          state
+        );
+
+
+        if (
+          state === "checking"
+        ) {
+
+          setConnectionStatus(
+            "Connecting..."
+          );
+
+        }
+
+
+        if (
+          state === "connected" ||
+          state === "completed"
+        ) {
+
+          setConnectionStatus(
+            "Connected"
+          );
+
+        }
+
+
+        if (
+          state === "disconnected"
+        ) {
+
+          setConnectionStatus(
+            "Connection interrupted"
+          );
+
+        }
+
+
+        if (
+          state === "failed"
+        ) {
+
+          setConnectionStatus(
+            "Connection failed"
+          );
+
+        }
+
+      };
+
+
+    // --------------------------------------------------------
+    // PEER CONNECTION STATE
+    // --------------------------------------------------------
+
+    peerConnection
+      .onconnectionstatechange =
+      () => {
+
+        if (!peerConnection) {
+          return;
+        }
+
+
+        const state =
+          peerConnection
+            .connectionState;
+
+
+        console.log(
+          "PEER CONNECTION STATE:",
+          state
+        );
+
+
+        if (
+          state === "connecting"
+        ) {
+
+          setConnectionStatus(
+            "Connecting..."
+          );
+
+        }
+
+
+        if (
+          state === "connected"
+        ) {
+
+          setConnectionStatus(
+            "Connected"
+          );
+
+        }
+
+
+        if (
+          state === "disconnected"
+        ) {
+
+          setConnectionStatus(
+            "Connection interrupted"
+          );
+
+        }
+
+
+        if (
+          state === "failed"
+        ) {
+
+          setConnectionStatus(
+            "Connection failed"
+          );
+
+        }
+
+      };
+
+  }
+
+
+  // ==========================================================
+  // SETUP CALL
+  // ==========================================================
+
+  async function setupCall() {
+
+    callDocRef =
+      doc(
+        db,
+        "meetings",
+        meetingId,
+        "calls",
+        "main"
+      );
+
 
     if (isHost) {
 
       await createHostOffer();
 
-    }
+    } else {
 
-    // ----------------------------------------------------------
-    // GUEST
-    // ----------------------------------------------------------
-
-    else {
+      listenForHostCandidates();
 
       await waitForHostOffer();
 
@@ -1943,7 +2096,7 @@
 
 
   // ==========================================================
-  // HOST CREATES OFFER
+  // HOST OFFER
   // ==========================================================
 
   async function createHostOffer() {
@@ -1953,176 +2106,89 @@
     }
 
 
-    offerCreated = true;
+    offerCreated =
+      true;
 
-
-    const offer =
-      await peerConnection
-        .createOffer();
-
-
-    await peerConnection
-      .setLocalDescription(
-        offer
-      );
-
-
-    await setDoc(
-      callDocRef,
-      {
-
-        offer: {
-
-          type:
-            offer.type,
-
-          sdp:
-            offer.sdp
-
-        },
-
-        hostId:
-          currentUser.uid,
-
-        createdAt:
-          serverTimestamp()
-
-      },
-      {
-        merge: true
-      }
-    );
-
-
-    listenForAnswer();
-
-
-    listenForGuestCandidates();
-
-  }
-
-
-  // ==========================================================
-  // GUEST WAITS FOR OFFER
-  // ==========================================================
-
-  async function waitForHostOffer() {
 
     setConnectionStatus(
-      "Waiting for host..."
+      "Waiting for participant..."
     );
 
 
-    callUnsubscribe =
-      onSnapshot(
+    try {
+
+      const offer =
+        await peerConnection
+          .createOffer();
+
+
+      await peerConnection
+        .setLocalDescription(
+          offer
+        );
+
+
+      await setDoc(
         callDocRef,
-        async snapshot => {
+        {
 
-          if (
-            !snapshot.exists()
-          ) {
+          offer: {
 
-            return;
+            type:
+              offer.type,
 
-          }
+            sdp:
+              offer.sdp
 
+          },
 
-          const data =
-            snapshot.data();
+          hostId:
+            currentUser.uid,
 
+          hostReady:
+            true,
 
-          if (
-            !data.offer
-          ) {
+          createdAt:
+            serverTimestamp()
 
-            return;
-
-          }
-
-
-          if (
-            peerConnection
-              .currentRemoteDescription
-          ) {
-
-            return;
-
-          }
-
-
-          try {
-
-            const offer =
-              new RTCSessionDescription(
-                data.offer
-              );
-
-
-            await peerConnection
-              .setRemoteDescription(
-                offer
-              );
-
-
-            await flushPendingCandidates();
-
-
-            const answer =
-              await peerConnection
-                .createAnswer();
-
-
-            await peerConnection
-              .setLocalDescription(
-                answer
-              );
-
-
-            await updateDoc(
-              callDocRef,
-              {
-
-                answer: {
-
-                  type:
-                    answer.type,
-
-                  sdp:
-                    answer.sdp
-
-                },
-
-                guestId:
-                  currentUser.uid
-
-              }
-            );
-
-
-            remoteParticipantUid =
-              data.hostId ||
-              null;
-
-
-            listenForHostCandidates();
-
-
-            setConnectionStatus(
-              "Connecting..."
-            );
-
-
-          } catch (error) {
-
-            console.error(
-              "Guest offer error:",
-              error
-            );
-
-          }
-
+        },
+        {
+          merge: true
         }
       );
+
+
+      console.log(
+        "HOST OFFER CREATED"
+      );
+
+
+      listenForAnswer();
+
+      listenForGuestCandidates();
+
+    } catch (error) {
+
+      console.error(
+        "HOST OFFER ERROR:",
+        error
+      );
+
+
+      offerCreated =
+        false;
+
+
+      setConnectionStatus(
+        "Connection failed"
+      );
+
+
+      showToast(
+        "Unable to start the video connection."
+      );
+
+    }
 
   }
 
@@ -2133,17 +2199,18 @@
 
   function listenForAnswer() {
 
+    if (callUnsubscribe) {
+      callUnsubscribe();
+    }
+
+
     callUnsubscribe =
       onSnapshot(
         callDocRef,
         async snapshot => {
 
-          if (
-            !snapshot.exists()
-          ) {
-
+          if (!snapshot.exists()) {
             return;
-
           }
 
 
@@ -2151,19 +2218,30 @@
             snapshot.data();
 
 
-          if (
-            !data.answer
-          ) {
-
+          if (!data.answer) {
             return;
+          }
 
+
+          if (answerCreated) {
+            return;
+          }
+
+
+          if (
+            !peerConnection
+          ) {
+            return;
           }
 
 
           if (
             peerConnection
-              .currentRemoteDescription
+              .remoteDescription
           ) {
+
+            answerCreated =
+              true;
 
             return;
 
@@ -2184,12 +2262,20 @@
               );
 
 
+            remoteDescriptionSet =
+              true;
+
+
             remoteParticipantUid =
               data.guestId ||
-              null;
+              remoteParticipantUid;
 
 
             await flushPendingCandidates();
+
+
+            answerCreated =
+              true;
 
 
             setConnectionStatus(
@@ -2197,11 +2283,20 @@
             );
 
 
+            console.log(
+              "HOST RECEIVED ANSWER"
+            );
+
           } catch (error) {
 
             console.error(
-              "Answer error:",
+              "ANSWER ERROR:",
               error
+            );
+
+
+            setConnectionStatus(
+              "Connection failed"
             );
 
           }
@@ -2213,23 +2308,182 @@
 
 
   // ==========================================================
-  // GUEST LISTENS FOR HOST CANDIDATES
+  // GUEST WAITS FOR HOST OFFER
   // ==========================================================
 
-  function listenForHostCandidates() {
+  async function waitForHostOffer() {
 
-    if (
-      candidateListenersStarted
-    ) {
+    setConnectionStatus(
+      "Waiting for host..."
+    );
 
-      return;
 
+    if (callUnsubscribe) {
+      callUnsubscribe();
     }
 
 
-    candidateListenersStarted =
-      true;
+    callUnsubscribe =
+      onSnapshot(
+        callDocRef,
+        async snapshot => {
 
+          if (!snapshot.exists()) {
+            return;
+          }
+
+
+          const data =
+            snapshot.data();
+
+
+          if (!data.offer) {
+            return;
+          }
+
+
+          if (
+            answerCreated
+          ) {
+            return;
+          }
+
+
+          if (
+            !peerConnection
+          ) {
+            return;
+          }
+
+
+          try {
+
+            /*
+              Make sure the guest never creates
+              a second answer.
+            */
+
+            if (
+              peerConnection
+                .signalingState !==
+              "stable"
+            ) {
+
+              if (
+                peerConnection
+                  .currentRemoteDescription
+              ) {
+
+                answerCreated =
+                  true;
+
+              }
+
+              return;
+
+            }
+
+
+            remoteParticipantUid =
+              data.hostId ||
+              remoteParticipantUid;
+
+
+            const offer =
+              new RTCSessionDescription(
+                data.offer
+              );
+
+
+            await peerConnection
+              .setRemoteDescription(
+                offer
+              );
+
+
+            remoteDescriptionSet =
+              true;
+
+
+            await flushPendingCandidates();
+
+
+            const answer =
+              await peerConnection
+                .createAnswer();
+
+
+            await peerConnection
+              .setLocalDescription(
+                answer
+              );
+
+
+            await setDoc(
+              callDocRef,
+              {
+
+                answer: {
+
+                  type:
+                    answer.type,
+
+                  sdp:
+                    answer.sdp
+
+                },
+
+                guestId:
+                  currentUser.uid,
+
+                guestReady:
+                  true
+
+              },
+              {
+                merge: true
+              }
+            );
+
+
+            answerCreated =
+              true;
+
+
+            setConnectionStatus(
+              "Connecting..."
+            );
+
+
+            console.log(
+              "GUEST SENT ANSWER"
+            );
+
+          } catch (error) {
+
+            console.error(
+              "GUEST OFFER ERROR:",
+              error
+            );
+
+
+            setConnectionStatus(
+              "Connection failed"
+            );
+
+          }
+
+        }
+      );
+
+  }
+
+
+  // ==========================================================
+  // HOST CANDIDATES
+  // ==========================================================
+
+  function listenForHostCandidates() {
 
     const candidatesRef =
       collection(
@@ -2240,6 +2494,11 @@
         "main",
         "callerCandidates"
       );
+
+
+    if (remoteCandidateUnsubscribe) {
+      remoteCandidateUnsubscribe();
+    }
 
 
     remoteCandidateUnsubscribe =
@@ -2260,11 +2519,33 @@
               }
 
 
+              if (
+                processedCandidateIds
+                  .has(change.doc.id)
+              ) {
+
+                return;
+
+              }
+
+
+              processedCandidateIds
+                .add(change.doc.id);
+
+
               addRemoteCandidate(
                 change.doc.data()
               );
 
             });
+
+        },
+        error => {
+
+          console.error(
+            "HOST CANDIDATE LISTENER ERROR:",
+            error
+          );
 
         }
       );
@@ -2273,7 +2554,7 @@
 
 
   // ==========================================================
-  // HOST LISTENS FOR GUEST CANDIDATES
+  // GUEST CANDIDATES
   // ==========================================================
 
   function listenForGuestCandidates() {
@@ -2289,6 +2570,11 @@
       );
 
 
+    if (remoteCandidateUnsubscribe) {
+      remoteCandidateUnsubscribe();
+    }
+
+
     remoteCandidateUnsubscribe =
       onSnapshot(
         candidatesRef,
@@ -2307,11 +2593,33 @@
               }
 
 
+              if (
+                processedCandidateIds
+                  .has(change.doc.id)
+              ) {
+
+                return;
+
+              }
+
+
+              processedCandidateIds
+                .add(change.doc.id);
+
+
               addRemoteCandidate(
                 change.doc.data()
               );
 
             });
+
+        },
+        error => {
+
+          console.error(
+            "GUEST CANDIDATE LISTENER ERROR:",
+            error
+          );
 
         }
       );
@@ -2327,46 +2635,52 @@
     candidateData
   ) {
 
-    if (
-      !peerConnection
-    ) {
-
+    if (!peerConnection) {
       return;
-
     }
 
 
-    const candidate =
-      new RTCIceCandidate(
-        candidateData
-      );
+    try {
+
+      const candidate =
+        new RTCIceCandidate(
+          candidateData
+        );
 
 
-    if (
-      peerConnection
-        .remoteDescription
-    ) {
-
-      try {
+      if (
+        peerConnection
+          .remoteDescription
+      ) {
 
         await peerConnection
           .addIceCandidate(
             candidate
           );
 
-      } catch (error) {
 
-        console.error(
-          "ICE add error:",
-          error
+        console.log(
+          "REMOTE ICE ADDED"
+        );
+
+      } else {
+
+        pendingRemoteCandidates
+          .push(candidate);
+
+
+        console.log(
+          "REMOTE ICE QUEUED"
         );
 
       }
 
-    } else {
+    } catch (error) {
 
-      pendingRemoteCandidates
-        .push(candidate);
+      console.error(
+        "REMOTE ICE ERROR:",
+        error
+      );
 
     }
 
@@ -2374,7 +2688,7 @@
 
 
   // ==========================================================
-  // FLUSH ICE CANDIDATES
+  // FLUSH REMOTE ICE
   // ==========================================================
 
   async function flushPendingCandidates() {
@@ -2411,7 +2725,7 @@
       } catch (error) {
 
         console.error(
-          "Pending ICE error:",
+          "PENDING ICE ERROR:",
           error
         );
 
@@ -2466,6 +2780,13 @@
 
                 remoteParticipantUid =
                   participant.uid;
+
+
+                remoteLabel.textContent =
+                  participant.role ===
+                  "host"
+                    ? "Host"
+                    : "Guest";
 
               }
 
@@ -2566,15 +2887,37 @@
           );
 
 
-          if (
-            count > 1
-          ) {
+          if (count > 1) {
 
-            remoteWaiting
-              .classList
-              .add("hidden");
+            remoteWaitingText.textContent =
+              "Connecting...";
+
+            setConnectionStatus(
+              "Connecting..."
+            );
+
+          } else {
+
+            if (isHost) {
+
+              remoteWaitingText.textContent =
+                "Waiting for another participant...";
+
+              setConnectionStatus(
+                "Waiting for participant..."
+              );
+
+            }
 
           }
+
+        },
+        error => {
+
+          console.error(
+            "PARTICIPANT LISTENER ERROR:",
+            error
+          );
 
         }
       );
@@ -2627,25 +2970,26 @@
 
 
       micButton
-        .querySelector(
-          "span"
-        )
+        .querySelector("span")
         .textContent =
           wasEnabled
             ? "Unmute"
             : "Mute";
-            
-       micButton.setAttribute(
+
+
+      micButton.setAttribute(
         "aria-label",
         wasEnabled
-        ? "Unmute microphone"
-        : "Mute microphone"
-    );
+          ? "Unmute microphone"
+          : "Mute microphone"
+      );
 
 
       await updateParticipantStatus({
+
         audioEnabled:
           !wasEnabled
+
       });
 
     };
@@ -2696,21 +3040,21 @@
 
 
       cameraButton
-        .querySelector(
-          "span"
-        )
+        .querySelector("span")
         .textContent =
           wasEnabled
             ? "Start Video"
             : "Stop Video";
 
-        cameraButton.setAttribute(
-  "aria-label",
-  wasEnabled
-    ? "Start video"
-    : "Stop video"
-);
-        
+
+      cameraButton.setAttribute(
+        "aria-label",
+        wasEnabled
+          ? "Start video"
+          : "Stop video"
+      );
+
+
       localWaiting
         .classList
         .toggle(
@@ -2720,8 +3064,10 @@
 
 
       await updateParticipantStatus({
+
         videoEnabled:
           !wasEnabled
+
       });
 
     };
@@ -2752,7 +3098,6 @@
         values
       );
 
-
     } catch (error) {
 
       console.error(
@@ -2766,15 +3111,13 @@
 
 
   // ==========================================================
-  // REQUEST SCREEN SHARING
+  // SCREEN SHARE REQUEST
   // ==========================================================
 
   screenButton.onclick =
     async () => {
 
-      if (
-        !remoteParticipantUid
-      ) {
+      if (!remoteParticipantUid) {
 
         showToast(
           "Another participant must join first."
@@ -2826,7 +3169,6 @@
           "Screen sharing request sent."
         );
 
-
       } catch (error) {
 
         console.error(
@@ -2845,7 +3187,7 @@
 
 
   // ==========================================================
-  // LISTEN FOR SCREEN REQUESTS
+  // SCREEN REQUEST LISTENER
   // ==========================================================
 
   function listenForScreenRequests() {
@@ -2869,9 +3211,9 @@
 
               if (
                 change.type !==
-                "added" &&
+                  "added" &&
                 change.type !==
-                "modified"
+                  "modified"
               ) {
 
                 return;
@@ -2969,7 +3311,6 @@
 
         await startScreenShare();
 
-
       } catch (error) {
 
         console.error(
@@ -3024,7 +3365,6 @@
           }
         );
 
-
       } catch (error) {
 
         console.error(
@@ -3061,8 +3401,10 @@
       currentScreenStream =
         await navigator.mediaDevices
           .getDisplayMedia({
+
             video: true,
             audio: false
+
           });
 
 
@@ -3086,9 +3428,7 @@
       }
 
 
-      if (
-        currentVideoSender
-      ) {
+      if (currentVideoSender) {
 
         await currentVideoSender
           .replaceTrack(
@@ -3102,10 +3442,13 @@
         currentScreenStream;
 
 
+      try {
+        await localVideo.play();
+      } catch (error) {}
+
+
       screenButton
-        .querySelector(
-          "span"
-        )
+        .querySelector("span")
         .textContent =
           "Stop Sharing";
 
@@ -3126,7 +3469,6 @@
       showToast(
         "You are sharing your screen."
       );
-
 
     } catch (error) {
 
@@ -3199,15 +3541,18 @@
       localVideo.srcObject =
         localStream;
 
+
+      try {
+        await localVideo.play();
+      } catch (error) {}
+
     }
 
 
     screenButton
-      .querySelector(
-        "span"
-      )
+      .querySelector("span")
       .textContent =
-        "Request Screen";
+        "Share";
 
 
     screenButton
@@ -3218,7 +3563,7 @@
 
 
   // ==========================================================
-  // CHAT
+  // CHAT LISTENER
   // ==========================================================
 
   function listenForChat() {
@@ -3372,7 +3717,6 @@
 
       chatInput.value =
         "";
-
 
     } catch (error) {
 
@@ -3578,7 +3922,6 @@
           "Meeting link copied."
         );
 
-
       } catch (error) {
 
         console.error(
@@ -3675,18 +4018,14 @@
         }
 
 
-        if (
-          peerConnection
-        ) {
+        if (peerConnection) {
 
           peerConnection.close();
 
         }
 
 
-        if (
-          currentUser
-        ) {
+        if (currentUser) {
 
           await deleteDoc(
             doc(
@@ -3729,14 +4068,16 @@
 
 
     if (
-      text === "Connected"
+      text ===
+      "Connected"
     ) {
 
       statusDot.style.background =
         "#36c76f";
 
     } else if (
-      text.toLowerCase()
+      text
+        .toLowerCase()
         .includes("failed")
     ) {
 
@@ -3823,87 +4164,99 @@
 
   }
 
-// ==========================================================
-// AUTO-HIDE MODERN CONTROLS
-// ==========================================================
 
-const controls =
-  document.getElementById("controls");
+  // ==========================================================
+  // AUTO-HIDE MODERN CONTROLS
+  // ==========================================================
 
-let controlsTimer = null;
-
-
-function showControls() {
-
-  if (!controls) {
-    return;
-  }
-
-  controls.classList.remove(
-    "controls-hidden"
-  );
-
-  clearTimeout(
-    controlsTimer
-  );
-
-  controlsTimer =
-    setTimeout(
-      () => {
-
-        if (
-          !sidePanel ||
-          sidePanel.classList.contains("hidden")
-        ) {
-
-          controls.classList.add(
-            "controls-hidden"
-          );
-
-        }
-
-      },
-      4000
+  const controls =
+    document.getElementById(
+      "controls"
     );
 
-}
+  let controlsTimer =
+    null;
 
 
-document.addEventListener(
-  "click",
-  event => {
+  function showControls() {
 
-    if (
-      event.target.closest(".controls")
-    ) {
-
-      showControls();
-
+    if (!controls) {
       return;
-
     }
 
 
-    showControls();
+    controls.classList.remove(
+      "controls-hidden"
+    );
+
+
+    clearTimeout(
+      controlsTimer
+    );
+
+
+    controlsTimer =
+      setTimeout(
+        () => {
+
+          if (
+            !sidePanel ||
+            sidePanel.classList.contains(
+              "hidden"
+            )
+          ) {
+
+            controls.classList.add(
+              "controls-hidden"
+            );
+
+          }
+
+        },
+        4000
+      );
 
   }
-);
 
 
-document.addEventListener(
-  "touchstart",
-  () => {
+  document.addEventListener(
+    "click",
+    event => {
 
-    showControls();
+      if (
+        event.target.closest(
+          ".controls"
+        )
+      ) {
 
-  },
-  {
-    passive: true
-  }
-);
+        showControls();
+
+        return;
+
+      }
 
 
-showControls();
+      showControls();
+
+    }
+  );
+
+
+  document.addEventListener(
+    "touchstart",
+    () => {
+
+      showControls();
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  showControls();
+
 
   // ==========================================================
   // START
