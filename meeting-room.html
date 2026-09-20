@@ -3246,94 +3246,310 @@ const remoteVolumeButton =
       }
 
     }
+/* =====================================================
+   DEVICE INFORMATION
+===================================================== */
 
+function getDeviceInfo() {
+
+  const ua = navigator.userAgent;
+
+  let deviceType = "Desktop";
+  let deviceName = "Computer";
+
+  if (/iPhone/i.test(ua)) {
+
+    deviceType = "Mobile";
+    deviceName = "iPhone";
+
+  } else if (/iPad/i.test(ua)) {
+
+    deviceType = "Tablet";
+    deviceName = "iPad";
+
+  } else if (/Android/i.test(ua)) {
+
+    deviceType = "Mobile";
+    deviceName = "Android Device";
+
+  } else if (/Macintosh/i.test(ua)) {
+
+    deviceType = "Desktop";
+    deviceName = "Mac";
+
+  } else if (/Windows/i.test(ua)) {
+
+    deviceType = "Desktop";
+    deviceName = "Windows PC";
+
+  } else if (/Linux/i.test(ua)) {
+
+    deviceType = "Desktop";
+    deviceName = "Linux Computer";
+
+  }
+
+  let browser = "Unknown";
+
+  if (/Edg/i.test(ua)) {
+
+    browser = "Edge";
+
+  } else if (/Chrome/i.test(ua)) {
+
+    browser = "Chrome";
+
+  } else if (/Safari/i.test(ua)) {
+
+    browser = "Safari";
+
+  } else if (/Firefox/i.test(ua)) {
+
+    browser = "Firefox";
+
+  }
+
+  let platform = "Unknown";
+
+  if (/iPhone|iPad/i.test(ua)) {
+
+    platform = "iOS";
+
+  } else if (/Android/i.test(ua)) {
+
+    platform = "Android";
+
+  } else if (/Windows/i.test(ua)) {
+
+    platform = "Windows";
+
+  } else if (/Macintosh/i.test(ua)) {
+
+    platform = "macOS";
+
+  } else if (/Linux/i.test(ua)) {
+
+    platform = "Linux";
+
+  }
+
+  return {
+    deviceType,
+    deviceName,
+    platform,
+    browser
+  };
+}
+
+
+/* =====================================================
+   CAMERA STATUS
+===================================================== */
+
+function getCameraEnabled() {
+
+  if (!localStream) {
+    return false;
+  }
+
+  const videoTracks =
+    localStream.getVideoTracks();
+
+  return videoTracks.some(
+    track => track.enabled
+  );
+}
+
+
+/* =====================================================
+   MICROPHONE STATUS
+===================================================== */
+
+function getMicrophoneEnabled() {
+
+  if (!localStream) {
+    return false;
+  }
+
+  const audioTracks =
+    localStream.getAudioTracks();
+
+  return audioTracks.some(
+    track => track.enabled
+  );
+}
+
+
+/* =====================================================
+   ACTIVITY LOGGER
+===================================================== */
+
+async function logActivity(
+  type,
+  description,
+  extra = {}
+) {
+
+  if (!meetingId || !currentUser) {
+    return;
+  }
+
+  try {
+
+    const deviceInfo =
+      getDeviceInfo();
+
+    await addDoc(
+      collection(
+        db,
+        "meetings",
+        meetingId,
+        "activities"
+      ),
+      {
+
+        uid:
+          currentUser.uid,
+
+        role:
+          isHost
+            ? "host"
+            : "guest",
+
+        type,
+
+        description,
+
+        deviceType:
+          deviceInfo.deviceType,
+
+        deviceName:
+          deviceInfo.deviceName,
+
+        platform:
+          deviceInfo.platform,
+
+        browser:
+          deviceInfo.browser,
+
+        timestamp:
+          serverTimestamp(),
+
+        ...extra
+
+      }
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "Activity logging error:",
+      error
+    );
+
+  }
+}
 
     /* =====================================================
-       PARTICIPANTS
-    ===================================================== */
+   PARTICIPANTS
+===================================================== */
 
-    async function registerParticipant() {
+async function registerParticipant() {
 
-      participantRef =
-        doc(
-          db,
-          "meetings",
-          meetingId,
-          "participants",
-          currentUser.uid
-        );
+  participantRef = doc(
+    db,
+    "meetings",
+    meetingId,
+    "participants",
+    currentUser.uid
+  );
 
+  const deviceInfo = getDeviceInfo();
 
-      await setDoc(
-        participantRef,
-        {
+  await setDoc(
+    participantRef,
+    {
+      uid: currentUser.uid,
 
-          uid:
-            currentUser.uid,
+      role: isHost
+        ? "host"
+        : "guest",
 
-          role:
-            isHost
-              ? "host"
-              : "guest",
+      joinedAt: serverTimestamp(),
 
-          joinedAt:
-            serverTimestamp(),
+      lastSeen: serverTimestamp(),
 
-          lastSeen:
-            serverTimestamp()
+      status: "online",
 
-        },
-        {
-          merge: true
-        }
-      );
+      deviceType: deviceInfo.deviceType,
 
+      deviceName: deviceInfo.deviceName,
 
-      heartbeatTimer =
-        setInterval(
-          async () => {
+      platform: deviceInfo.platform,
 
-            if (
-              leftMeeting ||
-              !participantRef
-            ) {
+      browser: deviceInfo.browser,
 
-              return;
+      cameraEnabled: getCameraEnabled(),
 
-            }
-
-
-            try {
-
-              await setDoc(
-                participantRef,
-                {
-
-                  lastSeen:
-                    serverTimestamp()
-
-                },
-                {
-                  merge: true
-                }
-              );
-
-            }
-
-            catch (error) {
-
-              console.warn(
-                "Heartbeat error:",
-                error
-              );
-
-            }
-
-          },
-          10000
-        );
-
+      microphoneEnabled: getMicrophoneEnabled()
+    },
+    {
+      merge: true
     }
+  );
+
+  await logActivity(
+    "joined",
+    "Joined the meeting",
+    {
+      deviceType: deviceInfo.deviceType,
+      deviceName: deviceInfo.deviceName,
+      browser: deviceInfo.browser
+    }
+  );
+
+  heartbeatTimer = setInterval(
+    async () => {
+
+      if (
+        leftMeeting ||
+        !participantRef
+      ) {
+        return;
+      }
+
+      try {
+
+        await setDoc(
+          participantRef,
+          {
+            lastSeen: serverTimestamp(),
+            status: "online",
+
+            cameraEnabled:
+              getCameraEnabled(),
+
+            microphoneEnabled:
+              getMicrophoneEnabled()
+          },
+          {
+            merge: true
+          }
+        );
+
+      } catch (error) {
+
+        console.warn(
+          "Heartbeat error:",
+          error
+        );
+
+      }
+
+    },
+    10000
+  );
+}
    
           async function sendGuestJoinNotification() {
 
