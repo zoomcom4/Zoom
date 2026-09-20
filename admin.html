@@ -20,276 +20,1285 @@
       padding: 0;
     }
 
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --background: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e5e7eb;
+      --sidebar: #0f172a;
+      --sidebar-hover: #1e293b;
+      --sidebar-text: #cbd5e1;
+      --green: #16a34a;
+      --red: #dc2626;
+    }
+
+
     body {
       font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
+        Roboto,
         sans-serif;
 
-      background: #f5f7fb;
-      color: #172033;
+      background: var(--background);
+      color: var(--text);
+
+      min-height: 100vh;
     }
 
-    header {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 15px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+
+    button {
+      font-family: inherit;
     }
 
-    .header-row {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
 
-    .menu-button {
-      width: 42px;
-      height: 42px;
-      border: 0;
-      border-radius: 10px;
-      background: #f1f3f7;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    header h1 {
-      font-size: 21px;
-    }
-
-    header p {
-      margin-top: 3px;
-      color: #6b7280;
-      font-size: 13px;
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.35);
-      z-index: 150;
-      display: none;
-    }
-
-    .overlay.show {
-      display: block;
-    }
+    /* =====================================================
+       SIDEBAR
+    ===================================================== */
 
     .side-menu {
+
       position: fixed;
+
       left: 0;
       top: 0;
       bottom: 0;
-      width: 285px;
-      background: #ffffff;
-      z-index: 200;
+
+      width: 275px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #0f172a 0%,
+          #111827 100%
+        );
+
+      color: white;
+
+      z-index: 1000;
+
       transform: translateX(-100%);
-      transition: transform .25s ease;
-      box-shadow: 5px 0 25px rgba(0,0,0,.12);
+
+      transition:
+        transform .28s ease;
+
+      box-shadow:
+        8px 0 30px rgba(0,0,0,.18);
+
+      display: flex;
+
+      flex-direction: column;
     }
+
 
     .side-menu.open {
       transform: translateX(0);
     }
 
-    .menu-header {
-      padding: 22px 20px;
-      border-bottom: 1px solid #e5e7eb;
+
+    .menu-brand {
+
+      padding: 24px 20px;
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
     }
 
-    .menu-header strong {
+
+    .brand-row {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+    }
+
+
+    .brand-logo {
+
+      width: 42px;
+      height: 42px;
+
+      border-radius: 12px;
+
+      background: var(--primary);
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      font-size: 20px;
+
+      box-shadow:
+        0 8px 20px
+        rgba(37,99,235,.35);
+    }
+
+
+    .brand-text strong {
+
+      display: block;
+
+      font-size: 17px;
+    }
+
+
+    .brand-text span {
+
+      display: block;
+
+      margin-top: 3px;
+
+      font-size: 12px;
+
+      color: #94a3b8;
+    }
+
+
+    .menu-label {
+
+      padding:
+        22px 20px
+        8px;
+
+      font-size: 11px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+
+      color: #64748b;
+
+      font-weight: 700;
+    }
+
+
+    .menu-items {
+
+      padding: 0 12px;
+    }
+
+
+    .menu-item {
+
+      width: 100%;
+
+      border: 0;
+
+      background: transparent;
+
+      color: var(--sidebar-text);
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 13px;
+
+      padding: 13px 14px;
+
+      margin-bottom: 4px;
+
+      border-radius: 11px;
+
+      cursor: pointer;
+
+      text-align: left;
+
+      font-size: 14px;
+
+      transition:
+        background .2s ease,
+        color .2s ease;
+    }
+
+
+    .menu-item:hover {
+
+      background:
+        var(--sidebar-hover);
+
+      color: white;
+    }
+
+
+    .menu-item.active {
+
+      background:
+        var(--primary);
+
+      color: white;
+
+      box-shadow:
+        0 5px 15px
+        rgba(37,99,235,.25);
+    }
+
+
+    .menu-icon {
+
+      width: 25px;
+
+      display: flex;
+
+      justify-content: center;
+
       font-size: 18px;
     }
 
-    .menu-header small {
-      display: block;
-      margin-top: 5px;
-      color: #6b7280;
+
+    .menu-footer {
+
+      margin-top: auto;
+
+      padding: 15px;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,.08);
     }
 
-    .menu-items {
-      padding: 12px;
-    }
 
-    .menu-item {
-      width: 100%;
+    .admin-profile {
+
       display: flex;
+
       align-items: center;
-      gap: 12px;
-      padding: 14px;
-      margin-bottom: 5px;
+
+      gap: 10px;
+
+      padding: 10px;
+
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,.05);
+
+      margin-bottom: 10px;
+    }
+
+
+    .admin-avatar {
+
+      width: 36px;
+      height: 36px;
+
+      border-radius: 50%;
+
+      background:
+        #334155;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      font-size: 17px;
+    }
+
+
+    .admin-profile strong {
+
+      display: block;
+
+      font-size: 13px;
+    }
+
+
+    .admin-profile span {
+
+      display: block;
+
+      font-size: 11px;
+
+      color: #94a3b8;
+
+      margin-top: 2px;
+    }
+
+
+    .logout-button {
+
+      width: 100%;
+
       border: 0;
+
+      background:
+        rgba(220,38,38,.12);
+
+      color: #fca5a5;
+
+      padding: 11px;
+
       border-radius: 10px;
-      background: transparent;
-      text-align: left;
-      font-size: 15px;
+
       cursor: pointer;
+
+      font-size: 13px;
+
+      transition:
+        background .2s ease;
     }
 
-    .menu-item:hover,
-    .menu-item.active {
-      background: #f1f5f9;
+
+    .logout-button:hover {
+
+      background:
+        rgba(220,38,38,.22);
     }
 
-    .menu-icon {
-      width: 24px;
-      text-align: center;
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    .overlay {
+
+      position: fixed;
+
+      inset: 0;
+
+      background:
+        rgba(15,23,42,.45);
+
+      backdrop-filter:
+        blur(2px);
+
+      z-index: 900;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition:
+        opacity .25s ease;
+    }
+
+
+    .overlay.show {
+
+      opacity: 1;
+
+      pointer-events: auto;
+    }
+
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
+
+    .main-wrapper {
+
+      min-height: 100vh;
+
+      width: 100%;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    header {
+
+      height: 74px;
+
+      background:
+        rgba(255,255,255,.94);
+
+      backdrop-filter:
+        blur(12px);
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 500;
+    }
+
+
+    .header-inner {
+
+      height: 100%;
+
+      max-width: 1400px;
+
+      margin: auto;
+
+      padding:
+        0 24px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .header-left {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 15px;
+    }
+
+
+    .menu-button {
+
+      width: 42px;
+      height: 42px;
+
+      border: 1px solid
+        var(--border);
+
+      border-radius: 11px;
+
+      background: white;
+
+      color: var(--text);
+
+      font-size: 20px;
+
+      cursor: pointer;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      transition:
+        background .2s ease;
+    }
+
+
+    .menu-button:hover {
+
+      background:
+        #f1f5f9;
+    }
+
+
+    .header-title h1 {
+
       font-size: 19px;
+
+      line-height: 1.2;
     }
+
+
+    .header-title p {
+
+      margin-top: 3px;
+
+      font-size: 12px;
+
+      color: var(--muted);
+    }
+
+
+    .header-status {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding:
+        8px 11px;
+
+      border-radius: 999px;
+
+      background:
+        #f0fdf4;
+
+      color:
+        #166534;
+
+      font-size: 12px;
+
+      font-weight: 600;
+    }
+
+
+    .status-dot {
+
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background:
+        var(--green);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(22,163,74,.1);
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
 
     .dashboard {
-      padding: 20px;
-      max-width: 1100px;
+
+      width: 100%;
+
+      max-width: 1400px;
+
       margin: auto;
+
+      padding:
+        28px 24px 50px;
     }
+
+
+    .error-box {
+
+      display: none;
+
+      padding: 15px 18px;
+
+      margin-bottom: 20px;
+
+      border-radius: 12px;
+
+      background: #fef2f2;
+
+      border:
+        1px solid
+        #fecaca;
+
+      color:
+        #991b1b;
+
+      font-size: 13px;
+    }
+
+
+    /* =====================================================
+       PAGE SECTIONS
+    ===================================================== */
 
     .page-section {
       display: none;
     }
 
+
     .page-section.active {
       display: block;
+
+      animation:
+        pageIn .2s ease;
     }
+
+
+    @keyframes pageIn {
+
+      from {
+        opacity: 0;
+        transform:
+          translateY(5px);
+      }
+
+      to {
+        opacity: 1;
+        transform:
+          translateY(0);
+      }
+
+    }
+
+
+    /* =====================================================
+       WELCOME
+    ===================================================== */
+
+    .welcome {
+
+      margin-bottom: 25px;
+    }
+
+
+    .welcome h2 {
+
+      font-size: 25px;
+
+      letter-spacing:
+        -.4px;
+    }
+
+
+    .welcome p {
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      margin-top: 5px;
+    }
+
+
+    /* =====================================================
+       STATS
+    ===================================================== */
 
     .stats {
+
       display: grid;
+
       grid-template-columns:
         repeat(
-          auto-fit,
-          minmax(180px, 1fr)
+          4,
+          minmax(0,1fr)
         );
-      gap: 15px;
-      margin-bottom: 20px;
+
+      gap: 16px;
+
+      margin-bottom: 22px;
     }
+
 
     .stat-card {
-      background: #ffffff;
-      border-radius: 14px;
+
+      background:
+        var(--card);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 16px;
+
       padding: 20px;
-      border: 1px solid #e5e7eb;
+
+      box-shadow:
+        0 2px 8px
+        rgba(15,23,42,.03);
     }
 
-    .stat-card span {
-      display: block;
-      color: #6b7280;
-      font-size: 14px;
-      margin-bottom: 8px;
+
+    .stat-top {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      margin-bottom: 18px;
     }
 
-    .stat-card strong {
-      font-size: 28px;
+
+    .stat-label {
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      font-weight: 500;
     }
 
-    .content-card {
-      background: #ffffff;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      overflow: hidden;
-    }
 
-    .content-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid #e5e7eb;
-    }
+    .stat-icon {
 
-    .content-header h2 {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 10px;
+
+      background:
+        #eff6ff;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
       font-size: 18px;
     }
 
-    .content-header p {
-      margin-top: 5px;
-      color: #6b7280;
-      font-size: 13px;
+
+    .stat-card strong {
+
+      display: block;
+
+      font-size: 29px;
+
+      letter-spacing:
+        -.7px;
     }
 
-    .content-list {
-      padding: 10px;
+
+    .stat-footer {
+
+      margin-top: 7px;
+
+      font-size: 11px;
+
+      color: var(--muted);
     }
 
-    .empty {
-      padding: 40px 20px;
-      text-align: center;
-      color: #6b7280;
+
+    /* =====================================================
+       CONTENT GRID
+    ===================================================== */
+
+    .content-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        340px;
+
+      gap: 20px;
     }
 
-    .participant-card,
-    .activity-card,
-    .device-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 10px;
-      background: #ffffff;
+
+    .content-card {
+
+      background:
+        var(--card);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 16px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 2px 8px
+        rgba(15,23,42,.03);
     }
 
-    .participant-top,
-    .activity-top,
-    .device-top {
+
+    .content-header {
+
+      padding:
+        18px 20px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
       display: flex;
-      justify-content: space-between;
+
       align-items: center;
+
+      justify-content: space-between;
+
       gap: 10px;
     }
 
-    .participant-name,
-    .activity-name,
-    .device-name {
-      font-weight: 600;
+
+    .content-header h2 {
+
       font-size: 16px;
     }
 
-    .online {
-      color: #16a34a;
-      font-size: 13px;
-      font-weight: 600;
+
+    .content-header p {
+
+      margin-top: 4px;
+
+      color: var(--muted);
+
+      font-size: 12px;
     }
+
+
+    .content-list {
+
+      padding: 12px;
+    }
+
+
+    /* =====================================================
+       PARTICIPANTS
+    ===================================================== */
+
+    .participant-card {
+
+      padding: 15px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 13px;
+
+      margin-bottom: 9px;
+
+      transition:
+        border .2s ease,
+        box-shadow .2s ease;
+    }
+
+
+    .participant-card:hover {
+
+      border-color:
+        #cbd5e1;
+
+      box-shadow:
+        0 4px 12px
+        rgba(15,23,42,.04);
+    }
+
+
+    .participant-top {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+    }
+
+
+    .participant-name {
+
+      font-size: 14px;
+
+      font-weight: 650;
+    }
+
+
+    .online,
+    .offline {
+
+      font-size: 11px;
+
+      font-weight: 650;
+
+      white-space: nowrap;
+    }
+
+
+    .online {
+      color: var(--green);
+    }
+
 
     .offline {
-      color: #6b7280;
-      font-size: 13px;
-      font-weight: 600;
+      color: var(--muted);
     }
 
-    .participant-info,
-    .activity-info,
-    .device-info {
-      margin-top: 10px;
+
+    .participant-info {
+
+      margin-top: 11px;
+
       display: grid;
-      gap: 6px;
-      color: #6b7280;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap: 7px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+
+    .participant-info div {
+
+      padding: 7px 9px;
+
+      background:
+        #f8fafc;
+
+      border-radius: 8px;
+    }
+
+
+    /* =====================================================
+       QUICK STATUS
+    ===================================================== */
+
+    .quick-card {
+
+      padding: 20px;
+    }
+
+
+    .quick-card h3 {
+
+      font-size: 15px;
+
+      margin-bottom: 15px;
+    }
+
+
+    .quick-row {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 12px 0;
+
+      border-bottom:
+        1px solid
+        #f1f5f9;
+
       font-size: 13px;
     }
+
+
+    .quick-row:last-child {
+      border-bottom: 0;
+    }
+
+
+    .quick-row span {
+      color: var(--muted);
+    }
+
+
+    .quick-row strong {
+      font-size: 13px;
+    }
+
+
+    /* =====================================================
+       ACTIVITY
+    ===================================================== */
+
+    .activity-card {
+
+      padding: 15px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 13px;
+
+      margin-bottom: 9px;
+    }
+
+
+    .activity-top {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+    }
+
+
+    .activity-name {
+
+      font-size: 14px;
+
+      font-weight: 650;
+    }
+
+
+    .activity-info {
+
+      margin-top: 11px;
+
+      display: grid;
+
+      gap: 7px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
 
     .badge {
-      display: inline-block;
-      padding: 4px 8px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      padding:
+        5px 9px;
+
       border-radius: 999px;
-      background: #f1f5f9;
-      font-size: 11px;
-      color: #475569;
+
+      background:
+        #eff6ff;
+
+      color:
+        #1d4ed8;
+
+      font-size: 10px;
+
+      font-weight: 650;
+
+      white-space: nowrap;
     }
+
 
     .badge.green {
-      background: #dcfce7;
-      color: #166534;
+
+      background:
+        #dcfce7;
+
+      color:
+        #166534;
     }
+
 
     .badge.red {
-      background: #fee2e2;
-      color: #991b1b;
+
+      background:
+        #fee2e2;
+
+      color:
+        #991b1b;
     }
 
-    .error-box {
-      padding: 18px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #991b1b;
-      display: none;
+
+    /* =====================================================
+       DEVICES
+    ===================================================== */
+
+    .device-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(260px,1fr)
+        );
+
+      gap: 12px;
+
+      padding: 14px;
+    }
+
+
+    .device-card {
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 14px;
+
+      padding: 17px;
+
+      background:
+        #ffffff;
+    }
+
+
+    .device-top {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin-bottom: 14px;
+    }
+
+
+    .device-name {
+
+      font-size: 14px;
+
+      font-weight: 650;
+    }
+
+
+    .device-info {
+
+      display: grid;
+
+      gap: 8px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+
+    .device-info div {
+
+      padding-bottom: 7px;
+
+      border-bottom:
+        1px solid
+        #f1f5f9;
+    }
+
+
+    /* =====================================================
+       EMPTY
+    ===================================================== */
+
+    .empty {
+
+      padding:
+        50px 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.6;
+    }
+
+
+    .empty-icon {
+
+      font-size: 32px;
+
+      margin-bottom: 10px;
+
+      opacity: .7;
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 900px) {
+
+      .stats {
+
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
+      }
+
+
+      .content-grid {
+
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+      header {
+
+        height: 68px;
+      }
+
+
+      .header-inner {
+
+        padding:
+          0 15px;
+      }
+
+
+      .header-title h1 {
+
+        font-size: 16px;
+      }
+
+
+      .header-title p {
+
+        font-size: 11px;
+      }
+
+
+      .header-status {
+
+        display: none;
+      }
+
+
+      .dashboard {
+
+        padding:
+          20px 14px 40px;
+      }
+
+
+      .welcome h2 {
+
+        font-size: 21px;
+      }
+
+
+      .stats {
+
+        gap: 10px;
+      }
+
+
+      .stat-card {
+
+        padding: 15px;
+      }
+
+
+      .stat-card strong {
+
+        font-size: 25px;
+      }
+
+
+      .stat-icon {
+
+        width: 34px;
+        height: 34px;
+
+        font-size: 16px;
+      }
+
+
+      .participant-info {
+
+        grid-template-columns: 1fr;
+      }
+
+
+      .side-menu {
+
+        width: 285px;
+      }
+
     }
 
   </style>
@@ -300,31 +1309,57 @@
 <body>
 
 
+<!-- =====================================================
+     OVERLAY
+===================================================== -->
+
 <div
   id="overlay"
   class="overlay"
 ></div>
 
 
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
 <aside
   id="sideMenu"
   class="side-menu"
 >
 
-  <div class="menu-header">
+  <div class="menu-brand">
 
-    <strong>
-      Admin Panel
-    </strong>
+    <div class="brand-row">
 
-    <small>
-      Meeting management
-    </small>
+      <div class="brand-logo">
+        ✦
+      </div>
+
+      <div class="brand-text">
+
+        <strong>
+          Admin Dashboard
+        </strong>
+
+        <span>
+          Meeting management
+        </span>
+
+      </div>
+
+    </div>
 
   </div>
 
 
+  <div class="menu-label">
+    Management
+  </div>
+
+
   <div class="menu-items">
+
 
     <button
       class="menu-item active"
@@ -335,7 +1370,9 @@
         📊
       </span>
 
-      Dashboard
+      <span>
+        Dashboard
+      </span>
 
     </button>
 
@@ -349,7 +1386,9 @@
         🕘
       </span>
 
-      Activity
+      <span>
+        Activity
+      </span>
 
     </button>
 
@@ -363,206 +1402,479 @@
         📱
       </span>
 
-      Connected Devices
+      <span>
+        Connected Devices
+      </span>
 
     </button>
+
+
+  </div>
+
+
+  <div class="menu-footer">
+
+
+    <div class="admin-profile">
+
+      <div class="admin-avatar">
+        👤
+      </div>
+
+      <div>
+
+        <strong>
+          Administrator
+        </strong>
+
+        <span>
+          Full access
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <button
+      id="logoutButton"
+      class="logout-button"
+    >
+
+      🚪 &nbsp; Sign Out
+
+    </button>
+
 
   </div>
 
 </aside>
 
 
-<header>
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-  <div class="header-row">
-
-    <button
-      id="menuButton"
-      class="menu-button"
-      aria-label="Open menu"
-    >
-      ☰
-    </button>
+<div class="main-wrapper">
 
 
-    <div>
+  <!-- ===================================================
+       HEADER
+  =================================================== -->
 
-      <h1 id="pageTitle">
-        Live Participants
-      </h1>
+  <header>
 
-      <p id="pageSubtitle">
-        Monitor active meeting participants
-      </p>
+    <div class="header-inner">
+
+
+      <div class="header-left">
+
+
+        <button
+          id="menuButton"
+          class="menu-button"
+          aria-label="Open admin menu"
+        >
+
+          ☰
+
+        </button>
+
+
+        <div class="header-title">
+
+          <h1 id="pageTitle">
+            Dashboard
+          </h1>
+
+          <p id="pageSubtitle">
+            Monitor your meetings and participants
+          </p>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="header-status">
+
+        <span class="status-dot"></span>
+
+        Monitoring Active
+
+      </div>
+
 
     </div>
 
-  </div>
-
-</header>
+  </header>
 
 
-<main
-  class="dashboard"
-  id="adminDashboard"
-  style="display:none;"
->
+  <!-- ===================================================
+       DASHBOARD CONTENT
+  =================================================== -->
 
-
-  <div
-    id="errorBox"
-    class="error-box"
-  ></div>
-
-
-  <!-- =========================
-       DASHBOARD
-  ========================= -->
-
-  <section
-    id="dashboardPage"
-    class="page-section active"
+  <main
+    id="adminDashboard"
+    class="dashboard"
+    style="display:none;"
   >
 
-    <section class="stats">
 
-      <div class="stat-card">
-
-        <span>
-          Online Now
-        </span>
-
-        <strong id="onlineCount">
-          0
-        </strong>
-
-      </div>
+    <div
+      id="errorBox"
+      class="error-box"
+    ></div>
 
 
-      <div class="stat-card">
+    <!-- =================================================
+         DASHBOARD PAGE
+    ================================================= -->
 
-        <span>
-          Hosts
-        </span>
-
-        <strong id="hostCount">
-          0
-        </strong>
-
-      </div>
+    <section
+      id="dashboardPage"
+      class="page-section active"
+    >
 
 
-      <div class="stat-card">
-
-        <span>
-          Guests
-        </span>
-
-        <strong id="guestCount">
-          0
-        </strong>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <span>
-          Activities
-        </span>
-
-        <strong id="activityCount">
-          0
-        </strong>
-
-      </div>
-
-    </section>
-
-
-    <section class="content-card">
-
-      <div class="content-header">
+      <div class="welcome">
 
         <h2>
-          Active Participants
+          Welcome back, Admin
         </h2>
 
         <p>
-          Participants currently recorded in meetings.
+          Here's what's happening across your meetings.
         </p>
 
       </div>
 
 
-      <div
-        id="participantList"
-        class="content-list"
-      >
+      <!-- STATS -->
 
-        <div class="empty">
-          Loading participants...
+      <section class="stats">
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Online Now
+            </span>
+
+            <div class="stat-icon">
+              🟢
+            </div>
+
+          </div>
+
+          <strong id="onlineCount">
+            0
+          </strong>
+
+          <div class="stat-footer">
+            Currently connected
+          </div>
+
         </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Hosts
+            </span>
+
+            <div class="stat-icon">
+              👑
+            </div>
+
+          </div>
+
+          <strong id="hostCount">
+            0
+          </strong>
+
+          <div class="stat-footer">
+            Recorded hosts
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Guests
+            </span>
+
+            <div class="stat-icon">
+              👥
+            </div>
+
+          </div>
+
+          <strong id="guestCount">
+            0
+          </strong>
+
+          <div class="stat-footer">
+            Recorded guests
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Activities
+            </span>
+
+            <div class="stat-icon">
+              🕘
+            </div>
+
+          </div>
+
+          <strong id="activityCount">
+            0
+          </strong>
+
+          <div class="stat-footer">
+            Recorded events
+          </div>
+
+        </div>
+
+
+      </section>
+
+
+      <!-- CONTENT -->
+
+      <div class="content-grid">
+
+
+        <section class="content-card">
+
+
+          <div class="content-header">
+
+            <div>
+
+              <h2>
+                Participants
+              </h2>
+
+              <p>
+                People currently or previously recorded in meetings.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div
+            id="participantList"
+            class="content-list"
+          >
+
+            <div class="empty">
+
+              <div class="empty-icon">
+                👥
+              </div>
+
+              Loading participants...
+
+            </div>
+
+          </div>
+
+
+        </section>
+
+
+        <!-- QUICK OVERVIEW -->
+
+        <section class="content-card">
+
+          <div class="quick-card">
+
+            <h3>
+              System Overview
+            </h3>
+
+
+            <div class="quick-row">
+
+              <span>
+                Participants
+              </span>
+
+              <strong id="totalParticipantCount">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="quick-row">
+
+              <span>
+                Online
+              </span>
+
+              <strong id="quickOnlineCount">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="quick-row">
+
+              <span>
+                Hosts
+              </span>
+
+              <strong id="quickHostCount">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="quick-row">
+
+              <span>
+                Guests
+              </span>
+
+              <strong id="quickGuestCount">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="quick-row">
+
+              <span>
+                Activities
+              </span>
+
+              <strong id="quickActivityCount">
+                0
+              </strong>
+
+            </div>
+
+
+          </div>
+
+        </section>
+
 
       </div>
 
+
     </section>
 
-  </section>
+
+    <!-- =================================================
+         ACTIVITY PAGE
+    ================================================= -->
+
+    <section
+      id="activityPage"
+      class="page-section"
+    >
 
 
-  <!-- =========================
-       ACTIVITY
-  ========================= -->
-
-  <section
-    id="activityPage"
-    class="page-section"
-  >
-
-    <section class="content-card">
-
-      <div class="content-header">
+      <div class="welcome">
 
         <h2>
           Activity
         </h2>
 
         <p>
-          Recorded activity from active meetings.
+          View recorded actions from meeting participants.
         </p>
 
       </div>
 
 
-      <div
-        id="activityList"
-        class="content-list"
-      >
+      <section class="content-card">
 
-        <div class="empty">
-          Loading activity...
+
+        <div class="content-header">
+
+          <div>
+
+            <h2>
+              Recent Activity
+            </h2>
+
+            <p>
+              Meeting activity is updated in real time.
+            </p>
+
+          </div>
+
+
+          <span class="badge">
+            Live
+          </span>
+
         </div>
 
-      </div>
+
+        <div
+          id="activityList"
+          class="content-list"
+        >
+
+          <div class="empty">
+
+            <div class="empty-icon">
+              🕘
+            </div>
+
+            Loading activity...
+
+          </div>
+
+        </div>
+
+
+      </section>
+
 
     </section>
 
-  </section>
+
+    <!-- =================================================
+         DEVICES PAGE
+    ================================================= -->
+
+    <section
+      id="devicesPage"
+      class="page-section"
+    >
 
 
-  <!-- =========================
-       DEVICES
-  ========================= -->
-
-  <section
-    id="devicesPage"
-    class="page-section"
-  >
-
-    <section class="content-card">
-
-      <div class="content-header">
+      <div class="welcome">
 
         <h2>
           Connected Devices
@@ -575,23 +1887,63 @@
       </div>
 
 
-      <div
-        id="deviceList"
-        class="content-list"
-      >
+      <section class="content-card">
 
-        <div class="empty">
-          Loading connected devices...
+
+        <div class="content-header">
+
+          <div>
+
+            <h2>
+              Devices
+            </h2>
+
+            <p>
+              Camera, microphone, platform and browser information.
+            </p>
+
+          </div>
+
+
+          <span class="badge">
+            Live
+          </span>
+
         </div>
 
-      </div>
+
+        <div
+          id="deviceList"
+          class="device-grid"
+        >
+
+          <div class="empty">
+
+            <div class="empty-icon">
+              📱
+            </div>
+
+            Loading connected devices...
+
+          </div>
+
+        </div>
+
+
+      </section>
+
 
     </section>
 
-  </section>
 
-</main>
+  </main>
 
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script type="module">
 
@@ -630,11 +1982,14 @@ let allParticipants = [];
 
 let allActivities = [];
 
-let participantUnsubs = new Map();
+let participantUnsubs =
+  new Map();
 
-let activityUnsubs = new Map();
+let activityUnsubs =
+  new Map();
 
-let monitoringStarted = false;
+let monitoringStarted =
+  false;
 
 
 /* =====================================================
@@ -646,29 +2001,40 @@ const adminDashboard =
     "adminDashboard"
   );
 
+
 const menuButton =
   document.getElementById(
     "menuButton"
   );
+
 
 const sideMenu =
   document.getElementById(
     "sideMenu"
   );
 
+
 const overlay =
   document.getElementById(
     "overlay"
   );
+
 
 const pageTitle =
   document.getElementById(
     "pageTitle"
   );
 
+
 const pageSubtitle =
   document.getElementById(
     "pageSubtitle"
+  );
+
+
+const logoutButton =
+  document.getElementById(
+    "logoutButton"
   );
 
 
@@ -711,86 +2077,109 @@ function closeMenu() {
 }
 
 
+/* =====================================================
+   MENU ITEMS
+===================================================== */
+
 document
-  .querySelectorAll(".menu-item")
-  .forEach(button => {
+  .querySelectorAll(
+    ".menu-item"
+  )
+  .forEach(
+    button => {
 
-    button.addEventListener(
-      "click",
-      () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-        const page =
-          button.dataset.page;
+          const page =
+            button.dataset.page;
 
 
-        document
-          .querySelectorAll(
-            ".page-section"
-          )
-          .forEach(section => {
+          document
+            .querySelectorAll(
+              ".page-section"
+            )
+            .forEach(
+              section => {
 
-            section.classList.remove(
+                section.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+          const selectedPage =
+            document.getElementById(
+              page
+            );
+
+
+          if (selectedPage) {
+
+            selectedPage.classList.add(
               "active"
             );
 
-          });
+          }
 
 
-        document
-          .getElementById(page)
-          .classList.add(
+          document
+            .querySelectorAll(
+              ".menu-item"
+            )
+            .forEach(
+              item => {
+
+                item.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+          button.classList.add(
             "active"
           );
 
 
-        document
-          .querySelectorAll(
-            ".menu-item"
-          )
-          .forEach(item => {
-
-            item.classList.remove(
-              "active"
-            );
-
-          });
+          updatePageHeader(
+            page
+          );
 
 
-        button.classList.add(
-          "active"
-        );
+          closeMenu();
 
+        }
+      );
 
-        updatePageHeader(
-          page
-        );
-
-
-        closeMenu();
-
-      }
-    );
-
-  });
+    }
+  );
 
 
 /* =====================================================
-   PAGE TITLES
+   PAGE HEADER
 ===================================================== */
 
-function updatePageHeader(page) {
+function updatePageHeader(
+  page
+) {
 
   if (
     page === "dashboardPage"
   ) {
 
     pageTitle.textContent =
-      "Live Participants";
+      "Dashboard";
 
     pageSubtitle.textContent =
-      "Monitor active meeting participants";
+      "Monitor your meetings and participants";
 
   }
+
 
   else if (
     page === "activityPage"
@@ -803,6 +2192,7 @@ function updatePageHeader(page) {
       "View recorded meeting activity";
 
   }
+
 
   else if (
     page === "devicesPage"
@@ -820,6 +2210,44 @@ function updatePageHeader(page) {
 
 
 /* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutButton.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      await signOut(
+        auth
+      );
+
+
+      window.location.href =
+        "signin.html";
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Logout error:",
+        error
+      );
+
+
+      alert(
+        "Could not sign out. Please try again."
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
    ADMIN AUTH
 ===================================================== */
 
@@ -828,10 +2256,6 @@ onAuthStateChanged(
   async user => {
 
     if (!user) {
-
-      alert(
-        "Please sign in with the admin account."
-      );
 
       window.location.href =
         "signin.html";
@@ -880,7 +2304,11 @@ onAuthStateChanged(
           "You do not have administrator access."
         );
 
-        await signOut(auth);
+
+        await signOut(
+          auth
+        );
+
 
         window.location.href =
           "signin.html";
@@ -902,6 +2330,7 @@ onAuthStateChanged(
       startMonitoring();
 
     }
+
 
     catch (error) {
 
@@ -928,11 +2357,17 @@ onAuthStateChanged(
 
 function startMonitoring() {
 
-  if (monitoringStarted) {
+  if (
+    monitoringStarted
+  ) {
+
     return;
+
   }
 
-  monitoringStarted = true;
+
+  monitoringStarted =
+    true;
 
 
   const meetingsRef =
@@ -985,18 +2420,17 @@ function syncMeetingListeners(
   const activeMeetingIds =
     new Set(
       meetingsSnapshot.docs.map(
-        meeting => meeting.id
+        meeting =>
+          meeting.id
       )
     );
 
 
-  /*
-   * Remove listeners for meetings
-   * that no longer exist.
-   */
-
   participantUnsubs.forEach(
-    (unsubscribe, meetingId) => {
+    (
+      unsubscribe,
+      meetingId
+    ) => {
 
       if (
         !activeMeetingIds.has(
@@ -1017,7 +2451,10 @@ function syncMeetingListeners(
 
 
   activityUnsubs.forEach(
-    (unsubscribe, meetingId) => {
+    (
+      unsubscribe,
+      meetingId
+    ) => {
 
       if (
         !activeMeetingIds.has(
@@ -1036,11 +2473,6 @@ function syncMeetingListeners(
     }
   );
 
-
-  /*
-   * Create one listener for each
-   * meeting's participants and activities.
-   */
 
   meetingsSnapshot.docs.forEach(
     meetingDoc => {
@@ -1081,7 +2513,7 @@ function syncMeetingListeners(
 
 
 /* =====================================================
-   PARTICIPANTS LISTENER
+   PARTICIPANTS
 ===================================================== */
 
 function listenToParticipants(
@@ -1126,11 +2558,6 @@ function listenToParticipants(
         );
 
 
-        /*
-         * Replace only the records
-         * belonging to this meeting.
-         */
-
         allParticipants =
           allParticipants.filter(
             participant =>
@@ -1146,9 +2573,10 @@ function listenToParticipants(
 
         updateDashboard();
 
-        buildDevices();
+        displayDevices();
 
       },
+
 
       error => {
 
@@ -1172,7 +2600,7 @@ function listenToParticipants(
 
 
 /* =====================================================
-   ACTIVITY LISTENER
+   ACTIVITY
 ===================================================== */
 
 function listenToActivities(
@@ -1240,26 +2668,23 @@ function listenToActivities(
         );
 
 
-        /*
-         * Keep newest activity first.
-         */
-
         allActivities.sort(
-          (a, b) =>
-            getTimestampMillis(b.timestamp) -
-            getTimestampMillis(a.timestamp)
+          (a,b) =>
+            getTimestampMillis(
+              b.timestamp
+            ) -
+            getTimestampMillis(
+              a.timestamp
+            )
         );
 
 
-        document.getElementById(
-          "activityCount"
-        ).textContent =
-          allActivities.length;
-
+        updateActivityCounts();
 
         displayActivities();
 
       },
+
 
       error => {
 
@@ -1296,6 +2721,26 @@ function updateDashboard() {
     );
 
 
+  const hosts =
+    allParticipants.filter(
+      participant =>
+        String(
+          participant.role || ""
+        ).toLowerCase() ===
+        "host"
+    );
+
+
+  const guests =
+    allParticipants.filter(
+      participant =>
+        String(
+          participant.role || ""
+        ).toLowerCase() ===
+        "guest"
+    );
+
+
   document.getElementById(
     "onlineCount"
   ).textContent =
@@ -1305,28 +2750,60 @@ function updateDashboard() {
   document.getElementById(
     "hostCount"
   ).textContent =
-    allParticipants.filter(
-      participant =>
-        String(
-          participant.role || ""
-        ).toLowerCase() ===
-        "host"
-    ).length;
+    hosts.length;
 
 
   document.getElementById(
     "guestCount"
   ).textContent =
-    allParticipants.filter(
-      participant =>
-        String(
-          participant.role || ""
-        ).toLowerCase() ===
-        "guest"
-    ).length;
+    guests.length;
+
+
+  document.getElementById(
+    "totalParticipantCount"
+  ).textContent =
+    allParticipants.length;
+
+
+  document.getElementById(
+    "quickOnlineCount"
+  ).textContent =
+    onlineParticipants.length;
+
+
+  document.getElementById(
+    "quickHostCount"
+  ).textContent =
+    hosts.length;
+
+
+  document.getElementById(
+    "quickGuestCount"
+  ).textContent =
+    guests.length;
 
 
   displayParticipants();
+
+}
+
+
+/* =====================================================
+   ACTIVITY COUNTS
+===================================================== */
+
+function updateActivityCounts() {
+
+  document.getElementById(
+    "activityCount"
+  ).textContent =
+    allActivities.length;
+
+
+  document.getElementById(
+    "quickActivityCount"
+  ).textContent =
+    allActivities.length;
 
 }
 
@@ -1354,6 +2831,10 @@ function displayParticipants() {
 
       <div class="empty">
 
+        <div class="empty-icon">
+          👥
+        </div>
+
         No participants have been recorded yet.
 
       </div>
@@ -1365,29 +2846,38 @@ function displayParticipants() {
   }
 
 
-  /*
-   * Display online participants first.
-   */
-
   const sorted =
     [...allParticipants].sort(
-      (a, b) => {
+      (a,b) => {
 
         if (
           a.status === "online" &&
           b.status !== "online"
         ) {
+
           return -1;
+
         }
+
 
         if (
           a.status !== "online" &&
           b.status === "online"
         ) {
+
           return 1;
+
         }
 
-        return 0;
+
+        return (
+          getTimestampMillis(
+            b.lastSeen
+          ) -
+          getTimestampMillis(
+            a.lastSeen
+          )
+        );
 
       }
     );
@@ -1453,63 +2943,55 @@ function displayParticipants() {
         <div class="participant-info">
 
           <div>
-
             Role:
             ${escapeHTML(role)}
-
           </div>
 
 
           <div>
-
             Device:
             ${escapeHTML(
               participant.deviceName ||
               participant.deviceType ||
               "Not provided"
             )}
-
           </div>
 
 
           <div>
-
             Browser:
             ${escapeHTML(
               participant.browser ||
               "Not provided"
             )}
-
           </div>
 
 
           <div>
-
             Camera:
-            ${participant.cameraEnabled
-              ? "On"
-              : "Off"}
-
+            ${
+              participant.cameraEnabled
+                ? "On"
+                : "Off"
+            }
           </div>
 
 
           <div>
-
             Microphone:
-            ${participant.microphoneEnabled
-              ? "On"
-              : "Off"}
-
+            ${
+              participant.microphoneEnabled
+                ? "On"
+                : "Off"
+            }
           </div>
 
 
           <div>
-
             Last seen:
             ${formatTimestamp(
               participant.lastSeen
             )}
-
           </div>
 
         </div>
@@ -1550,13 +3032,16 @@ function displayActivities() {
 
       <div class="empty">
 
-        No activity records are currently
-        available.
+        <div class="empty-icon">
+          🕘
+        </div>
 
-        <br><br>
+        No activity records are currently available.
 
-        Activity will appear when someone
-        joins or performs a recorded action.
+        <br>
+
+        Activity will appear when a participant
+        performs a recorded action.
 
       </div>
 
@@ -1602,6 +3087,7 @@ function displayActivities() {
             ${escapeHTML(name)}
 
           </div>
+
 
           <span class="badge">
 
@@ -1695,17 +3181,6 @@ function displayActivities() {
 
 
 /* =====================================================
-   CONNECTED DEVICES
-===================================================== */
-
-function buildDevices() {
-
-  displayDevices();
-
-}
-
-
-/* =====================================================
    DISPLAY DEVICES
 ===================================================== */
 
@@ -1727,6 +3202,10 @@ function displayDevices() {
     list.innerHTML = `
 
       <div class="empty">
+
+        <div class="empty-icon">
+          📱
+        </div>
 
         No connected device records
         are currently available.
@@ -1775,15 +3254,18 @@ function displayDevices() {
 
           </div>
 
+
           <span class="${
             isOnline
               ? "badge green"
               : "badge"
           }">
 
-            ${isOnline
-              ? "Online"
-              : "Offline"}
+            ${
+              isOnline
+                ? "Online"
+                : "Offline"
+            }
 
           </span>
 
@@ -1828,9 +3310,11 @@ function displayDevices() {
           <div>
 
             Camera:
-            ${participant.cameraEnabled
-              ? "On"
-              : "Off"}
+            ${
+              participant.cameraEnabled
+                ? "On"
+                : "Off"
+            }
 
           </div>
 
@@ -1838,9 +3322,11 @@ function displayDevices() {
           <div>
 
             Microphone:
-            ${participant.microphoneEnabled
-              ? "On"
-              : "Off"}
+            ${
+              participant.microphoneEnabled
+                ? "On"
+                : "Off"
+            }
 
           </div>
 
@@ -1887,10 +3373,10 @@ function getTimestampMillis(
   timestamp
 ) {
 
-  if (
-    !timestamp
-  ) {
+  if (!timestamp) {
+
     return 0;
+
   }
 
 
@@ -1908,7 +3394,11 @@ function getTimestampMillis(
     timestamp.seconds
   ) {
 
-    return timestamp.seconds * 1000;
+    return (
+      Number(
+        timestamp.seconds
+      ) * 1000
+    );
 
   }
 
