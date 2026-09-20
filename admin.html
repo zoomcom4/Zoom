@@ -20,7 +20,6 @@
       padding: 0;
     }
 
-
     body {
       font-family:
         -apple-system,
@@ -32,23 +31,14 @@
       color: #172033;
     }
 
-
-    /* =========================
-       HEADER
-    ========================= */
-
     header {
       background: #ffffff;
       border-bottom: 1px solid #e5e7eb;
-
       padding: 15px 20px;
-
       position: sticky;
       top: 0;
-
       z-index: 100;
     }
-
 
     .header-row {
       display: flex;
@@ -56,367 +46,249 @@
       gap: 15px;
     }
 
-
     .menu-button {
       width: 42px;
       height: 42px;
-
       border: 0;
       border-radius: 10px;
-
       background: #f1f3f7;
-
       font-size: 22px;
-
       cursor: pointer;
     }
-
 
     header h1 {
       font-size: 21px;
     }
 
-
     header p {
       margin-top: 3px;
-
       color: #6b7280;
-
       font-size: 13px;
     }
 
-
-    /* =========================
-       SIDE MENU
-    ========================= */
-
     .overlay {
       position: fixed;
-
       inset: 0;
-
       background: rgba(0,0,0,.35);
-
       z-index: 150;
-
       display: none;
     }
-
 
     .overlay.show {
       display: block;
     }
 
-
     .side-menu {
       position: fixed;
-
       left: 0;
       top: 0;
       bottom: 0;
-
       width: 285px;
-
       background: #ffffff;
-
       z-index: 200;
-
       transform: translateX(-100%);
-
-      transition:
-        transform .25s ease;
-
-      box-shadow:
-        5px 0 25px rgba(0,0,0,.12);
+      transition: transform .25s ease;
+      box-shadow: 5px 0 25px rgba(0,0,0,.12);
     }
-
 
     .side-menu.open {
       transform: translateX(0);
     }
 
-
     .menu-header {
       padding: 22px 20px;
-
       border-bottom: 1px solid #e5e7eb;
     }
-
 
     .menu-header strong {
       font-size: 18px;
     }
 
-
     .menu-header small {
       display: block;
-
       margin-top: 5px;
-
       color: #6b7280;
     }
-
 
     .menu-items {
       padding: 12px;
     }
 
-
     .menu-item {
       width: 100%;
-
       display: flex;
-
       align-items: center;
-
       gap: 12px;
-
       padding: 14px;
-
       margin-bottom: 5px;
-
       border: 0;
-
       border-radius: 10px;
-
       background: transparent;
-
       text-align: left;
-
       font-size: 15px;
-
       cursor: pointer;
     }
-
 
     .menu-item:hover,
     .menu-item.active {
       background: #f1f5f9;
     }
 
-
     .menu-icon {
       width: 24px;
-
       text-align: center;
-
       font-size: 19px;
     }
 
-
-    /* =========================
-       MAIN
-    ========================= */
-
     .dashboard {
       padding: 20px;
-
       max-width: 1100px;
-
       margin: auto;
     }
-
 
     .page-section {
       display: none;
     }
 
-
     .page-section.active {
       display: block;
     }
 
-
-    /* =========================
-       STATS
-    ========================= */
-
     .stats {
       display: grid;
-
       grid-template-columns:
         repeat(
           auto-fit,
           minmax(180px, 1fr)
         );
-
       gap: 15px;
-
       margin-bottom: 20px;
     }
 
-
     .stat-card {
       background: #ffffff;
-
       border-radius: 14px;
-
       padding: 20px;
-
       border: 1px solid #e5e7eb;
     }
 
-
     .stat-card span {
       display: block;
-
       color: #6b7280;
-
       font-size: 14px;
-
       margin-bottom: 8px;
     }
-
 
     .stat-card strong {
       font-size: 28px;
     }
 
-
-    /* =========================
-       CONTENT CARD
-    ========================= */
-
     .content-card {
       background: #ffffff;
-
       border-radius: 14px;
-
       border: 1px solid #e5e7eb;
-
       overflow: hidden;
     }
 
-
     .content-header {
       padding: 18px 20px;
-
-      border-bottom:
-        1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
     }
-
 
     .content-header h2 {
       font-size: 18px;
     }
 
-
     .content-header p {
       margin-top: 5px;
-
       color: #6b7280;
-
       font-size: 13px;
     }
-
 
     .content-list {
       padding: 10px;
     }
 
-
     .empty {
       padding: 40px 20px;
-
       text-align: center;
-
       color: #6b7280;
     }
-
-
-    /* =========================
-       PARTICIPANT CARD
-    ========================= */
 
     .participant-card,
     .activity-card,
     .device-card {
       border: 1px solid #e5e7eb;
-
       border-radius: 12px;
-
       padding: 15px;
-
       margin-bottom: 10px;
-
       background: #ffffff;
     }
-
 
     .participant-top,
     .activity-top,
     .device-top {
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       gap: 10px;
     }
-
 
     .participant-name,
     .activity-name,
     .device-name {
       font-weight: 600;
-
       font-size: 16px;
     }
 
-
     .online {
       color: #16a34a;
-
       font-size: 13px;
-
       font-weight: 600;
     }
 
+    .offline {
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 600;
+    }
 
     .participant-info,
     .activity-info,
     .device-info {
       margin-top: 10px;
-
       display: grid;
-
-      gap: 5px;
-
+      gap: 6px;
       color: #6b7280;
-
       font-size: 13px;
     }
 
-
     .badge {
       display: inline-block;
-
       padding: 4px 8px;
-
       border-radius: 999px;
-
       background: #f1f5f9;
-
       font-size: 11px;
-
       color: #475569;
     }
 
+    .badge.green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
 
     .error-box {
       padding: 18px;
-
       margin-bottom: 20px;
-
       border-radius: 12px;
-
       background: #fef2f2;
-
       border: 1px solid #fecaca;
-
       color: #991b1b;
-
       display: none;
     }
 
@@ -427,10 +299,6 @@
 
 <body>
 
-
-<!-- =========================
-     SIDE MENU
-========================= -->
 
 <div
   id="overlay"
@@ -457,7 +325,6 @@
 
 
   <div class="menu-items">
-
 
     <button
       class="menu-item active"
@@ -500,30 +367,21 @@
 
     </button>
 
-
   </div>
 
 </aside>
 
 
-
-<!-- =========================
-     HEADER
-========================= -->
-
 <header>
 
   <div class="header-row">
-
 
     <button
       id="menuButton"
       class="menu-button"
       aria-label="Open menu"
     >
-
       ☰
-
     </button>
 
 
@@ -539,16 +397,10 @@
 
     </div>
 
-
   </div>
 
 </header>
 
-
-
-<!-- =========================
-     DASHBOARD
-========================= -->
 
 <main
   class="dashboard"
@@ -563,17 +415,16 @@
   ></div>
 
 
-
-  <!-- DASHBOARD PAGE -->
+  <!-- =========================
+       DASHBOARD
+  ========================= -->
 
   <section
     id="dashboardPage"
     class="page-section active"
   >
 
-
     <section class="stats">
-
 
       <div class="stat-card">
 
@@ -626,9 +477,7 @@
 
       </div>
 
-
     </section>
-
 
 
     <section class="content-card">
@@ -659,12 +508,12 @@
 
     </section>
 
-
   </section>
 
 
-
-  <!-- ACTIVITY PAGE -->
+  <!-- =========================
+       ACTIVITY
+  ========================= -->
 
   <section
     id="activityPage"
@@ -680,7 +529,7 @@
         </h2>
 
         <p>
-          Activity records currently available in Firestore.
+          Recorded activity from active meetings.
         </p>
 
       </div>
@@ -702,8 +551,9 @@
   </section>
 
 
-
-  <!-- DEVICES PAGE -->
+  <!-- =========================
+       DEVICES
+  ========================= -->
 
   <section
     id="devicesPage"
@@ -719,7 +569,7 @@
         </h2>
 
         <p>
-          Devices represented by the participant records.
+          Device information provided by meeting participants.
         </p>
 
       </div>
@@ -740,9 +590,7 @@
 
   </section>
 
-
 </main>
-
 
 
 <script type="module">
@@ -759,7 +607,8 @@ import {
 
 
 import {
-  onAuthStateChanged
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 
@@ -767,9 +616,10 @@ import {
   collection,
   doc,
   getDoc,
-  onSnapshot
+  onSnapshot,
+  query,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-
 
 
 /* =====================================================
@@ -780,8 +630,11 @@ let allParticipants = [];
 
 let allActivities = [];
 
-let allDevices = [];
+let participantUnsubs = new Map();
 
+let activityUnsubs = new Map();
+
+let monitoringStarted = false;
 
 
 /* =====================================================
@@ -793,36 +646,30 @@ const adminDashboard =
     "adminDashboard"
   );
 
-
 const menuButton =
   document.getElementById(
     "menuButton"
   );
-
 
 const sideMenu =
   document.getElementById(
     "sideMenu"
   );
 
-
 const overlay =
   document.getElementById(
     "overlay"
   );
-
 
 const pageTitle =
   document.getElementById(
     "pageTitle"
   );
 
-
 const pageSubtitle =
   document.getElementById(
     "pageSubtitle"
   );
-
 
 
 /* =====================================================
@@ -862,7 +709,6 @@ function closeMenu() {
   );
 
 }
-
 
 
 document
@@ -928,14 +774,11 @@ document
   });
 
 
-
 /* =====================================================
    PAGE TITLES
 ===================================================== */
 
-function updatePageHeader(
-  page
-) {
+function updatePageHeader(page) {
 
   if (
     page === "dashboardPage"
@@ -949,7 +792,6 @@ function updatePageHeader(
 
   }
 
-
   else if (
     page === "activityPage"
   ) {
@@ -961,7 +803,6 @@ function updatePageHeader(
       "View recorded meeting activity";
 
   }
-
 
   else if (
     page === "devicesPage"
@@ -976,7 +817,6 @@ function updatePageHeader(
   }
 
 }
-
 
 
 /* =====================================================
@@ -1040,7 +880,7 @@ onAuthStateChanged(
           "You do not have administrator access."
         );
 
-        await auth.signOut();
+        await signOut(auth);
 
         window.location.href =
           "signin.html";
@@ -1063,7 +903,6 @@ onAuthStateChanged(
 
     }
 
-
     catch (error) {
 
       console.error(
@@ -1083,12 +922,18 @@ onAuthStateChanged(
 );
 
 
-
 /* =====================================================
    START MONITORING
 ===================================================== */
 
 function startMonitoring() {
+
+  if (monitoringStarted) {
+    return;
+  }
+
+  monitoringStarted = true;
+
 
   const meetingsRef =
     collection(
@@ -1103,13 +948,7 @@ function startMonitoring() {
 
     snapshot => {
 
-      console.log(
-        "Meetings found:",
-        snapshot.size
-      );
-
-
-      loadMeetingParticipants(
+      syncMeetingListeners(
         snapshot
       );
 
@@ -1135,117 +974,312 @@ function startMonitoring() {
 }
 
 
-
 /* =====================================================
-   LOAD PARTICIPANTS
+   SYNC MEETING LISTENERS
 ===================================================== */
 
-async function loadMeetingParticipants(
+function syncMeetingListeners(
   meetingsSnapshot
 ) {
 
-  const participantArrays = [];
+  const activeMeetingIds =
+    new Set(
+      meetingsSnapshot.docs.map(
+        meeting => meeting.id
+      )
+    );
 
 
-  for (
-    const meetingDoc
-    of meetingsSnapshot.docs
-  ) {
+  /*
+   * Remove listeners for meetings
+   * that no longer exist.
+   */
 
-    const participantsRef =
-      collection(
-        db,
-        "meetings",
-        meetingDoc.id,
-        "participants"
-      );
+  participantUnsubs.forEach(
+    (unsubscribe, meetingId) => {
 
+      if (
+        !activeMeetingIds.has(
+          meetingId
+        )
+      ) {
 
-    await new Promise(
-      resolve => {
+        unsubscribe();
 
-        onSnapshot(
-
-          participantsRef,
-
-          participantSnapshot => {
-
-            const participants = [];
-
-
-            participantSnapshot.forEach(
-              participantDoc => {
-
-                const data =
-                  participantDoc.data();
-
-
-                participants.push({
-
-                  ...data,
-
-                  participantId:
-                    participantDoc.id,
-
-                  meetingId:
-                    meetingDoc.id
-
-                });
-
-              }
-            );
-
-
-            participantArrays.push(
-              participants
-            );
-
-
-            resolve();
-
-          },
-
-          error => {
-
-            console.error(
-              "Participant error:",
-              meetingDoc.id,
-              error
-            );
-
-
-            resolve();
-
-          }
-
+        participantUnsubs.delete(
+          meetingId
         );
 
       }
-    );
 
-  }
-
-
-  allParticipants =
-    participantArrays.flat();
-
-
-  console.log(
-    "All participants:",
-    allParticipants
+    }
   );
 
 
-  updateDashboard();
+  activityUnsubs.forEach(
+    (unsubscribe, meetingId) => {
+
+      if (
+        !activeMeetingIds.has(
+          meetingId
+        )
+      ) {
+
+        unsubscribe();
+
+        activityUnsubs.delete(
+          meetingId
+        );
+
+      }
+
+    }
+  );
 
 
-  buildActivities();
+  /*
+   * Create one listener for each
+   * meeting's participants and activities.
+   */
+
+  meetingsSnapshot.docs.forEach(
+    meetingDoc => {
+
+      const meetingId =
+        meetingDoc.id;
 
 
-  buildDevices();
+      if (
+        !participantUnsubs.has(
+          meetingId
+        )
+      ) {
+
+        listenToParticipants(
+          meetingId
+        );
+
+      }
+
+
+      if (
+        !activityUnsubs.has(
+          meetingId
+        )
+      ) {
+
+        listenToActivities(
+          meetingId
+        );
+
+      }
+
+    }
+  );
 
 }
 
+
+/* =====================================================
+   PARTICIPANTS LISTENER
+===================================================== */
+
+function listenToParticipants(
+  meetingId
+) {
+
+  const participantsRef =
+    collection(
+      db,
+      "meetings",
+      meetingId,
+      "participants"
+    );
+
+
+  const unsubscribe =
+    onSnapshot(
+
+      participantsRef,
+
+      snapshot => {
+
+        const meetingParticipants =
+          [];
+
+
+        snapshot.forEach(
+          participantDoc => {
+
+            meetingParticipants.push({
+
+              ...participantDoc.data(),
+
+              participantId:
+                participantDoc.id,
+
+              meetingId
+
+            });
+
+          }
+        );
+
+
+        /*
+         * Replace only the records
+         * belonging to this meeting.
+         */
+
+        allParticipants =
+          allParticipants.filter(
+            participant =>
+              participant.meetingId !==
+              meetingId
+          );
+
+
+        allParticipants.push(
+          ...meetingParticipants
+        );
+
+
+        updateDashboard();
+
+        buildDevices();
+
+      },
+
+      error => {
+
+        console.error(
+          "Participant listener error:",
+          meetingId,
+          error
+        );
+
+      }
+
+    );
+
+
+  participantUnsubs.set(
+    meetingId,
+    unsubscribe
+  );
+
+}
+
+
+/* =====================================================
+   ACTIVITY LISTENER
+===================================================== */
+
+function listenToActivities(
+  meetingId
+) {
+
+  const activitiesRef =
+    collection(
+      db,
+      "meetings",
+      meetingId,
+      "activities"
+    );
+
+
+  const activitiesQuery =
+    query(
+      activitiesRef,
+      orderBy(
+        "timestamp",
+        "desc"
+      )
+    );
+
+
+  const unsubscribe =
+    onSnapshot(
+
+      activitiesQuery,
+
+      snapshot => {
+
+        const meetingActivities =
+          [];
+
+
+        snapshot.forEach(
+          activityDoc => {
+
+            meetingActivities.push({
+
+              ...activityDoc.data(),
+
+              activityId:
+                activityDoc.id,
+
+              meetingId
+
+            });
+
+          }
+        );
+
+
+        allActivities =
+          allActivities.filter(
+            activity =>
+              activity.meetingId !==
+              meetingId
+          );
+
+
+        allActivities.push(
+          ...meetingActivities
+        );
+
+
+        /*
+         * Keep newest activity first.
+         */
+
+        allActivities.sort(
+          (a, b) =>
+            getTimestampMillis(b.timestamp) -
+            getTimestampMillis(a.timestamp)
+        );
+
+
+        document.getElementById(
+          "activityCount"
+        ).textContent =
+          allActivities.length;
+
+
+        displayActivities();
+
+      },
+
+      error => {
+
+        console.error(
+          "Activity listener error:",
+          meetingId,
+          error
+        );
+
+      }
+
+    );
+
+
+  activityUnsubs.set(
+    meetingId,
+    unsubscribe
+  );
+
+}
 
 
 /* =====================================================
@@ -1254,20 +1288,29 @@ async function loadMeetingParticipants(
 
 function updateDashboard() {
 
+  const onlineParticipants =
+    allParticipants.filter(
+      participant =>
+        participant.status ===
+        "online"
+    );
+
+
   document.getElementById(
     "onlineCount"
   ).textContent =
-    allParticipants.length;
+    onlineParticipants.length;
 
 
   document.getElementById(
     "hostCount"
   ).textContent =
     allParticipants.filter(
-      item =>
+      participant =>
         String(
-          item.role || ""
-        ).toLowerCase() === "host"
+          participant.role || ""
+        ).toLowerCase() ===
+        "host"
     ).length;
 
 
@@ -1275,17 +1318,17 @@ function updateDashboard() {
     "guestCount"
   ).textContent =
     allParticipants.filter(
-      item =>
+      participant =>
         String(
-          item.role || ""
-        ).toLowerCase() === "guest"
+          participant.role || ""
+        ).toLowerCase() ===
+        "guest"
     ).length;
 
 
   displayParticipants();
 
 }
-
 
 
 /* =====================================================
@@ -1311,7 +1354,7 @@ function displayParticipants() {
 
       <div class="empty">
 
-        No participants currently online.
+        No participants have been recorded yet.
 
       </div>
 
@@ -1322,7 +1365,35 @@ function displayParticipants() {
   }
 
 
-  allParticipants.forEach(
+  /*
+   * Display online participants first.
+   */
+
+  const sorted =
+    [...allParticipants].sort(
+      (a, b) => {
+
+        if (
+          a.status === "online" &&
+          b.status !== "online"
+        ) {
+          return -1;
+        }
+
+        if (
+          a.status !== "online" &&
+          b.status === "online"
+        ) {
+          return 1;
+        }
+
+        return 0;
+
+      }
+    );
+
+
+  sorted.forEach(
     participant => {
 
       const card =
@@ -1338,6 +1409,7 @@ function displayParticipants() {
       const name =
         participant.name ||
         participant.displayName ||
+        participant.deviceName ||
         participant.uid ||
         participant.participantId ||
         "Unknown participant";
@@ -1346,6 +1418,11 @@ function displayParticipants() {
       const role =
         participant.role ||
         "Unknown";
+
+
+      const isOnline =
+        participant.status ===
+        "online";
 
 
       card.innerHTML = `
@@ -1358,9 +1435,15 @@ function displayParticipants() {
 
           </div>
 
-          <div class="online">
+          <div class="${
+            isOnline
+              ? "online"
+              : "offline"
+          }">
 
-            ● Online
+            ${isOnline
+              ? "● Online"
+              : "● Offline"}
 
           </div>
 
@@ -1379,9 +1462,11 @@ function displayParticipants() {
 
           <div>
 
-            Meeting:
+            Device:
             ${escapeHTML(
-              participant.meetingId
+              participant.deviceName ||
+              participant.deviceType ||
+              "Not provided"
             )}
 
           </div>
@@ -1389,9 +1474,40 @@ function displayParticipants() {
 
           <div>
 
-            Participant ID:
+            Browser:
             ${escapeHTML(
-              participant.participantId
+              participant.browser ||
+              "Not provided"
+            )}
+
+          </div>
+
+
+          <div>
+
+            Camera:
+            ${participant.cameraEnabled
+              ? "On"
+              : "Off"}
+
+          </div>
+
+
+          <div>
+
+            Microphone:
+            ${participant.microphoneEnabled
+              ? "On"
+              : "Off"}
+
+          </div>
+
+
+          <div>
+
+            Last seen:
+            ${formatTimestamp(
+              participant.lastSeen
             )}
 
           </div>
@@ -1409,104 +1525,6 @@ function displayParticipants() {
   );
 
 }
-
-
-
-/* =====================================================
-   BUILD ACTIVITY
-===================================================== */
-
-function buildActivities() {
-
-  allActivities = [];
-
-
-  allParticipants.forEach(
-    participant => {
-
-      const name =
-        participant.name ||
-        participant.displayName ||
-        participant.uid ||
-        participant.participantId ||
-        "Unknown participant";
-
-
-      /*
-       * Use existing activity fields if the
-       * participant document contains them.
-       */
-
-      if (
-        participant.activity
-      ) {
-
-        allActivities.push({
-
-          name,
-
-          activity:
-            participant.activity,
-
-          meetingId:
-            participant.meetingId
-
-        });
-
-      }
-
-
-      if (
-        participant.action
-      ) {
-
-        allActivities.push({
-
-          name,
-
-          activity:
-            participant.action,
-
-          meetingId:
-            participant.meetingId
-
-        });
-
-      }
-
-
-      if (
-        participant.status
-      ) {
-
-        allActivities.push({
-
-          name,
-
-          activity:
-            participant.status,
-
-          meetingId:
-            participant.meetingId
-
-        });
-
-      }
-
-    }
-  );
-
-
-  document.getElementById(
-    "activityCount"
-  ).textContent =
-    allActivities.length;
-
-
-  displayActivities();
-
-}
-
 
 
 /* =====================================================
@@ -1533,12 +1551,12 @@ function displayActivities() {
       <div class="empty">
 
         No activity records are currently
-        stored in Firestore.
+        available.
 
         <br><br>
 
-        Activity will appear here when the
-        participant records contain activity data.
+        Activity will appear when someone
+        joins or performs a recorded action.
 
       </div>
 
@@ -1562,21 +1580,35 @@ function displayActivities() {
         "activity-card";
 
 
+      const name =
+        activity.name ||
+        activity.deviceName ||
+        activity.uid ||
+        "Participant";
+
+
+      const description =
+        activity.description ||
+        activity.type ||
+        "Activity";
+
+
       card.innerHTML = `
 
         <div class="activity-top">
 
           <div class="activity-name">
 
-            ${escapeHTML(
-              activity.name
-            )}
+            ${escapeHTML(name)}
 
           </div>
 
           <span class="badge">
 
-            Activity
+            ${escapeHTML(
+              activity.type ||
+              "Activity"
+            )}
 
           </span>
 
@@ -1588,7 +1620,41 @@ function displayActivities() {
           <div>
 
             ${escapeHTML(
-              activity.activity
+              description
+            )}
+
+          </div>
+
+
+          <div>
+
+            Role:
+            ${escapeHTML(
+              activity.role ||
+              "Unknown"
+            )}
+
+          </div>
+
+
+          <div>
+
+            Device:
+            ${escapeHTML(
+              activity.deviceName ||
+              activity.deviceType ||
+              "Not provided"
+            )}
+
+          </div>
+
+
+          <div>
+
+            Browser:
+            ${escapeHTML(
+              activity.browser ||
+              "Not provided"
             )}
 
           </div>
@@ -1599,6 +1665,16 @@ function displayActivities() {
             Meeting:
             ${escapeHTML(
               activity.meetingId
+            )}
+
+          </div>
+
+
+          <div>
+
+            Time:
+            ${formatTimestamp(
+              activity.timestamp
             )}
 
           </div>
@@ -1618,58 +1694,15 @@ function displayActivities() {
 }
 
 
-
 /* =====================================================
-   BUILD CONNECTED DEVICES
+   CONNECTED DEVICES
 ===================================================== */
 
 function buildDevices() {
 
-  allDevices = [];
-
-
-  allParticipants.forEach(
-    participant => {
-
-      const name =
-        participant.name ||
-        participant.displayName ||
-        participant.uid ||
-        participant.participantId ||
-        "Unknown participant";
-
-
-      const device =
-        participant.device ||
-        participant.deviceName ||
-        participant.deviceType ||
-        participant.platform ||
-        participant.browser ||
-        "Device information not provided";
-
-
-      allDevices.push({
-
-        name,
-
-        device,
-
-        meetingId:
-          participant.meetingId,
-
-        participantId:
-          participant.participantId
-
-      });
-
-    }
-  );
-
-
   displayDevices();
 
 }
-
 
 
 /* =====================================================
@@ -1688,7 +1721,7 @@ function displayDevices() {
 
 
   if (
-    allDevices.length === 0
+    allParticipants.length === 0
   ) {
 
     list.innerHTML = `
@@ -1707,8 +1740,8 @@ function displayDevices() {
   }
 
 
-  allDevices.forEach(
-    device => {
+  allParticipants.forEach(
+    participant => {
 
       const card =
         document.createElement(
@@ -1720,23 +1753,39 @@ function displayDevices() {
         "device-card";
 
 
+      const name =
+        participant.deviceName ||
+        participant.name ||
+        participant.displayName ||
+        "Unknown device";
+
+
+      const isOnline =
+        participant.status ===
+        "online";
+
+
       card.innerHTML = `
 
         <div class="device-top">
 
           <div class="device-name">
 
-            ${escapeHTML(
-              device.name
-            )}
+            ${escapeHTML(name)}
 
           </div>
 
-          <div class="online">
+          <span class="${
+            isOnline
+              ? "badge green"
+              : "badge"
+          }">
 
-            ● Connected
+            ${isOnline
+              ? "Online"
+              : "Offline"}
 
-          </div>
+          </span>
 
         </div>
 
@@ -1745,9 +1794,62 @@ function displayDevices() {
 
           <div>
 
-            Device:
+            Device type:
             ${escapeHTML(
-              device.device
+              participant.deviceType ||
+              "Not provided"
+            )}
+
+          </div>
+
+
+          <div>
+
+            Platform:
+            ${escapeHTML(
+              participant.platform ||
+              "Not provided"
+            )}
+
+          </div>
+
+
+          <div>
+
+            Browser:
+            ${escapeHTML(
+              participant.browser ||
+              "Not provided"
+            )}
+
+          </div>
+
+
+          <div>
+
+            Camera:
+            ${participant.cameraEnabled
+              ? "On"
+              : "Off"}
+
+          </div>
+
+
+          <div>
+
+            Microphone:
+            ${participant.microphoneEnabled
+              ? "On"
+              : "Off"}
+
+          </div>
+
+
+          <div>
+
+            Last seen:
+            ${formatTimestamp(
+              participant.lastSeen
             )}
 
           </div>
@@ -1757,17 +1859,7 @@ function displayDevices() {
 
             Meeting:
             ${escapeHTML(
-              device.meetingId
-            )}
-
-          </div>
-
-
-          <div>
-
-            Participant ID:
-            ${escapeHTML(
-              device.participantId
+              participant.meetingId
             )}
 
           </div>
@@ -1786,6 +1878,77 @@ function displayDevices() {
 
 }
 
+
+/* =====================================================
+   TIMESTAMP
+===================================================== */
+
+function getTimestampMillis(
+  timestamp
+) {
+
+  if (
+    !timestamp
+  ) {
+    return 0;
+  }
+
+
+  if (
+    typeof timestamp.toMillis ===
+    "function"
+  ) {
+
+    return timestamp.toMillis();
+
+  }
+
+
+  if (
+    timestamp.seconds
+  ) {
+
+    return timestamp.seconds * 1000;
+
+  }
+
+
+  if (
+    timestamp instanceof Date
+  ) {
+
+    return timestamp.getTime();
+
+  }
+
+
+  return 0;
+
+}
+
+
+function formatTimestamp(
+  timestamp
+) {
+
+  const millis =
+    getTimestampMillis(
+      timestamp
+    );
+
+
+  if (!millis) {
+
+    return "Waiting...";
+
+  }
+
+
+  return new Date(
+    millis
+  ).toLocaleString();
+
+}
 
 
 /* =====================================================
@@ -1810,7 +1973,6 @@ function showError(
     "block";
 
 }
-
 
 
 /* =====================================================
