@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Create Account</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f7f8fa;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: #222;
+
+      padding: 20px;
+    }
+
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+
+    .logo {
+      text-align: center;
+
+      margin-bottom: 28px;
+
+      font-size: 32px;
+
+      font-weight: 700;
+
+      color: #2d8cff;
+
+      letter-spacing: -1px;
+    }
+
+
+    .card {
+      background: #fff;
+
+      border-radius: 16px;
+
+      padding: 32px 28px;
+
+      box-shadow:
+        0 8px 30px
+        rgba(0, 0, 0, 0.08);
+    }
+
+
+    h1 {
+      text-align: center;
+
+      font-size: 25px;
+
+      margin-bottom: 8px;
+    }
+
+
+    .subtitle {
+      text-align: center;
+
+      color: #777;
+
+      font-size: 14px;
+
+      margin-bottom: 28px;
+    }
+
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+
+    label {
+      display: block;
+
+      font-size: 14px;
+
+      font-weight: 600;
+
+      margin-bottom: 8px;
+    }
+
+
+    input {
+      width: 100%;
+
+      height: 50px;
+
+      border:
+        1px solid #d9d9d9;
+
+      border-radius: 9px;
+
+      padding:
+        0 14px;
+
+      font-size: 15px;
+
+      outline: none;
+
+      transition: 0.2s;
+    }
+
+
+    input:focus {
+      border-color: #2d8cff;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(45, 140, 255, 0.1);
+    }
+
+
+    .password-wrapper {
+      position: relative;
+    }
+
+
+    .password-wrapper input {
+      padding-right: 55px;
+    }
+
+
+    .show-password {
+      position: absolute;
+
+      right: 14px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      border: none;
+
+      background: transparent;
+
+      cursor: pointer;
+
+      color: #666;
+
+      font-size: 13px;
+    }
+
+
+    .signup-btn {
+      width: 100%;
+
+      height: 50px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: #2d8cff;
+
+      color: white;
+
+      font-size: 16px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+      margin-top: 5px;
+    }
+
+
+    .signup-btn:hover {
+      background: #1677e8;
+    }
+
+
+    .signup-btn:disabled {
+      opacity: 0.65;
+
+      cursor: not-allowed;
+    }
+
+
+    .message {
+      display: none;
+
+      margin-bottom: 18px;
+
+      padding: 12px;
+
+      border-radius: 8px;
+
+      font-size: 13px;
+
+      line-height: 1.4;
+    }
+
+
+    .message.error {
+      display: block;
+
+      background: #fff0f0;
+
+      color: #c62828;
+    }
+
+
+    .message.success {
+      display: block;
+
+      background: #effaf1;
+
+      color: #218838;
+    }
+
+
+    .signin {
+      text-align: center;
+
+      margin-top: 24px;
+
+      font-size: 14px;
+
+      color: #777;
+    }
+
+
+    .signin a {
+      color: #2d8cff;
+
+      font-weight: 600;
+
+      text-decoration: none;
+
+      margin-left: 4px;
+    }
+
+
+    .terms {
+      text-align: center;
+
+      color: #999;
+
+      font-size: 11px;
+
+      line-height: 1.5;
+
+      margin-top: 22px;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <div class="container">
+
+
+    <div class="logo">
+      Zoom
+    </div>
+
+
+    <div class="card">
+
+
+      <h1>
+        Create account
+      </h1>
+
+
+      <p class="subtitle">
+        Create your account to get started
+      </p>
+
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+
+      <form id="signupForm">
+
+
+        <!-- NAME -->
+
+        <div class="field">
+
+          <label for="name">
+            Full name
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required
+          >
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div class="field">
+
+          <label for="email">
+            Email
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="field">
+
+          <label for="password">
+            Password
+          </label>
+
+
+          <div class="password-wrapper">
+
+            <input
+              id="password"
+              type="password"
+              placeholder="Create a password"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
+
+
+            <button
+              type="button"
+              class="show-password"
+              id="showPassword"
+            >
+              Show
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="field">
+
+          <label for="confirmPassword">
+            Confirm password
+          </label>
+
+
+          <div class="password-wrapper">
+
+            <input
+              id="confirmPassword"
+              type="password"
+              placeholder="Confirm your password"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
+
+
+            <button
+              type="button"
+              class="show-password"
+              id="showConfirmPassword"
+            >
+              Show
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="signup-btn"
+          id="signupBtn"
+        >
+          Create Account
+        </button>
+
+
+      </form>
+
+
+      <div class="signin">
+
+        Already have an account?
+
+        <a href="index.html">
+          Sign In
+        </a>
+
+      </div>
+
+
+      <div class="terms">
+
+        By creating an account, you agree to
+        the terms and conditions of this service.
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+  <!-- =========================================
+       FIREBASE
+  ========================================== -->
+
+  <script type="module">
+
+
+    import {
+      initializeApp
+    } from
+    "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      updateProfile
+    } from
+    "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      serverTimestamp
+    } from
+    "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+    /* =========================================
+       FIREBASE CONFIG
+    ========================================= */
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyCvu3_4yEA03T9XD6MpJIdcQUplp2B2SCc",
+
+      authDomain:
+        "zoom-5ff91.firebaseapp.com",
+
+      projectId:
+        "zoom-5ff91",
+
+      storageBucket:
+        "zoom-5ff91.firebasestorage.app",
+
+      messagingSenderId:
+        "811034741528",
+
+      appId:
+        "1:811034741528:web:88fdaa6ca16ac5bc512c6d"
+
+    };
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
+
+    const app =
+      initializeApp(firebaseConfig);
+
+
+    const auth =
+      getAuth(app);
+
+
+    const db =
+      getFirestore(app);
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const signupForm =
+      document.getElementById(
+        "signupForm"
+      );
+
+
+    const nameInput =
+      document.getElementById(
+        "name"
+      );
+
+
+    const emailInput =
+      document.getElementById(
+        "email"
+      );
+
+
+    const passwordInput =
+      document.getElementById(
+        "password"
+      );
+
+
+    const confirmPasswordInput =
+      document.getElementById(
+        "confirmPassword"
+      );
+
+
+    const signupBtn =
+      document.getElementById(
+        "signupBtn"
+      );
+
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+
+    const showPassword =
+      document.getElementById(
+        "showPassword"
+      );
+
+
+    const showConfirmPassword =
+      document.getElementById(
+        "showConfirmPassword"
+      );
+
+
+    /* =========================================
+       MESSAGE
+    ========================================= */
+
+    function showMessage(
+      text,
+      type = "error"
+    ) {
+
+      message.textContent =
+        text;
+
+      message.className =
+        "message " + type;
+
+    }
+
+
+    /* =========================================
+       SHOW PASSWORD
+    ========================================= */
+
+    showPassword.addEventListener(
+      "click",
+      () => {
+
+        if (
+          passwordInput.type ===
+          "password"
+        ) {
+
+          passwordInput.type =
+            "text";
+
+          showPassword.textContent =
+            "Hide";
+
+        } else {
+
+          passwordInput.type =
+            "password";
+
+          showPassword.textContent =
+            "Show";
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       SHOW CONFIRM PASSWORD
+    ========================================= */
+
+    showConfirmPassword.addEventListener(
+      "click",
+      () => {
+
+        if (
+          confirmPasswordInput.type ===
+          "password"
+        ) {
+
+          confirmPasswordInput.type =
+            "text";
+
+          showConfirmPassword.textContent =
+            "Hide";
+
+        } else {
+
+          confirmPasswordInput.type =
+            "password";
+
+          showConfirmPassword.textContent =
+            "Show";
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       SIGN UP
+    ========================================= */
+
+    signupForm.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+
+        const name =
+          nameInput.value.trim();
+
+
+        const email =
+          emailInput.value.trim();
+
+
+        const password =
+          passwordInput.value;
+
+
+        const confirmPassword =
+          confirmPasswordInput.value;
+
+
+        /* -------------------------------------
+           VALIDATION
+        ------------------------------------- */
+
+        if (!name) {
+
+          showMessage(
+            "Please enter your full name."
+          );
+
+          return;
+
+        }
+
+
+        if (!email) {
+
+          showMessage(
+            "Please enter your email address."
+          );
+
+          return;
+
+        }
+
+
+        if (password.length < 6) {
+
+          showMessage(
+            "Password must be at least 6 characters."
+          );
+
+          return;
+
+        }
+
+
+        if (
+          password !==
+          confirmPassword
+        ) {
+
+          showMessage(
+            "Passwords do not match."
+          );
+
+          return;
+
+        }
+
+
+        signupBtn.disabled =
+          true;
+
+
+        signupBtn.textContent =
+          "Creating account...";
+
+
+        try {
+
+
+          /* =====================================
+             CREATE FIREBASE AUTH ACCOUNT
+          ===================================== */
+
+          const userCredential =
+            await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+
+
+          const user =
+            userCredential.user;
+
+
+          /* =====================================
+             SAVE DISPLAY NAME
+          ===================================== */
+
+          await updateProfile(
+            user,
+            {
+              displayName: name
+            }
+          );
+
+
+          /* =====================================
+             CREATE USER DOCUMENT
+          ===================================== */
+
+          await setDoc(
+            doc(
+              db,
+              "users",
+              user.uid
+            ),
+            {
+
+              uid:
+                user.uid,
+
+              name:
+                name,
+
+              email:
+                email,
+
+              createdAt:
+                serverTimestamp()
+
+            }
+          );
+
+
+          /* =====================================
+             SUCCESS
+          ===================================== */
+
+          showMessage(
+            "Account created successfully.",
+            "success"
+          );
+
+
+          /*
+             The user is automatically signed in
+             by Firebase after registration.
+          */
+
+
+          setTimeout(
+            () => {
+
+              window.location.href =
+                "host.html";
+
+            },
+            700
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "SIGN UP ERROR:",
+            error
+          );
+
+
+          let errorMessage =
+            "Unable to create your account.";
+
+
+          switch (error.code) {
+
+
+            case "auth/email-already-in-use":
+
+              errorMessage =
+                "An account with this email already exists.";
+
+              break;
+
+
+            case "auth/invalid-email":
+
+              errorMessage =
+                "Please enter a valid email address.";
+
+              break;
+
+
+            case "auth/weak-password":
+
+              errorMessage =
+                "Your password is too weak.";
+
+              break;
+
+
+            case "auth/network-request-failed":
+
+              errorMessage =
+                "Network error. Please check your internet connection.";
+
+              break;
+
+
+            default:
+
+              errorMessage =
+                error.message;
+
+          }
+
+
+          showMessage(
+            errorMessage
+          );
+
+
+          signupBtn.disabled =
+            false;
+
+
+          signupBtn.textContent =
+            "Create Account";
+
+        }
+
+      }
+    );
+
+  </script>
+
+
+</body>
+
+</html>
