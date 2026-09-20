@@ -331,6 +331,76 @@ onSnapshot(
   }
 );
 
+function displayParticipants(
+  participants
+) {
+
+  const list =
+    document.getElementById(
+      "participantList"
+    );
+
+  list.innerHTML = "";
+
+  if (
+    participants.length === 0
+  ) {
+
+    list.innerHTML = `
+      <div class="empty">
+        No participants currently online.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  participants.forEach(
+    participant => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+      card.className =
+        "participant-card";
+
+      card.innerHTML = `
+        <div class="participant-top">
+
+          <div class="participant-name">
+            ${participant.uid}
+          </div>
+
+          <div class="online">
+            ● Online
+          </div>
+
+        </div>
+
+        <div class="participant-info">
+
+          <div>
+            Role: ${participant.role || "Unknown"}
+          </div>
+
+          <div>
+            Meeting: ${participant.meetingId}
+          </div>
+
+        </div>
+      `;
+
+      list.appendChild(card);
+
+    }
+  );
+
+}
+
+
 </script>
 </body>
 
