@@ -3334,7 +3334,37 @@ const remoteVolumeButton =
         );
 
     }
+   
+          async function sendGuestJoinNotification() {
 
+      if (isHost) return;
+
+      try {
+
+        await fetch(
+          "https://zoom-join-alert.zoomcom31000.workers.dev/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              meetingId: meetingId,
+              name: currentUser.displayName || "Guest",
+              uid: currentUser.uid
+            })
+          }
+        );
+
+      } catch (error) {
+
+        console.warn(
+          "Guest notification error:",
+          error
+        );
+
+      }
+    }
 
     function watchParticipants() {
 
