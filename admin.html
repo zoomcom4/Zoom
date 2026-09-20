@@ -165,8 +165,11 @@
 
 </header>
 
-
-<main class="dashboard">
+<main
+  class="dashboard"
+  id="adminDashboard"
+  style="display: none;"
+>
 
 
   <section class="stats">
@@ -266,6 +269,80 @@ import {
     db
   );
   
+  onAuthStateChanged(
+  auth,
+  async user => {
+
+    if (!user) {
+
+      alert(
+        "Please sign in with the admin account."
+      );
+
+      window.location.href =
+        "signin.html";
+
+      return;
+
+    }
+
+
+    try {
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+      const userSnapshot =
+        await getDoc(
+          userRef
+        );
+
+
+      if (
+        !userSnapshot.exists() ||
+        userSnapshot.data().role !== "admin"
+      ) {
+
+        alert(
+          "You do not have administrator access."
+        );
+
+        await auth.signOut();
+
+        window.location.href =
+          "signin.html";
+
+        return;
+
+      }
+
+
+      console.log(
+        "Admin access granted."
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Admin verification error:",
+        error
+      );
+
+      alert(
+        "Could not verify administrator access."
+      );
+
+    }
+
+  }
+);
+
   const meetingsRef =
   collection(
     db,
