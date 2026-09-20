@@ -3958,18 +3958,16 @@ const remoteVolumeButton =
     async function startScreenShare() {
 
       if (
-        !navigator.mediaDevices ||
-        !navigator.mediaDevices.getDisplayMedia
-      ) {
+  !navigator.mediaDevices ||
+  !navigator.mediaDevices.getDisplayMedia
+) {
 
-        showToast(
-          "Screen sharing is not supported."
-        );
+  showToast(
+    "Screen sharing is not available on this iPhone browser."
+  );
 
-        return;
-
-      }
-
+  return;
+}
 
       if (
         !peerConnection
