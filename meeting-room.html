@@ -3952,107 +3952,196 @@ const remoteVolumeButton =
 
 
     /* =====================================================
-       SCREEN SHARE
-    ===================================================== */
+   SCREEN SHARE
+===================================================== */
 
-    async function startScreenShare() {
+async function startScreenShare() {
 
-      if (
-  !navigator.mediaDevices ||
-  !navigator.mediaDevices.getDisplayMedia
-) {
+  /* ===================================================
+     CHECK VIDEO CONNECTION
+  =================================================== */
 
-  showToast(
-    "Screen sharing is not available on this iPhone browser."
-  );
+  if (!peerConnection) {
 
-  return;
-}
+    showToast(
+      "Video connection is not ready."
+    );
 
-      if (
-        !peerConnection
-      ) {
+    return;
 
-        showToast(
-          "Video connection is not ready."
-        );
-
-        return;
-
-      }
+  }
 
 
-      try {
+  /* ===================================================
+     DETECT iPHONE / iPAD
+  =================================================== */
 
-        screenStream =
-          await navigator.mediaDevices.getDisplayMedia({
-
-            video:
-              true,
-
-            audio:
-              true
-
-          });
-
-
-        const screenTrack =
-          screenStream.getVideoTracks()[0];
+  const isIOS =
+    /iPad|iPhone|iPod/.test(
+      navigator.userAgent
+    ) ||
+    (
+      navigator.platform === "MacIntel" &&
+      navigator.maxTouchPoints > 1
+    );
 
 
-        const sender =
-          peerConnection
-            .getSenders()
-            .find(
-              item =>
-                item.track &&
-                item.track.kind ===
-                  "video"
-            );
+  /* ===================================================
+     iPHONE / iPAD SAFARI
+  =================================================== */
+
+  if (isIOS) {
+
+    showToast(
+      "Screen sharing is not available in iPhone Safari."
+    );
+
+    return;
+
+  }
 
 
-        if (!sender) {
+  /* ===================================================
+     CHECK SCREEN CAPTURE SUPPORT
+  =================================================== */
 
-          throw new Error(
-            "Video sender not found."
-          );
+  if (
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getDisplayMedia
+  ) {
 
-        }
+    showToast(
+      "Screen sharing is not supported by this browser."
+    );
 
+    return;
 
-        await sender.replaceTrack(
-          screenTrack
-        );
-
-
-        screenTrack.onended =
-          () => {
-
-            stopScreenShare();
-
-          };
+  }
 
 
-        showToast(
-          "You are sharing your screen."
-        );
+  /* ===================================================
+     START SCREEN SHARING
+  =================================================== */
 
-      }
+  try {
 
-      catch (error) {
+    screenStream =
+      await navigator.mediaDevices.getDisplayMedia({
 
-        console.error(
-          error
-        );
+        video: true,
 
-        showToast(
-          "Screen sharing was cancelled."
-        );
+        audio: true
 
-      }
+      });
+
+
+    /* =================================================
+       GET SCREEN VIDEO TRACK
+    ================================================= */
+
+    const screenTrack =
+      screenStream.getVideoTracks()[0];
+
+
+    if (!screenTrack) {
+
+      throw new Error(
+        "Screen video track was not created."
+      );
 
     }
 
+
+    /* =================================================
+       FIND VIDEO SENDER
+    ================================================= */
+
+    const sender =
+      peerConnection
+        .getSenders()
+        .find(
+          item =>
+            item.track &&
+            item.track.kind === "video"
+        );
+
+
+    if (!sender) {
+
+      throw new Error(
+        "Video sender not found."
+      );
+
+    }
+
+
+    /* =================================================
+       REPLACE CAMERA WITH SCREEN
+    ================================================= */
+
+    await sender.replaceTrack(
+      screenTrack
+    );
+
+
+    /* =================================================
+       STOP WHEN USER ENDS SCREEN SHARING
+    ================================================= */
+
+    screenTrack.onended =
+      () => {
+
+        stopScreenShare();
+
+      };
+
+
+    /* =================================================
+       SUCCESS
+    ================================================= */
+
+    showToast(
+      "You are sharing your screen."
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Screen sharing error:",
+      error
+    );
+
+
+    /* =================================================
+       USER CANCELLED
+    ================================================= */
+
+    if (
+      error.name === "AbortError"
+    ) {
+
+      showToast(
+        "Screen sharing was cancelled."
+      );
+
+      return;
+
+    }
+
+
+    /* =================================================
+       OTHER ERROR
+    ================================================= */
+
+    showToast(
+      "Could not start screen sharing."
+    );
+
+  }
+
+}
 
     async function stopScreenShare() {
 
