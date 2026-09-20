@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -9,7 +10,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Zoom - Home</title>
+  <title>Zoom - Dashboard</title>
 
   <style>
 
@@ -26,6 +27,11 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    button {
+      font-family: inherit;
+    }
+
+
     /* =========================================
        HEADER
     ========================================= */
@@ -37,21 +43,53 @@
 
       display: flex;
       align-items: center;
-      justify-content: space-between;
 
-      padding: 0 24px;
+      padding: 0 20px;
+
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .menu-button {
+      width: 42px;
+      height: 42px;
+
+      border: none;
+      background: transparent;
+
+      border-radius: 9px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 25px;
+      cursor: pointer;
+
+      color: #333;
+    }
+
+    .menu-button:hover {
+      background: #f1f3f5;
     }
 
     .logo {
       color: #2d8cff;
       font-size: 25px;
       font-weight: 700;
+
       letter-spacing: -1px;
+
+      margin-left: 8px;
     }
 
     .user-area {
+      margin-left: auto;
+
       display: flex;
       align-items: center;
+
       gap: 12px;
     }
 
@@ -61,8 +99,8 @@
     }
 
     .avatar {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
 
       border-radius: 50%;
 
@@ -73,9 +111,156 @@
       align-items: center;
       justify-content: center;
 
-      font-weight: 700;
       font-size: 14px;
+      font-weight: 700;
     }
+
+
+    /* =========================================
+       SIDE MENU
+    ========================================= */
+
+    .side-menu {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 290px;
+      height: 100vh;
+
+      background: #fff;
+
+      z-index: 300;
+
+      transform: translateX(-100%);
+
+      transition: transform 0.25s ease;
+
+      box-shadow:
+        5px 0 25px rgba(0, 0, 0, 0.12);
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    .side-menu.open {
+      transform: translateX(0);
+    }
+
+    .side-menu-header {
+      height: 64px;
+
+      display: flex;
+      align-items: center;
+
+      padding: 0 18px;
+
+      border-bottom: 1px solid #eee;
+    }
+
+    .side-menu-header .logo {
+      margin-left: 0;
+    }
+
+    .close-menu {
+      margin-left: auto;
+
+      width: 40px;
+      height: 40px;
+
+      border: none;
+      background: transparent;
+
+      border-radius: 8px;
+
+      font-size: 28px;
+      color: #555;
+
+      cursor: pointer;
+    }
+
+    .close-menu:hover {
+      background: #f3f3f3;
+    }
+
+    .menu-items {
+      padding: 18px 12px;
+    }
+
+    .menu-item {
+      width: 100%;
+
+      min-height: 50px;
+
+      border: none;
+      background: transparent;
+
+      border-radius: 9px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 13px;
+
+      padding: 0 14px;
+
+      color: #333;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      cursor: pointer;
+
+      text-align: left;
+
+      margin-bottom: 4px;
+    }
+
+    .menu-item:hover {
+      background: #f1f6ff;
+      color: #1677e8;
+    }
+
+    .menu-item-icon {
+      width: 24px;
+
+      text-align: center;
+
+      font-size: 18px;
+    }
+
+    .logout-menu {
+      margin-top: auto;
+      margin-bottom: 20px;
+      color: #d32f2f;
+    }
+
+    .logout-menu:hover {
+      background: #fff0f0;
+      color: #c62828;
+    }
+
+    .menu-overlay {
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(0, 0, 0, 0.35);
+
+      z-index: 250;
+
+      opacity: 0;
+      visibility: hidden;
+
+      transition: 0.25s;
+    }
+
+    .menu-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
 
     /* =========================================
        MAIN
@@ -90,6 +275,24 @@
       padding: 45px 24px;
     }
 
+
+    /* =========================================
+       VIEWS
+    ========================================= */
+
+    .page-view {
+      display: none;
+    }
+
+    .page-view.active {
+      display: block;
+    }
+
+
+    /* =========================================
+       DASHBOARD
+    ========================================= */
+
     .welcome {
       margin-bottom: 30px;
     }
@@ -103,10 +306,6 @@
       color: #777;
       font-size: 15px;
     }
-
-    /* =========================================
-       ACTION CARDS
-    ========================================= */
 
     .actions {
       display: grid;
@@ -157,6 +356,7 @@
 
     .action-card p {
       color: #777;
+
       font-size: 14px;
       line-height: 1.5;
 
@@ -174,6 +374,7 @@
       font-weight: 600;
 
       cursor: pointer;
+
       transition: 0.2s;
     }
 
@@ -199,17 +400,48 @@
       background: #f5f5f5;
     }
 
+
     /* =========================================
-       QUICK LINKS
+       PAGE HEADER
     ========================================= */
 
-    .section-title {
-      font-size: 19px;
-      margin-top: 42px;
-      margin-bottom: 16px;
+    .page-header {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      margin-bottom: 25px;
     }
 
-    .quick-links {
+    .back-button {
+      width: 40px;
+      height: 40px;
+
+      border: none;
+      background: #fff;
+
+      border-radius: 8px;
+
+      font-size: 20px;
+
+      cursor: pointer;
+    }
+
+    .back-button:hover {
+      background: #eee;
+    }
+
+    .page-header h1 {
+      font-size: 25px;
+    }
+
+
+    /* =========================================
+       ACTIVITY
+    ========================================= */
+
+    .activity-card {
       background: #fff;
 
       border: 1px solid #e8e8e8;
@@ -217,49 +449,110 @@
       border-radius: 14px;
 
       overflow: hidden;
+
+      box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.05);
     }
 
-    .quick-link {
-      min-height: 58px;
+    .activity-summary {
+      display: grid;
 
-      padding: 0 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      grid-template-columns:
+        repeat(3, 1fr);
 
       border-bottom: 1px solid #eee;
-
-      cursor: pointer;
     }
 
-    .quick-link:last-child {
+    .activity-stat {
+      padding: 24px;
+
+      border-right: 1px solid #eee;
+    }
+
+    .activity-stat:last-child {
+      border-right: none;
+    }
+
+    .activity-number {
+      font-size: 25px;
+      font-weight: 700;
+
+      margin-bottom: 5px;
+    }
+
+    .activity-label {
+      color: #777;
+      font-size: 12px;
+    }
+
+    .devices-list {
+      padding: 30px;
+    }
+
+    .empty-devices {
+      text-align: center;
+
+      padding: 30px 10px;
+
+      color: #888;
+
+      font-size: 14px;
+    }
+
+    .activity-description {
+      margin-top: 12px;
+
+      color: #999;
+
+      font-size: 11px;
+
+      line-height: 1.5;
+    }
+
+
+    /* =========================================
+       PROFILE
+    ========================================= */
+
+    .profile-card,
+    .settings-card {
+      background: #fff;
+
+      border: 1px solid #e8e8e8;
+
+      border-radius: 14px;
+
+      padding: 25px;
+
+      box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-row {
+      padding: 16px 0;
+
+      border-bottom: 1px solid #eee;
+    }
+
+    .profile-row:last-child {
       border-bottom: none;
     }
 
-    .quick-link:hover {
-      background: #fafafa;
+    .profile-label {
+      color: #888;
+
+      font-size: 12px;
+
+      margin-bottom: 5px;
     }
 
-    .quick-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .quick-icon {
-      font-size: 18px;
-    }
-
-    .quick-text {
-      font-size: 14px;
+    .profile-value {
+      font-size: 15px;
       font-weight: 500;
     }
 
-    .arrow {
-      color: #999;
-      font-size: 18px;
-    }
 
     /* =========================================
        MESSAGE
@@ -268,7 +561,7 @@
     .message {
       display: none;
 
-      margin-top: 22px;
+      margin-top: 20px;
 
       padding: 13px 15px;
 
@@ -277,46 +570,22 @@
       font-size: 14px;
     }
 
-    .message.error {
-      display: block;
-
-      background: #fff0f0;
-      color: #c62828;
-    }
-
     .message.success {
       display: block;
 
       background: #effaf1;
+
       color: #218838;
     }
 
-    /* =========================================
-       LOGOUT
-    ========================================= */
+    .message.error {
+      display: block;
 
-    .logout {
-      margin-top: 30px;
+      background: #fff0f0;
 
-      width: 100%;
-      height: 45px;
-
-      border: 1px solid #ddd;
-      border-radius: 8px;
-
-      background: #fff;
-
-      color: #555;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      cursor: pointer;
+      color: #c62828;
     }
 
-    .logout:hover {
-      background: #f5f5f5;
-    }
 
     /* =========================================
        MOBILE
@@ -325,7 +594,7 @@
     @media (max-width: 650px) {
 
       header {
-        padding: 0 16px;
+        padding: 0 14px;
       }
 
       .user-name {
@@ -344,6 +613,27 @@
         grid-template-columns: 1fr;
       }
 
+      .activity-summary {
+        grid-template-columns:
+          repeat(3, 1fr);
+      }
+
+      .activity-stat {
+        padding: 17px 10px;
+      }
+
+      .activity-number {
+        font-size: 21px;
+      }
+
+      .activity-label {
+        font-size: 10px;
+      }
+
+      .side-menu {
+        width: 280px;
+      }
+
     }
 
   </style>
@@ -354,11 +644,19 @@
 <body>
 
 
-  <!-- =======================================
+  <!-- =========================================
        HEADER
-  ======================================== -->
+  ========================================== -->
 
   <header>
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
 
     <div class="logo">
       Zoom
@@ -385,180 +683,447 @@
   </header>
 
 
+  <!-- =========================================
+       MENU OVERLAY
+  ========================================== -->
 
-  <!-- =======================================
+  <div
+    class="menu-overlay"
+    id="menuOverlay"
+  ></div>
+
+
+  <!-- =========================================
+       SIDE MENU
+  ========================================== -->
+
+  <aside
+    class="side-menu"
+    id="sideMenu"
+  >
+
+    <div class="side-menu-header">
+
+      <div class="logo">
+        Zoom
+      </div>
+
+      <button
+        class="close-menu"
+        id="closeMenu"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="menu-items">
+
+
+      <button
+        class="menu-item"
+        id="dashboardMenu"
+      >
+
+        <span class="menu-item-icon">
+          🏠
+        </span>
+
+        <span>
+          Dashboard
+        </span>
+
+      </button>
+
+
+      <button
+        class="menu-item"
+        id="activityMenu"
+      >
+
+        <span class="menu-item-icon">
+          📊
+        </span>
+
+        <span>
+          Activity & Connected Devices
+        </span>
+
+      </button>
+
+
+      <button
+        class="menu-item"
+        id="profileMenu"
+      >
+
+        <span class="menu-item-icon">
+          👤
+        </span>
+
+        <span>
+          Profile
+        </span>
+
+      </button>
+
+
+      <button
+        class="menu-item"
+        id="settingsMenu"
+      >
+
+        <span class="menu-item-icon">
+          ⚙️
+        </span>
+
+        <span>
+          Settings
+        </span>
+
+      </button>
+
+
+    </div>
+
+
+    <button
+      class="menu-item logout-menu"
+      id="menuLogout"
+    >
+
+      <span class="menu-item-icon">
+        🚪
+      </span>
+
+      <span>
+        Sign Out
+      </span>
+
+    </button>
+
+  </aside>
+
+
+  <!-- =========================================
        MAIN
-  ======================================== -->
+  ========================================== -->
 
   <main>
 
 
-    <div class="welcome">
+    <!-- =====================================
+         DASHBOARD VIEW
+    ====================================== -->
 
-      <h1 id="welcomeText">
-        Welcome
-      </h1>
+    <section
+      class="page-view active"
+      id="dashboardView"
+    >
 
-      <p>
-        Start a meeting or join an existing one.
+      <div class="welcome">
+
+        <h1 id="welcomeText">
+          Welcome
+        </h1>
+
+        <p>
+          Start a meeting or join an existing one.
+        </p>
+
+      </div>
+
+
+      <div class="actions">
+
+
+        <div class="action-card">
+
+          <div class="icon">
+            +
+          </div>
+
+          <h2>
+            New Meeting
+          </h2>
+
+          <p>
+            Start a new video meeting and invite
+            participants.
+          </p>
+
+          <button
+            class="primary-btn"
+            id="createMeetingBtn"
+          >
+            Start New Meeting
+          </button>
+
+        </div>
+
+
+        <div class="action-card">
+
+          <div class="icon">
+            ↗
+          </div>
+
+          <h2>
+            Join Meeting
+          </h2>
+
+          <p>
+            Enter a meeting ID or link to join
+            an existing meeting.
+          </p>
+
+          <button
+            class="secondary-btn"
+            id="joinMeetingBtn"
+          >
+            Join Meeting
+          </button>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         ACTIVITY VIEW
+    ====================================== -->
+
+    <section
+      class="page-view"
+      id="activityView"
+    >
+
+      <div class="page-header">
+
+        <button
+          class="back-button"
+          id="activityBack"
+        >
+          ←
+        </button>
+
+        <h1>
+          Activity & Connected Devices
+        </h1>
+
+      </div>
+
+
+      <div class="activity-card">
+
+
+        <div class="activity-summary">
+
+
+          <div class="activity-stat">
+
+            <div
+              class="activity-number"
+              id="connectedCount"
+            >
+              0
+            </div>
+
+            <div class="activity-label">
+              Connected
+            </div>
+
+          </div>
+
+
+          <div class="activity-stat">
+
+            <div
+              class="activity-number"
+              id="activeCount"
+            >
+              0
+            </div>
+
+            <div class="activity-label">
+              Active
+            </div>
+
+          </div>
+
+
+          <div class="activity-stat">
+
+            <div
+              class="activity-number"
+              id="sharingCount"
+            >
+              0
+            </div>
+
+            <div class="activity-label">
+              Sharing
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <div
+          class="devices-list"
+          id="devicesList"
+        >
+
+          <div class="empty-devices">
+            No connected devices yet.
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+      <p class="activity-description">
+
+        Device activity and screen-sharing
+        information will appear here when
+        participants connect.
+
       </p>
 
-    </div>
-
-
-
-    <!-- =====================================
-         MAIN ACTIONS
-    ====================================== -->
-
-    <div class="actions">
-
-
-      <!-- CREATE MEETING -->
-
-      <div class="action-card">
-
-        <div class="icon">
-          +
-        </div>
-
-        <h2>
-          New Meeting
-        </h2>
-
-        <p>
-          Start a new video meeting and invite
-          participants.
-        </p>
-
-        <button
-          class="primary-btn"
-          id="createMeetingBtn"
-        >
-          Start New Meeting
-        </button>
-
-      </div>
-
-
-
-      <!-- JOIN MEETING -->
-
-      <div class="action-card">
-
-        <div class="icon">
-          ↗
-        </div>
-
-        <h2>
-          Join Meeting
-        </h2>
-
-        <p>
-          Enter a meeting ID or link to join
-          an existing meeting.
-        </p>
-
-        <button
-          class="secondary-btn"
-          id="joinMeetingBtn"
-        >
-          Join Meeting
-        </button>
-
-      </div>
-
-    </div>
-
+    </section>
 
 
     <!-- =====================================
-         QUICK LINKS
+         PROFILE VIEW
     ====================================== -->
 
-    <h2 class="section-title">
-      Quick Access
-    </h2>
+    <section
+      class="page-view"
+      id="profileView"
+    >
 
+      <div class="page-header">
 
-    <div class="quick-links">
+        <button
+          class="back-button"
+          id="profileBack"
+        >
+          ←
+        </button>
 
-
-      <div
-        class="quick-link"
-        id="profileBtn"
-      >
-
-        <div class="quick-left">
-
-          <span class="quick-icon">
-            👤
-          </span>
-
-          <span class="quick-text">
-            Profile
-          </span>
-
-        </div>
-
-        <span class="arrow">
-          ›
-        </span>
+        <h1>
+          Profile
+        </h1>
 
       </div>
 
 
+      <div class="profile-card">
 
-      <div
-        class="quick-link"
-        id="settingsBtn"
-      >
 
-        <div class="quick-left">
+        <div class="profile-row">
 
-          <span class="quick-icon">
-            ⚙
-          </span>
+          <div class="profile-label">
+            Name
+          </div>
 
-          <span class="quick-text">
-            Settings
-          </span>
+          <div
+            class="profile-value"
+            id="profileName"
+          >
+            —
+          </div>
 
         </div>
 
-        <span class="arrow">
-          ›
-        </span>
+
+        <div class="profile-row">
+
+          <div class="profile-label">
+            Email
+          </div>
+
+          <div
+            class="profile-value"
+            id="profileEmail"
+          >
+            —
+          </div>
+
+        </div>
+
+
+        <div class="profile-row">
+
+          <div class="profile-label">
+            Account ID
+          </div>
+
+          <div
+            class="profile-value"
+            id="profileUid"
+          >
+            —
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         SETTINGS VIEW
+    ====================================== -->
+
+    <section
+      class="page-view"
+      id="settingsView"
+    >
+
+      <div class="page-header">
+
+        <button
+          class="back-button"
+          id="settingsBack"
+        >
+          ←
+        </button>
+
+        <h1>
+          Settings
+        </h1>
 
       </div>
 
 
+      <div class="settings-card">
 
-      <div
-        class="quick-link"
-        id="logoutBtn"
-      >
-
-        <div class="quick-left">
-
-          <span class="quick-icon">
-            ⇥
-          </span>
-
-          <span class="quick-text">
-            Sign Out
-          </span>
-
-        </div>
-
-        <span class="arrow">
-          ›
-        </span>
+        <p
+          style="
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+          "
+        >
+          Meeting, audio, video, notification,
+          privacy and other settings will be
+          added here.
+        </p>
 
       </div>
 
-
-    </div>
+    </section>
 
 
     <div
@@ -566,46 +1131,13 @@
       class="message"
     ></div>
 
-   <!-- OWNER ACTIVITY -->
 
-<section
-  id="ownerActivity"
-  style="margin-top: 40px;"
->
-
-  <h2 style="font-size: 20px; margin-bottom: 16px;">
-    Activity & Connected Devices
-  </h2>
-
-  <div
-    style="
-      background: #fff;
-      border: 1px solid #e8e8e8;
-      border-radius: 14px;
-      padding: 25px;
-    "
-  >
-
-    <p
-      style="
-        color: #777;
-        font-size: 14px;
-      "
-    >
-      No connected devices yet.
-    </p>
-
-  </div>
-
-</section>
-  
   </main>
 
 
-
-  <!-- =======================================
+  <!-- =========================================
        FIREBASE
-  ======================================== -->
+  ========================================== -->
 
   <script type="module">
 
@@ -651,7 +1183,7 @@
 
 
     /* ==========================================
-       INITIALIZE
+       INITIALIZE FIREBASE
     ========================================== */
 
     const app =
@@ -665,6 +1197,57 @@
        ELEMENTS
     ========================================== */
 
+    const menuButton =
+      document.getElementById("menuButton");
+
+    const closeMenu =
+      document.getElementById("closeMenu");
+
+    const sideMenu =
+      document.getElementById("sideMenu");
+
+    const menuOverlay =
+      document.getElementById("menuOverlay");
+
+    const dashboardMenu =
+      document.getElementById("dashboardMenu");
+
+    const activityMenu =
+      document.getElementById("activityMenu");
+
+    const profileMenu =
+      document.getElementById("profileMenu");
+
+    const settingsMenu =
+      document.getElementById("settingsMenu");
+
+    const menuLogout =
+      document.getElementById("menuLogout");
+
+
+    const dashboardView =
+      document.getElementById("dashboardView");
+
+    const activityView =
+      document.getElementById("activityView");
+
+    const profileView =
+      document.getElementById("profileView");
+
+    const settingsView =
+      document.getElementById("settingsView");
+
+
+    const activityBack =
+      document.getElementById("activityBack");
+
+    const profileBack =
+      document.getElementById("profileBack");
+
+    const settingsBack =
+      document.getElementById("settingsBack");
+
+
     const userName =
       document.getElementById("userName");
 
@@ -674,17 +1257,154 @@
     const avatar =
       document.getElementById("avatar");
 
+    const profileName =
+      document.getElementById("profileName");
+
+    const profileEmail =
+      document.getElementById("profileEmail");
+
+    const profileUid =
+      document.getElementById("profileUid");
+
     const message =
       document.getElementById("message");
 
-    const createMeetingBtn =
-      document.getElementById("createMeetingBtn");
 
-    const joinMeetingBtn =
-      document.getElementById("joinMeetingBtn");
+    /* ==========================================
+       MENU
+    ========================================== */
 
-    const logoutBtn =
-      document.getElementById("logoutBtn");
+    function openMenu() {
+
+      sideMenu.classList.add("open");
+
+      menuOverlay.classList.add("show");
+
+    }
+
+
+    function closeSideMenu() {
+
+      sideMenu.classList.remove("open");
+
+      menuOverlay.classList.remove("show");
+
+    }
+
+
+    menuButton.addEventListener(
+      "click",
+      openMenu
+    );
+
+
+    closeMenu.addEventListener(
+      "click",
+      closeSideMenu
+    );
+
+
+    menuOverlay.addEventListener(
+      "click",
+      closeSideMenu
+    );
+
+
+    /* ==========================================
+       VIEW SYSTEM
+    ========================================== */
+
+    function showView(view) {
+
+      dashboardView.classList.remove("active");
+
+      activityView.classList.remove("active");
+
+      profileView.classList.remove("active");
+
+      settingsView.classList.remove("active");
+
+
+      view.classList.add("active");
+
+      closeSideMenu();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+
+    dashboardMenu.addEventListener(
+      "click",
+      () => {
+
+        showView(dashboardView);
+
+      }
+    );
+
+
+    activityMenu.addEventListener(
+      "click",
+      () => {
+
+        showView(activityView);
+
+      }
+    );
+
+
+    profileMenu.addEventListener(
+      "click",
+      () => {
+
+        showView(profileView);
+
+      }
+    );
+
+
+    settingsMenu.addEventListener(
+      "click",
+      () => {
+
+        showView(settingsView);
+
+      }
+    );
+
+
+    activityBack.addEventListener(
+      "click",
+      () => {
+
+        showView(dashboardView);
+
+      }
+    );
+
+
+    profileBack.addEventListener(
+      "click",
+      () => {
+
+        showView(dashboardView);
+
+      }
+    );
+
+
+    settingsBack.addEventListener(
+      "click",
+      () => {
+
+        showView(dashboardView);
+
+      }
+    );
 
 
     /* ==========================================
@@ -719,127 +1439,34 @@
           "Welcome, " + name;
 
 
-        const firstLetter =
-          name.charAt(0).toUpperCase();
-
-
         avatar.textContent =
-          firstLetter;
+          name
+            .charAt(0)
+            .toUpperCase();
+
+
+        profileName.textContent =
+          user.displayName ||
+          "Not set";
+
+
+        profileEmail.textContent =
+          user.email ||
+          "—";
+
+
+        profileUid.textContent =
+          user.uid;
 
       }
     );
-
-
-    /* ==========================================
-       MESSAGE
-    ========================================== */
-
-    function showMessage(
-      text,
-      type = "error"
-    ) {
-
-      message.textContent =
-        text;
-
-      message.className =
-        "message " + type;
-
-    }
-
-
-    /* ==========================================
-       CREATE MEETING
-    ========================================== */
-
-    createMeetingBtn.addEventListener(
-      "click",
-      () => {
-
-        showMessage(
-          "Meeting creation is ready to be connected.",
-          "success"
-        );
-
-      }
-    );
-
-
-    /* ==========================================
-       JOIN MEETING
-    ========================================== */
-
-    joinMeetingBtn.addEventListener(
-      "click",
-      () => {
-
-        const meetingId =
-          prompt(
-            "Enter the meeting ID:"
-          );
-
-
-        if (!meetingId) {
-
-          return;
-
-        }
-
-
-        showMessage(
-          "Joining meeting " +
-          meetingId +
-          "...",
-          "success"
-        );
-
-      }
-    );
-
-
-    /* ==========================================
-       PROFILE
-    ========================================== */
-
-    document
-      .getElementById("profileBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          showMessage(
-            "Profile section coming next.",
-            "success"
-          );
-
-        }
-      );
-
-
-    /* ==========================================
-       SETTINGS
-    ========================================== */
-
-    document
-      .getElementById("settingsBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          showMessage(
-            "Settings section coming next.",
-            "success"
-          );
-
-        }
-      );
 
 
     /* ==========================================
        SIGN OUT
     ========================================== */
 
-    logoutBtn.addEventListener(
+    menuLogout.addEventListener(
       "click",
       async () => {
 
@@ -854,14 +1481,71 @@
 
           console.error(error);
 
-          showMessage(
-            "Unable to sign out. Please try again."
-          );
+          message.textContent =
+            "Unable to sign out.";
+
+          message.className =
+            "message error";
 
         }
 
       }
     );
+
+
+    /* ==========================================
+       CREATE MEETING
+    ========================================== */
+
+    document
+      .getElementById("createMeetingBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          message.textContent =
+            "Meeting creation will be connected next.";
+
+          message.className =
+            "message success";
+
+        }
+      );
+
+
+    /* ==========================================
+       JOIN MEETING
+    ========================================== */
+
+    document
+      .getElementById("joinMeetingBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          const meetingId =
+            prompt(
+              "Enter the meeting ID:"
+            );
+
+
+          if (!meetingId) {
+
+            return;
+
+          }
+
+
+          message.textContent =
+            "Joining meeting " +
+            meetingId +
+            "...";
+
+          message.className =
+            "message success";
+
+        }
+      );
 
   </script>
 
