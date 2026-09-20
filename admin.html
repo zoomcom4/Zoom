@@ -271,17 +271,46 @@ onSnapshot(
     );
 
     snapshot.forEach(
-      meetingDoc => {
+  meetingDoc => {
+
+    console.log(
+      "Meeting:",
+      meetingDoc.id
+    );
+
+    const participantsRef =
+      collection(
+        db,
+        "meetings",
+        meetingDoc.id,
+        "participants"
+      );
+
+    onSnapshot(
+      participantsRef,
+      participantSnapshot => {
 
         console.log(
-          "Meeting:",
-          meetingDoc.id
+          "Participants in",
+          meetingDoc.id,
+          ":",
+          participantSnapshot.size
+        );
+
+      },
+      error => {
+
+        console.error(
+          "Participant error:",
+          error
         );
 
       }
     );
 
-  },
+  }
+);
+
   error => {
 
     console.error(
