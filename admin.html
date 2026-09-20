@@ -286,18 +286,34 @@ onSnapshot(
         "participants"
       );
 
-    onSnapshot(
-      participantsRef,
-      participantSnapshot => {
+    participantSnapshot => {
 
-        console.log(
-          "Participants in",
-          meetingDoc.id,
-          ":",
-          participantSnapshot.size
-        );
+  const participants = [];
 
-      },
+  participantSnapshot.forEach(
+    participantDoc => {
+
+      const data =
+        participantDoc.data();
+
+      participants.push({
+
+        ...data,
+
+        meetingId:
+          meetingDoc.id
+
+      });
+
+    }
+  );
+
+  displayParticipants(
+    participants
+  );
+
+},
+
       error => {
 
         console.error(
