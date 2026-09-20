@@ -238,7 +238,50 @@
 
 </main>
 
+<script type="module">
 
+  import {
+    db
+  } from "./firebase-config.js";
+
+  import {
+    collection,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+  console.log(
+    "Admin Firebase connected:",
+    db
+  );
+  
+  const meetingsRef =
+  collection(
+    db,
+    "meetings"
+  );
+
+onSnapshot(
+  meetingsRef,
+  snapshot => {
+
+    console.log(
+      "Meetings found:",
+      snapshot.size
+    );
+
+  },
+  error => {
+
+    console.error(
+      "Admin meetings error:",
+      error
+    );
+
+  }
+);
+
+</script>
 </body>
 
 </html>
