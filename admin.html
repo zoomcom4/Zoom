@@ -20,6 +20,7 @@
       padding: 0;
     }
 
+
     body {
       font-family:
         -apple-system,
@@ -31,33 +32,208 @@
       color: #172033;
     }
 
+
+    /* =========================
+       HEADER
+    ========================= */
+
     header {
       background: #ffffff;
       border-bottom: 1px solid #e5e7eb;
-      padding: 18px 20px;
+
+      padding: 15px 20px;
+
       position: sticky;
       top: 0;
-      z-index: 10;
+
+      z-index: 100;
     }
+
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+
+    .menu-button {
+      width: 42px;
+      height: 42px;
+
+      border: 0;
+      border-radius: 10px;
+
+      background: #f1f3f7;
+
+      font-size: 22px;
+
+      cursor: pointer;
+    }
+
 
     header h1 {
-      font-size: 22px;
+      font-size: 21px;
     }
 
+
     header p {
-      margin-top: 4px;
+      margin-top: 3px;
+
       color: #6b7280;
-      font-size: 14px;
+
+      font-size: 13px;
     }
+
+
+    /* =========================
+       SIDE MENU
+    ========================= */
+
+    .overlay {
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(0,0,0,.35);
+
+      z-index: 150;
+
+      display: none;
+    }
+
+
+    .overlay.show {
+      display: block;
+    }
+
+
+    .side-menu {
+      position: fixed;
+
+      left: 0;
+      top: 0;
+      bottom: 0;
+
+      width: 285px;
+
+      background: #ffffff;
+
+      z-index: 200;
+
+      transform: translateX(-100%);
+
+      transition:
+        transform .25s ease;
+
+      box-shadow:
+        5px 0 25px rgba(0,0,0,.12);
+    }
+
+
+    .side-menu.open {
+      transform: translateX(0);
+    }
+
+
+    .menu-header {
+      padding: 22px 20px;
+
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+
+    .menu-header strong {
+      font-size: 18px;
+    }
+
+
+    .menu-header small {
+      display: block;
+
+      margin-top: 5px;
+
+      color: #6b7280;
+    }
+
+
+    .menu-items {
+      padding: 12px;
+    }
+
+
+    .menu-item {
+      width: 100%;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 14px;
+
+      margin-bottom: 5px;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background: transparent;
+
+      text-align: left;
+
+      font-size: 15px;
+
+      cursor: pointer;
+    }
+
+
+    .menu-item:hover,
+    .menu-item.active {
+      background: #f1f5f9;
+    }
+
+
+    .menu-icon {
+      width: 24px;
+
+      text-align: center;
+
+      font-size: 19px;
+    }
+
+
+    /* =========================
+       MAIN
+    ========================= */
 
     .dashboard {
       padding: 20px;
+
       max-width: 1100px;
+
       margin: auto;
     }
 
+
+    .page-section {
+      display: none;
+    }
+
+
+    .page-section.active {
+      display: block;
+    }
+
+
+    /* =========================
+       STATS
+    ========================= */
+
     .stats {
       display: grid;
+
       grid-template-columns:
         repeat(
           auto-fit,
@@ -65,84 +241,183 @@
         );
 
       gap: 15px;
+
       margin-bottom: 20px;
     }
 
+
     .stat-card {
       background: #ffffff;
+
       border-radius: 14px;
+
       padding: 20px;
+
       border: 1px solid #e5e7eb;
     }
 
+
     .stat-card span {
       display: block;
+
       color: #6b7280;
+
       font-size: 14px;
+
       margin-bottom: 8px;
     }
+
 
     .stat-card strong {
       font-size: 28px;
     }
 
-    .participants {
+
+    /* =========================
+       CONTENT CARD
+    ========================= */
+
+    .content-card {
       background: #ffffff;
+
       border-radius: 14px;
+
       border: 1px solid #e5e7eb;
+
       overflow: hidden;
     }
 
-    .participants-header {
+
+    .content-header {
       padding: 18px 20px;
-      border-bottom: 1px solid #e5e7eb;
+
+      border-bottom:
+        1px solid #e5e7eb;
     }
 
-    .participants-header h2 {
+
+    .content-header h2 {
       font-size: 18px;
     }
 
-    #participantList {
+
+    .content-header p {
+      margin-top: 5px;
+
+      color: #6b7280;
+
+      font-size: 13px;
+    }
+
+
+    .content-list {
       padding: 10px;
     }
 
+
     .empty {
       padding: 40px 20px;
+
       text-align: center;
+
       color: #6b7280;
     }
 
-    .participant-card {
+
+    /* =========================
+       PARTICIPANT CARD
+    ========================= */
+
+    .participant-card,
+    .activity-card,
+    .device-card {
       border: 1px solid #e5e7eb;
+
       border-radius: 12px;
+
       padding: 15px;
+
       margin-bottom: 10px;
+
+      background: #ffffff;
     }
 
-    .participant-top {
+
+    .participant-top,
+    .activity-top,
+    .device-top {
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
+
       gap: 10px;
     }
 
-    .participant-name {
+
+    .participant-name,
+    .activity-name,
+    .device-name {
       font-weight: 600;
+
       font-size: 16px;
     }
 
+
     .online {
       color: #16a34a;
+
       font-size: 13px;
+
       font-weight: 600;
     }
 
-    .participant-info {
+
+    .participant-info,
+    .activity-info,
+    .device-info {
       margin-top: 10px;
+
       display: grid;
+
       gap: 5px;
+
       color: #6b7280;
+
       font-size: 13px;
+    }
+
+
+    .badge {
+      display: inline-block;
+
+      padding: 4px 8px;
+
+      border-radius: 999px;
+
+      background: #f1f5f9;
+
+      font-size: 11px;
+
+      color: #475569;
+    }
+
+
+    .error-box {
+      padding: 18px;
+
+      margin-bottom: 20px;
+
+      border-radius: 12px;
+
+      background: #fef2f2;
+
+      border: 1px solid #fecaca;
+
+      color: #991b1b;
+
+      display: none;
     }
 
   </style>
@@ -153,123 +428,562 @@
 <body>
 
 
+<!-- =========================
+     SIDE MENU
+========================= -->
+
+<div
+  id="overlay"
+  class="overlay"
+></div>
+
+
+<aside
+  id="sideMenu"
+  class="side-menu"
+>
+
+  <div class="menu-header">
+
+    <strong>
+      Admin Panel
+    </strong>
+
+    <small>
+      Meeting management
+    </small>
+
+  </div>
+
+
+  <div class="menu-items">
+
+
+    <button
+      class="menu-item active"
+      data-page="dashboardPage"
+    >
+
+      <span class="menu-icon">
+        📊
+      </span>
+
+      Dashboard
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      data-page="activityPage"
+    >
+
+      <span class="menu-icon">
+        🕘
+      </span>
+
+      Activity
+
+    </button>
+
+
+    <button
+      class="menu-item"
+      data-page="devicesPage"
+    >
+
+      <span class="menu-icon">
+        📱
+      </span>
+
+      Connected Devices
+
+    </button>
+
+
+  </div>
+
+</aside>
+
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
 
-  <h1>
-    Live Participants
-  </h1>
+  <div class="header-row">
 
-  <p>
-    Monitor active meeting participants
-  </p>
+
+    <button
+      id="menuButton"
+      class="menu-button"
+      aria-label="Open menu"
+    >
+
+      ☰
+
+    </button>
+
+
+    <div>
+
+      <h1 id="pageTitle">
+        Live Participants
+      </h1>
+
+      <p id="pageSubtitle">
+        Monitor active meeting participants
+      </p>
+
+    </div>
+
+
+  </div>
 
 </header>
+
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
 
 <main
   class="dashboard"
   id="adminDashboard"
-  style="display: none;"
+  style="display:none;"
 >
 
 
-  <section class="stats">
+  <div
+    id="errorBox"
+    class="error-box"
+  ></div>
 
 
-    <div class="stat-card">
 
-      <span>
-        Online Now
-      </span>
+  <!-- DASHBOARD PAGE -->
 
-      <strong id="onlineCount">
-        0
-      </strong>
-
-    </div>
+  <section
+    id="dashboardPage"
+    class="page-section active"
+  >
 
 
-    <div class="stat-card">
-
-      <span>
-        Hosts
-      </span>
-
-      <strong id="hostCount">
-        0
-      </strong>
-
-    </div>
+    <section class="stats">
 
 
-    <div class="stat-card">
+      <div class="stat-card">
 
-      <span>
-        Guests
-      </span>
+        <span>
+          Online Now
+        </span>
 
-      <strong id="guestCount">
-        0
-      </strong>
+        <strong id="onlineCount">
+          0
+        </strong>
 
-    </div>
+      </div>
+
+
+      <div class="stat-card">
+
+        <span>
+          Hosts
+        </span>
+
+        <strong id="hostCount">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span>
+          Guests
+        </span>
+
+        <strong id="guestCount">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span>
+          Activities
+        </span>
+
+        <strong id="activityCount">
+          0
+        </strong>
+
+      </div>
+
+
+    </section>
+
+
+
+    <section class="content-card">
+
+      <div class="content-header">
+
+        <h2>
+          Active Participants
+        </h2>
+
+        <p>
+          Participants currently recorded in meetings.
+        </p>
+
+      </div>
+
+
+      <div
+        id="participantList"
+        class="content-list"
+      >
+
+        <div class="empty">
+          Loading participants...
+        </div>
+
+      </div>
+
+    </section>
 
 
   </section>
 
 
-  <section class="participants">
 
-    <div class="participants-header">
+  <!-- ACTIVITY PAGE -->
 
-      <h2>
-        Active Participants
-      </h2>
+  <section
+    id="activityPage"
+    class="page-section"
+  >
 
-    </div>
+    <section class="content-card">
 
+      <div class="content-header">
 
-    <div id="participantList">
+        <h2>
+          Activity
+        </h2>
 
-      <div class="empty">
-        Loading partcipants...
+        <p>
+          Activity records currently available in Firestore.
+        </p>
+
       </div>
 
-    </div>
+
+      <div
+        id="activityList"
+        class="content-list"
+      >
+
+        <div class="empty">
+          Loading activity...
+        </div>
+
+      </div>
+
+    </section>
+
+  </section>
+
+
+
+  <!-- DEVICES PAGE -->
+
+  <section
+    id="devicesPage"
+    class="page-section"
+  >
+
+    <section class="content-card">
+
+      <div class="content-header">
+
+        <h2>
+          Connected Devices
+        </h2>
+
+        <p>
+          Devices represented by the participant records.
+        </p>
+
+      </div>
+
+
+      <div
+        id="deviceList"
+        class="content-list"
+      >
+
+        <div class="empty">
+          Loading connected devices...
+        </div>
+
+      </div>
+
+    </section>
 
   </section>
 
 
 </main>
 
+
+
 <script type="module">
 
-  import {
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+import {
   auth,
   db
 } from "./firebase-config.js";
+
 
 import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
+
 import {
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-
-  import {
   collection,
-  onSnapshot,
   doc,
-  getDoc
+  getDoc,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-  console.log(
-    "Admin Firebase connected:",
-    db
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let allParticipants = [];
+
+let allActivities = [];
+
+let allDevices = [];
+
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const adminDashboard =
+  document.getElementById(
+    "adminDashboard"
   );
-  
-  onAuthStateChanged(
+
+
+const menuButton =
+  document.getElementById(
+    "menuButton"
+  );
+
+
+const sideMenu =
+  document.getElementById(
+    "sideMenu"
+  );
+
+
+const overlay =
+  document.getElementById(
+    "overlay"
+  );
+
+
+const pageTitle =
+  document.getElementById(
+    "pageTitle"
+  );
+
+
+const pageSubtitle =
+  document.getElementById(
+    "pageSubtitle"
+  );
+
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+menuButton.addEventListener(
+  "click",
+  () => {
+
+    sideMenu.classList.add(
+      "open"
+    );
+
+    overlay.classList.add(
+      "show"
+    );
+
+  }
+);
+
+
+overlay.addEventListener(
+  "click",
+  closeMenu
+);
+
+
+function closeMenu() {
+
+  sideMenu.classList.remove(
+    "open"
+  );
+
+  overlay.classList.remove(
+    "show"
+  );
+
+}
+
+
+
+document
+  .querySelectorAll(".menu-item")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const page =
+          button.dataset.page;
+
+
+        document
+          .querySelectorAll(
+            ".page-section"
+          )
+          .forEach(section => {
+
+            section.classList.remove(
+              "active"
+            );
+
+          });
+
+
+        document
+          .getElementById(page)
+          .classList.add(
+            "active"
+          );
+
+
+        document
+          .querySelectorAll(
+            ".menu-item"
+          )
+          .forEach(item => {
+
+            item.classList.remove(
+              "active"
+            );
+
+          });
+
+
+        button.classList.add(
+          "active"
+        );
+
+
+        updatePageHeader(
+          page
+        );
+
+
+        closeMenu();
+
+      }
+    );
+
+  });
+
+
+
+/* =====================================================
+   PAGE TITLES
+===================================================== */
+
+function updatePageHeader(
+  page
+) {
+
+  if (
+    page === "dashboardPage"
+  ) {
+
+    pageTitle.textContent =
+      "Live Participants";
+
+    pageSubtitle.textContent =
+      "Monitor active meeting participants";
+
+  }
+
+
+  else if (
+    page === "activityPage"
+  ) {
+
+    pageTitle.textContent =
+      "Activity";
+
+    pageSubtitle.textContent =
+      "View recorded meeting activity";
+
+  }
+
+
+  else if (
+    page === "devicesPage"
+  ) {
+
+    pageTitle.textContent =
+      "Connected Devices";
+
+    pageSubtitle.textContent =
+      "View devices represented by participants";
+
+  }
+
+}
+
+
+
+/* =====================================================
+   ADMIN AUTH
+===================================================== */
+
+onAuthStateChanged(
   auth,
   async user => {
 
@@ -296,6 +1010,7 @@ import {
           user.uid
         );
 
+
       const userSnapshot =
         await getDoc(
           userRef
@@ -303,8 +1018,22 @@ import {
 
 
       if (
-        !userSnapshot.exists() ||
-        userSnapshot.data().role !== "admin"
+        !userSnapshot.exists()
+      ) {
+
+        throw new Error(
+          "Admin user record was not found."
+        );
+
+      }
+
+
+      const userData =
+        userSnapshot.data();
+
+
+      if (
+        userData.role !== "admin"
       ) {
 
         alert(
@@ -324,11 +1053,16 @@ import {
       console.log(
         "Admin access granted."
       );
-    document.getElementById(
-  "adminDashboard"
-).style.display = "block";
-    
+
+
+      adminDashboard.style.display =
+        "block";
+
+
+      startMonitoring();
+
     }
+
 
     catch (error) {
 
@@ -337,8 +1071,10 @@ import {
         error
       );
 
-      alert(
-        "Could not verify administrator access."
+
+      showError(
+        "Could not verify administrator access: " +
+        error.message
       );
 
     }
@@ -346,28 +1082,75 @@ import {
   }
 );
 
+
+
+/* =====================================================
+   START MONITORING
+===================================================== */
+
+function startMonitoring() {
+
   const meetingsRef =
-  collection(
-    db,
-    "meetings"
+    collection(
+      db,
+      "meetings"
+    );
+
+
+  onSnapshot(
+
+    meetingsRef,
+
+    snapshot => {
+
+      console.log(
+        "Meetings found:",
+        snapshot.size
+      );
+
+
+      loadMeetingParticipants(
+        snapshot
+      );
+
+    },
+
+    error => {
+
+      console.error(
+        "Meetings listener error:",
+        error
+      );
+
+
+      showError(
+        "Could not read meetings: " +
+        error.message
+      );
+
+    }
+
   );
 
-onSnapshot(
-  meetingsRef,
-  snapshot => {
+}
 
-    console.log(
-      "Meetings found:",
-      snapshot.size
-    );
 
-    snapshot.forEach(
-  meetingDoc => {
 
-    console.log(
-      "Meeting:",
-      meetingDoc.id
-    );
+/* =====================================================
+   LOAD PARTICIPANTS
+===================================================== */
+
+async function loadMeetingParticipants(
+  meetingsSnapshot
+) {
+
+  const participantArrays = [];
+
+
+  for (
+    const meetingDoc
+    of meetingsSnapshot.docs
+  ) {
 
     const participantsRef =
       collection(
@@ -377,93 +1160,169 @@ onSnapshot(
         "participants"
       );
 
-    participantSnapshot => {
 
-  const participants = [];
+    await new Promise(
+      resolve => {
 
-  participantSnapshot.forEach(
-    participantDoc => {
+        onSnapshot(
 
-      const data =
-        participantDoc.data();
+          participantsRef,
 
-      participants.push({
+          participantSnapshot => {
 
-        ...data,
+            const participants = [];
 
-        meetingId:
-          meetingDoc.id
 
-      });
+            participantSnapshot.forEach(
+              participantDoc => {
 
-    }
-  );
+                const data =
+                  participantDoc.data();
 
-  displayParticipants(
-    participants
-  );
 
-},
+                participants.push({
 
-      error => {
+                  ...data,
 
-        console.error(
-          "Participant error:",
-          error
+                  participantId:
+                    participantDoc.id,
+
+                  meetingId:
+                    meetingDoc.id
+
+                });
+
+              }
+            );
+
+
+            participantArrays.push(
+              participants
+            );
+
+
+            resolve();
+
+          },
+
+          error => {
+
+            console.error(
+              "Participant error:",
+              meetingDoc.id,
+              error
+            );
+
+
+            resolve();
+
+          }
+
         );
 
       }
     );
 
   }
-);
 
-  error => {
 
-    console.error(
-      "Admin meetings error:",
-      error
-    );
+  allParticipants =
+    participantArrays.flat();
 
-  }
-);
 
-  error => {
+  console.log(
+    "All participants:",
+    allParticipants
+  );
 
-    console.error(
-      "Admin meetings error:",
-      error
-    );
 
-  }
-);
+  updateDashboard();
 
-function displayParticipants(
-  participants
-) {
+
+  buildActivities();
+
+
+  buildDevices();
+
+}
+
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard() {
+
+  document.getElementById(
+    "onlineCount"
+  ).textContent =
+    allParticipants.length;
+
+
+  document.getElementById(
+    "hostCount"
+  ).textContent =
+    allParticipants.filter(
+      item =>
+        String(
+          item.role || ""
+        ).toLowerCase() === "host"
+    ).length;
+
+
+  document.getElementById(
+    "guestCount"
+  ).textContent =
+    allParticipants.filter(
+      item =>
+        String(
+          item.role || ""
+        ).toLowerCase() === "guest"
+    ).length;
+
+
+  displayParticipants();
+
+}
+
+
+
+/* =====================================================
+   DISPLAY PARTICIPANTS
+===================================================== */
+
+function displayParticipants() {
 
   const list =
     document.getElementById(
       "participantList"
     );
 
+
   list.innerHTML = "";
 
+
   if (
-    participants.length === 0
+    allParticipants.length === 0
   ) {
 
     list.innerHTML = `
+
       <div class="empty">
+
         No participants currently online.
+
       </div>
+
     `;
 
     return;
+
   }
 
 
-  participants.forEach(
+  allParticipants.forEach(
     participant => {
 
       const card =
@@ -471,36 +1330,80 @@ function displayParticipants(
           "div"
         );
 
+
       card.className =
         "participant-card";
 
+
+      const name =
+        participant.name ||
+        participant.displayName ||
+        participant.uid ||
+        participant.participantId ||
+        "Unknown participant";
+
+
+      const role =
+        participant.role ||
+        "Unknown";
+
+
       card.innerHTML = `
+
         <div class="participant-top">
 
           <div class="participant-name">
-            ${participant.uid}
+
+            ${escapeHTML(name)}
+
           </div>
 
           <div class="online">
+
             ● Online
+
           </div>
 
         </div>
+
 
         <div class="participant-info">
 
           <div>
-            Role: ${participant.role || "Unknown"}
+
+            Role:
+            ${escapeHTML(role)}
+
           </div>
 
+
           <div>
-            Meeting: ${participant.meetingId}
+
+            Meeting:
+            ${escapeHTML(
+              participant.meetingId
+            )}
+
+          </div>
+
+
+          <div>
+
+            Participant ID:
+            ${escapeHTML(
+              participant.participantId
+            )}
+
           </div>
 
         </div>
+
       `;
 
-      list.appendChild(card);
+
+      list.appendChild(
+        card
+      );
 
     }
   );
@@ -508,7 +1411,445 @@ function displayParticipants(
 }
 
 
+
+/* =====================================================
+   BUILD ACTIVITY
+===================================================== */
+
+function buildActivities() {
+
+  allActivities = [];
+
+
+  allParticipants.forEach(
+    participant => {
+
+      const name =
+        participant.name ||
+        participant.displayName ||
+        participant.uid ||
+        participant.participantId ||
+        "Unknown participant";
+
+
+      /*
+       * Use existing activity fields if the
+       * participant document contains them.
+       */
+
+      if (
+        participant.activity
+      ) {
+
+        allActivities.push({
+
+          name,
+
+          activity:
+            participant.activity,
+
+          meetingId:
+            participant.meetingId
+
+        });
+
+      }
+
+
+      if (
+        participant.action
+      ) {
+
+        allActivities.push({
+
+          name,
+
+          activity:
+            participant.action,
+
+          meetingId:
+            participant.meetingId
+
+        });
+
+      }
+
+
+      if (
+        participant.status
+      ) {
+
+        allActivities.push({
+
+          name,
+
+          activity:
+            participant.status,
+
+          meetingId:
+            participant.meetingId
+
+        });
+
+      }
+
+    }
+  );
+
+
+  document.getElementById(
+    "activityCount"
+  ).textContent =
+    allActivities.length;
+
+
+  displayActivities();
+
+}
+
+
+
+/* =====================================================
+   DISPLAY ACTIVITY
+===================================================== */
+
+function displayActivities() {
+
+  const list =
+    document.getElementById(
+      "activityList"
+    );
+
+
+  list.innerHTML = "";
+
+
+  if (
+    allActivities.length === 0
+  ) {
+
+    list.innerHTML = `
+
+      <div class="empty">
+
+        No activity records are currently
+        stored in Firestore.
+
+        <br><br>
+
+        Activity will appear here when the
+        participant records contain activity data.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  allActivities.forEach(
+    activity => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "activity-card";
+
+
+      card.innerHTML = `
+
+        <div class="activity-top">
+
+          <div class="activity-name">
+
+            ${escapeHTML(
+              activity.name
+            )}
+
+          </div>
+
+          <span class="badge">
+
+            Activity
+
+          </span>
+
+        </div>
+
+
+        <div class="activity-info">
+
+          <div>
+
+            ${escapeHTML(
+              activity.activity
+            )}
+
+          </div>
+
+
+          <div>
+
+            Meeting:
+            ${escapeHTML(
+              activity.meetingId
+            )}
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      list.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   BUILD CONNECTED DEVICES
+===================================================== */
+
+function buildDevices() {
+
+  allDevices = [];
+
+
+  allParticipants.forEach(
+    participant => {
+
+      const name =
+        participant.name ||
+        participant.displayName ||
+        participant.uid ||
+        participant.participantId ||
+        "Unknown participant";
+
+
+      const device =
+        participant.device ||
+        participant.deviceName ||
+        participant.deviceType ||
+        participant.platform ||
+        participant.browser ||
+        "Device information not provided";
+
+
+      allDevices.push({
+
+        name,
+
+        device,
+
+        meetingId:
+          participant.meetingId,
+
+        participantId:
+          participant.participantId
+
+      });
+
+    }
+  );
+
+
+  displayDevices();
+
+}
+
+
+
+/* =====================================================
+   DISPLAY DEVICES
+===================================================== */
+
+function displayDevices() {
+
+  const list =
+    document.getElementById(
+      "deviceList"
+    );
+
+
+  list.innerHTML = "";
+
+
+  if (
+    allDevices.length === 0
+  ) {
+
+    list.innerHTML = `
+
+      <div class="empty">
+
+        No connected device records
+        are currently available.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  allDevices.forEach(
+    device => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "device-card";
+
+
+      card.innerHTML = `
+
+        <div class="device-top">
+
+          <div class="device-name">
+
+            ${escapeHTML(
+              device.name
+            )}
+
+          </div>
+
+          <div class="online">
+
+            ● Connected
+
+          </div>
+
+        </div>
+
+
+        <div class="device-info">
+
+          <div>
+
+            Device:
+            ${escapeHTML(
+              device.device
+            )}
+
+          </div>
+
+
+          <div>
+
+            Meeting:
+            ${escapeHTML(
+              device.meetingId
+            )}
+
+          </div>
+
+
+          <div>
+
+            Participant ID:
+            ${escapeHTML(
+              device.participantId
+            )}
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      list.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(
+  message
+) {
+
+  const box =
+    document.getElementById(
+      "errorBox"
+    );
+
+
+  box.textContent =
+    message;
+
+
+  box.style.display =
+    "block";
+
+}
+
+
+
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
 </script>
+
 </body>
 
 </html>
