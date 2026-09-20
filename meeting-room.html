@@ -3399,44 +3399,50 @@ async function logActivity(
     const deviceInfo =
       getDeviceInfo();
 
-    await addDoc(
-      collection(
-        db,
-        "meetings",
-        meetingId,
-        "activities"
-      ),
+    await fetch(
+      "https://meeting-activity.zoomcom31000.workers.dev/",
       {
+        method: "POST",
 
-        uid:
-          currentUser.uid,
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
-        role:
-          isHost
-            ? "host"
-            : "guest",
+        body: JSON.stringify({
 
-        type,
+          meetingId:
+            meetingId,
 
-        description,
+          uid:
+            currentUser.uid,
 
-        deviceType:
-          deviceInfo.deviceType,
+          role:
+            isHost
+              ? "host"
+              : "guest",
 
-        deviceName:
-          deviceInfo.deviceName,
+          type:
+            type,
 
-        platform:
-          deviceInfo.platform,
+          description:
+            description,
 
-        browser:
-          deviceInfo.browser,
+          deviceType:
+            deviceInfo.deviceType,
 
-        timestamp:
-          serverTimestamp(),
+          deviceName:
+            deviceInfo.deviceName,
 
-        ...extra
+          platform:
+            deviceInfo.platform,
 
+          browser:
+            deviceInfo.browser,
+
+          ...extra
+
+        })
       }
     );
 
@@ -3449,7 +3455,6 @@ async function logActivity(
 
   }
 }
-
     /* =====================================================
    PARTICIPANTS
 ===================================================== */
